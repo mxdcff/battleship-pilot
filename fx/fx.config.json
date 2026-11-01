@@ -1,0 +1,15 @@
+{
+ "pixelfx": "vendor/pixelfx",
+ "out": "assets/fx",
+ "effects": [
+  {
+   "name": "bigboom",
+   "id": "explosions/big-explosion",
+   "fps": 10,
+   "maxSec": 4.6,
+   "downscale": 2,
+   "seed": 7,
+   "opts": {}
+  }
+ ]
+}

@@ -1,0 +1,5 @@
+dist/
+node_modules/
+vendor/pixelfx/records/
+records/
+.DS_Store

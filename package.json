@@ -1,0 +1,15 @@
+{
+  "name": "battleship-pilot",
+  "private": true,
+  "type": "module",
+  "description": "배틀쉽 파일럿 · pixel naval roguelike (single-file HTML5 canvas game)",
+  "scripts": {
+    "fx:bake": "node tools/fx-bake.mjs",
+    "fx:embed": "node tools/fx-embed.mjs",
+    "fx": "node tools/fx-bake.mjs && node tools/fx-embed.mjs",
+    "fx:list": "node vendor/pixelfx/tools/list.mjs",
+    "fx:render": "node vendor/pixelfx/tools/render.mjs",
+    "build": "node tools/build.mjs"
+  },
+  "engines": { "node": ">=18" }
+}
