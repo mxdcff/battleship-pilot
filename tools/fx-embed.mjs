@@ -12,7 +12,7 @@ for (const f of readdirSync(dir).filter(f => /-v\d+\.json$/.test(f)).sort((a, b)
   const v = { src: "data:image/png;base64," + readFileSync(join(dir, j.meta.image)).toString("base64"),
     fw: m.frameSize[0], fh: m.frameSize[1], cols: m.columns, n: m.frames, pivot: m.pivot, k: m.downscale || 1 };
   if (m.light) v.light = { src: "data:image/png;base64," + readFileSync(join(dir, m.light.image)).toString("base64"),
-    fw: m.light.frameSize[0], fh: m.light.frameSize[1], cols: m.light.columns, pivot: m.light.pivot, k: m.light.downscale };
+    fw: m.light.frameSize[0], fh: m.light.frameSize[1], cols: m.light.columns, pivot: m.light.pivot, k: m.light.downscale, g: m.light.glow ?? 0.9 };
   (sheets[name] = sheets[name] || { fps: m.fps, loop: m.loop, vars: [] }).vars.push(v);
 }
 const kb = n => (JSON.stringify(sheets[n]).length / 1024).toFixed(0);

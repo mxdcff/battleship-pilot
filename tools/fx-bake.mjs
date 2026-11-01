@@ -16,6 +16,7 @@
 //   smokeRamp        hex colors dark -> light; grey (unsaturated) color pixels are remapped onto it
 //   startSec         skip the effect's lead-in (e.g. start a lightning strike just before the bolt lands)
 //   --no-quantize    keep full RGBA PNGs (otherwise a 256-color pass shrinks them ~4x)
+//   glow             strength of the additive light layer in the game (0..1, default 0.9)
 //   variants         [{seed, opts}, ...]: bake several takes; the game picks one at random each time it plays.
 //                    Files are <name>-v<i>.png / -v<i>-light.png / -v<i>.json. Without it: one take, -v0.
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
@@ -107,7 +108,7 @@ for (const e of cfg.effects) {
   json.meta = { app: "https://github.com/patch-gg/pixelfx", version: "1", image: `${tag}.png`, format: "RGBA8888", size: { w: C.SW, h: C.SH }, scale: String(1 / k),
     frameTags: [{ name: tag, from: 0, to: n - 1, direction: "forward" }],
     pixelfx: { id: e.id, effect: e.name, variant: vi, seed: V.seed ?? e.seed, name: fx.meta.name, fps: e.fps, loop: fx.meta.loop, frames: n, frameSize: [C.cw, C.ch], columns: C.cols, pivot: pivC, downscale: k, squash: sq,
-      light: { image: `${tag}-light.png`, frameSize: [Lp.cw, Lp.ch], columns: Lp.cols, pivot: pivL, downscale: kl, blend: "additive" } } };
+      light: { image: `${tag}-light.png`, frameSize: [Lp.cw, Lp.ch], columns: Lp.cols, pivot: pivL, downscale: kl, blend: "additive", glow: e.glow ?? 0.9 } } };
   writeFileSync(join(out, `${tag}.png`), C.png); writeFileSync(join(out, `${tag}-light.png`), Lp.png); written.push(join(out, `${tag}.png`), join(out, `${tag}-light.png`));
   writeFileSync(join(out, `${tag}.json`), JSON.stringify(json, null, 1));
   console.log(`${tag} <- ${e.id}: ${n} frames @${e.fps}fps · color ${C.cw}x${C.ch} ${(C.png.length / 1024).toFixed(0)} KB · light ${Lp.cw}x${Lp.ch} ${(Lp.png.length / 1024).toFixed(0)} KB`);

@@ -491,7 +491,8 @@
      62
     ],
     "downscale": 3,
-    "blend": "additive"
+    "blend": "additive",
+    "glow": 0.85
    }
   }
  }

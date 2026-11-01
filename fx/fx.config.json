@@ -3,45 +3,233 @@
  "out": "assets/fx",
  "effects": [
   {
-   "name": "bigboom", "id": "explosions/big-explosion",
-   "fps": 10, "maxSec": 4.0, "downscale": 1, "lightDownscale": 3, "squash": 0.82,
-   "groundFade": { "above": 26, "r0": 24, "r1": 52 },
-   "smokeRamp": ["#1c2129", "#363c46", "#585e68", "#868b93", "#c2c5c9"],
-   "opts": { "palette": ["#3a0f0a", "#8a1f14", "#e0533f", "#ff7a3d", "#ffb347", "#ffd75e", "#fff1b8", "#ffffff"], "stone": "#6f8fa6" },
-   "variants": [{ "seed": 7 }, { "seed": 21 }, { "seed": 38 }]
+   "name": "bigboom",
+   "id": "explosions/big-explosion",
+   "fps": 10,
+   "maxSec": 4.0,
+   "downscale": 1,
+   "lightDownscale": 3,
+   "squash": 0.82,
+   "groundFade": {
+    "above": 26,
+    "r0": 24,
+    "r1": 52
+   },
+   "smokeRamp": [
+    "#1c2129",
+    "#363c46",
+    "#585e68",
+    "#868b93",
+    "#c2c5c9"
+   ],
+   "opts": {
+    "palette": [
+     "#3a0f0a",
+     "#8a1f14",
+     "#e0533f",
+     "#ff7a3d",
+     "#ffb347",
+     "#ffd75e",
+     "#fff1b8",
+     "#ffffff"
+    ],
+    "stone": "#6f8fa6"
+   },
+   "variants": [
+    {
+     "seed": 7
+    },
+    {
+     "seed": 21
+    },
+    {
+     "seed": 38
+    }
+   ],
+   "glow": 0.9
   },
   {
-   "name": "bolt", "id": "lightning/lightning-strike",
-   "fps": 12, "startSec": 0.62, "maxSec": 2.2, "downscale": 1, "lightDownscale": 3, "squash": 0.82,
-   "groundFade": { "above": 14, "r0": 16, "r1": 34 },
-   "variants": [{ "seed": 1 }, { "seed": 2 }, { "seed": 3 }, { "seed": 4 }]
+   "name": "bolt",
+   "id": "lightning/lightning-strike",
+   "fps": 12,
+   "startSec": 0.62,
+   "maxSec": 2.2,
+   "downscale": 1,
+   "lightDownscale": 3,
+   "squash": 0.82,
+   "groundFade": {
+    "above": 14,
+    "r0": 16,
+    "r1": 34
+   },
+   "variants": [
+    {
+     "seed": 1
+    },
+    {
+     "seed": 2
+    },
+    {
+     "seed": 3
+    },
+    {
+     "seed": 4
+    }
+   ],
+   "opts": {
+    "palette": [
+     "#0c1a2b",
+     "#173452",
+     "#25567d",
+     "#3f86b3",
+     "#7fd6ff",
+     "#bfe8ff",
+     "#fff8e6",
+     "#ffffff"
+    ],
+    "sparks": [
+     "#ffffff",
+     "#fff1b8",
+     "#ffe98a",
+     "#ffb347"
+    ]
+   },
+   "glow": 0.85
   },
   {
-   "name": "geyser", "id": "water/geyser",
-   "fps": 10, "startSec": 1.0, "maxSec": 4.2, "downscale": 1, "lightDownscale": 3, "squash": 0.82,
-   "groundFade": { "above": 10, "r0": 26, "r1": 44 },
-   "variants": [{ "seed": 4, "opts": { "height": 70 } }, { "seed": 9, "opts": { "height": 100 } }, { "seed": 15, "opts": { "height": 130 } }]
+   "name": "geyser",
+   "id": "water/geyser",
+   "fps": 10,
+   "startSec": 1.0,
+   "maxSec": 4.2,
+   "downscale": 1,
+   "lightDownscale": 3,
+   "squash": 0.82,
+   "groundFade": {
+    "above": 10,
+    "r0": 26,
+    "r1": 44
+   },
+   "variants": [
+    {
+     "seed": 4,
+     "opts": {
+      "height": 70
+     }
+    },
+    {
+     "seed": 9,
+     "opts": {
+      "height": 100
+     }
+    },
+    {
+     "seed": 15,
+     "opts": {
+      "height": 130
+     }
+    }
+   ],
+   "opts": {
+    "palette": [
+     "#0b1d2e",
+     "#16466d",
+     "#1e5b8c",
+     "#3a7fb5",
+     "#6fa9d3",
+     "#9fcbe6",
+     "#e8f4fb",
+     "#ffffff"
+    ]
+   },
+   "glow": 0.6
   },
   {
-   "name": "whirl", "id": "water/whirlpool",
-   "fps": 10, "downscale": 1, "lightDownscale": 2,
-   "variants": [{ "seed": 5 }]
+   "name": "whirl",
+   "id": "water/whirlpool",
+   "fps": 10,
+   "downscale": 1,
+   "lightDownscale": 2,
+   "variants": [
+    {
+     "seed": 5
+    }
+   ],
+   "opts": {
+    "palette": [
+     "#0b1d2e",
+     "#16466d",
+     "#1e5b8c",
+     "#3a7fb5",
+     "#6fa9d3",
+     "#9fcbe6",
+     "#e8f4fb",
+     "#ffffff"
+    ]
+   },
+   "glow": 0.5
   },
   {
-   "name": "hands", "id": "shadow/grasping-hands",
-   "fps": 10, "maxSec": 3.1, "downscale": 1, "lightDownscale": 3, "squash": 0.82,
-   "opts": { "palette": ["#071418", "#0e2a30", "#174a52", "#2f6f73", "#4fa3a8", "#7fd6ff", "#bfe8ff", "#ffffff"] },
-   "variants": [{ "seed": 5 }, { "seed": 12 }, { "seed": 27 }]
+   "name": "hands",
+   "id": "shadow/grasping-hands",
+   "fps": 10,
+   "maxSec": 3.1,
+   "downscale": 1,
+   "lightDownscale": 3,
+   "squash": 0.82,
+   "opts": {
+    "palette": [
+     "#081418",
+     "#0f2a30",
+     "#174a52",
+     "#2f6f73",
+     "#4fa3a8",
+     "#7fd6ff",
+     "#bfe8ff",
+     "#ffffff"
+    ]
+   },
+   "variants": [
+    {
+     "seed": 5
+    },
+    {
+     "seed": 12
+    },
+    {
+     "seed": 27
+    }
+   ],
+   "glow": 0.7
   },
   {
-   "name": "soul", "id": "spawn/soul-rise",
-   "fps": 10, "maxSec": 3.0, "downscale": 1, "lightDownscale": 3, "squash": 0.9,
-   "variants": [{ "seed": 2 }, { "seed": 6 }]
-  },
-  {
-   "name": "coin", "id": "pickups/coin-spin",
-   "fps": 12, "downscale": 1, "lightDownscale": 2,
-   "variants": [{ "seed": 3 }]
+   "name": "soul",
+   "id": "spawn/soul-rise",
+   "fps": 10,
+   "maxSec": 3.0,
+   "downscale": 1,
+   "lightDownscale": 3,
+   "squash": 0.9,
+   "variants": [
+    {
+     "seed": 2
+    },
+    {
+     "seed": 6
+    }
+   ],
+   "opts": {
+    "palette": [
+     "#081418",
+     "#0f2a30",
+     "#174a52",
+     "#4fa3a8",
+     "#7fd6ff",
+     "#bfe8ff",
+     "#ffffff"
+    ]
+   },
+   "glow": 0.8
   }
  ]
 }

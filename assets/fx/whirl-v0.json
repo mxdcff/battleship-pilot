@@ -711,7 +711,8 @@
      20
     ],
     "downscale": 2,
-    "blend": "additive"
+    "blend": "additive",
+    "glow": 0.5
    }
   }
  }

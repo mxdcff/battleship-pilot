@@ -20,7 +20,10 @@ checkout for every pixelfx command; do not clone another copy.
      and additive glows, while pixelfx effects are side-view pixel art. So: `downscale: 1` (native pixels, drawn
      small), `lightDownscale: 3` (glow baked as its own soft layer), `squash: ~0.82` (3/4 view), `groundFade`
      (no flat ground stripe on the sea), `smokeRamp` + `opts.palette` in the game's colors
-     (fire `#8a1f14 #e0533f #ff7a3d #ffb347 #ffd75e #fff1b8`, smoke neutral grey, spray `#6f8fa6`).
+     (fire `#8a1f14 #e0533f #ff7a3d #ffb347 #ffd75e #fff1b8`, smoke neutral grey, spray `#6f8fa6`;
+     water `#16466d #1e5b8c #3a7fb5 #6fa9d3 #9fcbe6 #e8f4fb`; electric `#3f86b3 #7fd6ff #bfe8ff #fff8e6` with warm
+     sparks `#fff1b8 #ffe98a`; ghost teal `#174a52 #2f6f73 #4fa3a8 #7fd6ff #bfe8ff`). `glow` sets the light layer
+     strength: lower for blue effects over the blue sea (0.5-0.6) so they do not wash out.
    - `variants`: 2-4 takes with different `seed` (and option tweaks such as geyser `height`); the game picks one at
      random every time, so the same moment never repeats exactly. `startSec` trims a slow lead-in.
    - Size: a 256-color palette pass (python3 + Pillow, `tools/fx-quantize.py`) runs after baking and shrinks
@@ -33,7 +36,9 @@ checkout for every pixelfx command; do not clone another copy.
 5. **Play it** (game code):
    - `playFx(name, x, z, scale, {delay, v, fixed, noFlip, rise, alpha})` plays a one-shot at world coordinates.
      Each play picks a random take and mirrors, resizes and retimes it by about ±13% (`fixed` turns that off).
-     `scale` is world units per sheet pixel (0.5-0.75 matches the ships).
+     `scale` is world units per sheet pixel. Keep every effect between 0.55 and 0.75 so pixel sizes match each
+     other and the ships; make an effect bigger with its own options (size, height) or several instances, not a
+     bigger scale.
    - `fxBolt(x, z, scale)` plays a lightning strike as one of three patterns: single, a double strike, or a main
      bolt with small side bolts.
    - `fxLoop(name, x, z, scale, cam, alpha, take)` draws a looping effect (whirlpools) from a render pass.
@@ -42,7 +47,7 @@ checkout for every pixelfx command; do not clone another copy.
    - When an effect replaces a game burst, drop the game's own particles for it so they do not double up.
    - Current uses: `bigboom` boss/elite flagship sinks (`kill`), `bolt` weather and arena lightning (`S.strikes`),
      `geyser` rising reefs and the Kraken weapon, `whirl` the 3장 whirlpool arena and boss whirlpools, `hands`
-     망령 제독 summons and ghost phase, `soul` its awakening and act-4 boss-fight sinkings, `coin` gold pickups.
+     망령 제독 summons and ghost phase, `soul` its awakening and act-4 boss-fight sinkings.
 6. **Check it in the game**: build (`npm run build` → `dist/index.html`), open it in a headless browser
    (playwright), start a battle, trigger the event, and screenshot a few moments of the effect. Look at the
    screenshots before saying it works.
