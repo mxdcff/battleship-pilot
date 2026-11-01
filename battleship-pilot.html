@@ -229,7 +229,7 @@ body{background:var(--deep);color:var(--ink);overflow:hidden;overscroll-behavior
 <script>
 (()=>{
 const cv=document.getElementById('game'),ctx=cv.getContext('2d'),wrap=document.getElementById('wrap');
-const VERSION='v0.48';
+const VERSION='v0.49';
 const FINE=(()=>{try{return matchMedia('(pointer:fine)').matches&&!('ontouchstart' in window);}catch(_){return false;}})();const ZOOMS=FINE?[260,340,430,500,580]:[260,340,430],ZOOMN=['가까이','보통','멀리','아주 멀리','전체'];let zoomIdx=1;try{const v=localStorage.getItem('bs_zoom');if(v!==null&&ZOOMS[+v])zoomIdx=+v;}catch(_){}
 let VIEW_MIN=ZOOMS[zoomIdx],JR=22*VIEW_MIN/240;
 const VZ=1.3,WW=900,WZ=900,YF=0.6,HULL_X=16,HULL_Z=7;
@@ -560,7 +560,7 @@ const KINDS={
   player:{hp:100,r:15,speed:72,spr:'player'},
   raider:{hp:30,r:15,speed:56,spr:'raider',approach:0.6,guns:[{range:110,dmg:6,cd:1.6,spd:170,pel:1,spread:0}]},
   gunboat:{hp:48,r:15,speed:36,spr:'gunboat',approach:0.85,guns:[{range:175,dmg:10,cd:2.7,spd:200,pel:1,spread:0}]},
-  boss:{hp:1250,r:30,speed:28,spr:'boss',sc:2,boss:true,approach:0.7,guns:[{range:160,dmg:8,cd:2.3,spd:190,pel:3,spread:0.35},{range:230,dmg:14,cd:3.6,spd:230,pel:1,spread:0,lob:true}]}
+  boss:{hp:1250,r:30,speed:24,spr:'boss',sc:2,boss:true,approach:1.05,guns:[{range:160,dmg:8,cd:2.3,spd:190,pel:3,spread:0.35},{range:230,dmg:14,cd:3.6,spd:230,pel:1,spread:0,lob:true}]}
 };
 Object.assign(KINDS,{
   rammer:{hp:22,r:13,speed:68,spr:'rammer',ai:'ram',approach:0.8,guns:[{range:120,cd:3}]},
@@ -568,9 +568,9 @@ Object.assign(KINDS,{
   fireship:{hp:26,r:14,speed:46,spr:'fireship',ai:'fire',approach:0,guns:[{range:40,cd:3}]},
   broadside:{hp:64,r:16,speed:30,spr:'broadside',ai:'broad',approach:0.85,guns:[{range:170,cd:3}]},
   boss2:{hp:1300,r:30,speed:34,spr:'boss2',sc:2,boss:true,approach:0.7,guns:[{range:160,cd:3}]},
-  boss3:{hp:4100,r:30,speed:30,spr:'boss3',sc:2,boss:true,approach:0.7,guns:[{range:170,cd:3}]},
+  boss3:{hp:4100,r:30,speed:38,spr:'boss3',sc:2,boss:true,approach:0.4,guns:[{range:170,cd:3}]},
   boss4:{hp:5000,r:30,speed:34,spr:'boss4',sc:2,boss:true,approach:0.7,guns:[{range:170,cd:3}]},
-  boss5:{hp:6400,r:30,speed:32,spr:'boss5',sc:2,boss:true,approach:0.7,guns:[{range:170,cd:3}]},
+  boss5:{hp:6400,r:30,speed:30,spr:'boss5',sc:2,boss:true,approach:0.95,guns:[{range:170,cd:3}]},
   fort:{hp:75,r:16,speed:0,spr:'fort',approach:0,guns:[{range:250,dmg:10,cd:2.6,spd:200,pel:1,spread:0,lob:true}]},
   flag:{hp:110,r:20,speed:32,spr:'flag',sc:1.45,approach:0.75,guns:[{range:170,cd:3}]},
   skiff:{hp:18,r:12,speed:92,spr:'skiff',approach:0.5,guns:[{range:85,dmg:4,cd:1.1,spd:230,pel:1,spread:0}]},
@@ -945,13 +945,28 @@ function bossAct(e,dt,p,dist){
     return true;
   }
   B.cd-=dt;if(B.cd>0||p.dead)return false;
-  const OP={boss:['volley','rain','line','ram','spiral','ringtrap','noose'],boss2:['volley','line','ram','cross','pincer','sweepfan','emines','tidal','firesea','crossfire','crossfire','reefrise'],boss3:['volley','rain','line','ram','ram','spiral','cross','hunt','storm','sweep','ringtrap','sweepfan','emines','vortex','reefrise','beam','noose','firesea','tidal'],boss4:['ram','volley','rain','spiral','cross','sweep','ringtrap','sweepfan','hunt','tidal','beam','noose','reefrise','firesea','whirlpools','blink','phantom']};
-  OP.boss5=['volley','rain','spiral','cross','sweep','ringtrap','sweepfan','hunt','tidal','beam','noose','storm','thunderline','thunderline'];
+  // each boss has its own kit: fortress = artillery, twins = crossfire, pirate king = boarding (rams, chains, fire),
+  // ghost admiral = hunting (blink, net, brand), storm king = the sky (lasers, lightning, barrage)
+  const OP={boss:['volley','rain','line','spiral','ringtrap','noose','rain'],
+    boss2:['volley','line','ram','cross','pincer','sweepfan','emines','tidal','firesea','crossfire','crossfire','reefrise'],
+    boss3:['ram','ram','chain','chain','firecage','volley','rain','hunt','sweep','emines','vortex','noose','firesea','spiral'],
+    boss4:['blink','blink','phantom','net','brand','brand','whirlpools','ringtrap','spiral','cross','sweep','hunt','noose','beam','volley'],
+    boss5:['beams','thunderline','thunderline','barrage','tidal','storm','volley','rain','sweepfan','spiral','cross','hunt','stormwall']};
   OP.mini=['volley','rain','line','ram','ringtrap','noose','cross'].concat(S.act>=3?['sweepfan','hunt']:[]);
-  const opts=[...OP[e.mini?'mini':e.kind]];if(!e.mini&&(e.kind==='boss3'||e.kind==='boss4'||e.kind==='boss5')){opts.push('net','barrage','firecage');if(e.kind!=='boss3'||B.phase>=2)opts.push('drag');if(e.kind!=='boss3')opts.push('brand','brand');if(e.kind==='boss5'&&B.phase>=2)opts.push('barrage','net');}if(!e.mini){if(e.kind!=='boss'||B.phase>=2)opts.push('grid');if(e.kind==='boss3'||e.kind==='boss4'||e.kind==='boss5')opts.push('beams');if((e.kind==='boss2'||e.kind==='boss3'||e.kind==='boss5'||(e.kind==='boss4'&&B.phase>=2))&&!S.tether)opts.push('chain');if(e.kind==='boss'&&B.phase>=2)opts.push('beams');}if(dist<160&&e.kind!=='boss2')opts.push('nova','nova');if(B.phase>=3&&e.kind!=='boss2')opts.push('hunt','storm');if(e.kind==='boss3'&&B.phase>=2&&B.fleetCd<=0)opts.push('fleet');
+  const opts=[...OP[e.mini?'mini':e.kind]];
+  if(!e.mini){const k=e.kind,ph=B.phase;
+    if(k==='boss'){if(ph>=2)opts.push('grid','grid');if(S.ents.some(f=>f.kind==='fort'&&!f.dead))opts.push('fortsalvo','fortsalvo');if(ph>=3)opts.push('barrage');}
+    if(k==='boss3'){if(ph>=2)opts.push('drag','drag','fleet');if(ph>=3)opts.push('firecage','storm');}
+    if(k==='boss4'){if(ph>=2)opts.push('net','phantom');if(ph>=3)opts.push('brand','hunt');}
+    if(k==='boss5'){if(ph>=2)opts.push('barrage','thunderline');if(ph>=3)opts.push('beams','stormwall');}
+    if(dist<160&&k!=='boss2'&&k!=='boss5'){opts.push('nova');if(k==='boss')opts.push('nova');}}
+  if(S.tether)for(let i=opts.length-1;i>=0;i--)if(opts[i]==='chain'||opts[i]==='drag')opts.splice(i,1);
+  if(e.kind==='boss3'&&B.fleetCd>0)for(let i=opts.length-1;i>=0;i--)if(opts[i]==='fleet')opts.splice(i,1);
+  // signature patterns have their own cooldowns so no single one floods the fight
+  {const PCD={beams:15,barrage:16,brand:9,net:8,firecage:10,drag:9,chain:7,grid:8,thunderline:5,tidal:10,stormwall:12,fortsalvo:7,blink:6,phantom:9},now=S.btime||0;B.pl=B.pl||{};for(let i=opts.length-1;i>=0;i--){const o=opts[i];if(PCD[o]&&B.pl[o]!==undefined&&now-B.pl[o]<PCD[o])opts.splice(i,1);}}
   const PP=e.mini?{volley:'guns',cross:'guns',noose:'guns',sweepfan:'guns',ram:'sail',line:'sail'}:e.kind==='boss2'?PAT_PART2:PAT_PART;const okO=opts.filter(o=>!broken(e,PP[o]));
   if(!okO.length){B.cd=1.2;return false;}
-  let pick,tries=0;do{pick=okO[Math.floor(Math.random()*okO.length)];tries++;}while(pick===B.last&&okO.length>1&&tries<10);B.last=pick;
+  let pick,tries=0;do{pick=okO[Math.floor(Math.random()*okO.length)];tries++;}while(pick===B.last&&okO.length>1&&tries<10);B.last=pick;(B.pl=B.pl||{})[pick]=S.btime||0;
   const ux=(p.x-e.x)/(dist||1),uz=(p.z-e.z)/(dist||1);
   const run=pick=>{
   if(pick==='volley'){fire(e,{range:999,dmg:8,cd:0,spd:190,pel:B.phase>=3?9:B.phase===2?7:5,spread:0.75},aimOf(e,p),0.5);B.cd=2.3*fast;}
@@ -964,8 +979,10 @@ function bossAct(e,dt,p,dist){
   else if(pick==='storm'){B.stormN=4;B.stormT=0;B.cd=3.6*fast;}
   else if(pick==='fleet'){summon(['fireship','fireship']);B.fleetCd=16;banner('해적왕이 화선을 풀었다');B.cd=2*fast;}
   else if(pick==='grid'){const cx=p.x+p.vx*0.3,cz=p.z+p.vz*0.3,G=34,par=Math.random()<0.5?0:1;for(let i=-2;i<=2;i++)for(let j=-2;j<=2;j++){const w=((i+j)&1)===par?0:1,x=cx+i*G,z=cz+j*G*1.0;shell(e,x,z,{lob:true,dmg:10,spd:210,delay:w?1.25:0.15});}if(!S.gridTip){S.gridTip=1;banner('격자 포격 · 두 번째 포격 전에 칸을 옮겨요');}B.cd=3.4*fast;}
-  else if(pick==='beams'){const n=e.kind==='boss5'?(B.phase>=3?5:4):e.kind==='boss4'?4:3,base=Math.atan2(uz,ux)+Math.PI/n,dir=Math.random()<0.5?1:-1,eL=D.easyLoot;for(let k=0;k<n;k++){const a=base+k*Math.PI*2/n;addLaser(e,e.x+Math.cos(a)*100,e.z+Math.sin(a)*100,{warn:1.3,act:eL?2.4:3.2,angV:dir*(eL?0.38:0.55)*(B.phase>=3?1.25:1),w:9,dmg:eL?4:6,len:e.kind==='boss'?330:430,col:'#ff7a3d',quiet:k>0});}e.vx*=0.3;e.vz*=0.3;if(!S.beamTip){S.beamTip=1;banner('회전 광선 · 같은 방향으로 돌며 피해요');}B.cd=4.6*fast;}
+  else if(pick==='beams'){const n=e.kind==='boss5'?(B.phase>=3?5:4):e.kind==='boss4'?4:3,base=Math.atan2(uz,ux)+Math.PI/n,dir=Math.random()<0.5?1:-1,eL=D.easyLoot;for(let k=0;k<n;k++){const a=base+k*Math.PI*2/n;addLaser(e,e.x+Math.cos(a)*100,e.z+Math.sin(a)*100,{warn:1.3,act:eL?2.4:3.2,angV:dir*(eL?0.38:0.55)*(B.phase>=3?1.25:1),w:9,dmg:eL?4:6,len:430,col:e.kind==='boss5'?'#7fd6ff':'#ff7a3d',quiet:k>0});if(k===0&&e.kind==='boss5')fxBolt(e.x,e.z,0.55);}e.vx*=0.3;e.vz*=0.3;if(!S.beamTip){S.beamTip=1;banner('회전 광선 · 같은 방향으로 돌며 피해요');}B.cd=4.6*fast;}
   else if(pick==='chain'){addLaser(e,p.x+p.vx*0.35,p.z+p.vz*0.35,{warn:0.9,w:9,dmg:6,len:Math.min(520,dist+80),col:'#cfd6dc',tether:true});B.cd=1.6*fast;}
+  else if(pick==='fortsalvo'){const fs=S.ents.filter(f=>f.kind==='fort'&&!f.dead);fs.forEach((f,j)=>{for(let i=0;i<4;i++){const a=Math.random()*TAU,r=Math.random()*40;shell(f,p.x+p.vx*0.5+Math.cos(a)*r,p.z+p.vz*0.5+Math.sin(a)*r,{lob:true,dmg:9,spd:200,delay:j*0.25+i*0.12});}});tip('salvoTip','포대 일제 사격 · 포대를 먼저 부수면 포격이 줄어요');B.cd=2.6*fast;}
+  else if(pick==='stormwall'){const ax=Math.random()<0.5?'x':'z',mx=ax==='x'?WW:WZ,dir=Math.random()<0.5?1:-1;S.tides.push({ax,dir,pos:dir>0?-10:mx+10,spd:170,w:14,warn:1.4,hit:false});setTimeout(()=>{if(S&&S.mode==='play'&&!e.dead){const ax2=ax==='x'?'z':'x',mx2=ax2==='x'?WW:WZ,d2=Math.random()<0.5?1:-1;S.tides.push({ax:ax2,dir:d2,pos:d2>0?-10:mx2+10,spd:170,w:14,warn:1.4,hit:false});}},1600);tip('wallTip','폭풍 벽 · 가로와 세로로 연달아 밀려와요');B.cd=3.2*fast;}
   else if(pick==='net'){const x=p.x+p.vx*0.5,z=p.z+p.vz*0.5;(S.warns=S.warns||[]).push({x,z,r:46,t:1.15,max:1.15,k:'net',src:e});SFX.play('warn');tip('netTip','포획 그물 · 원 밖으로 피하지 못하면 2초 넘게 느려지고 급기동도 못 써요');B.cd=2.3*fast;}
   else if(pick==='brand'){const tg=aimOf(e,p);S.brand={x:tg.x,z:tg.z,tg,t:2.8,max:2.8,r:48,src:e,dmg:D.easyLoot?16:26};SFX.play('warn');tip('brandTip','낙인 포격 · 표적이 따라와요. 마지막 순간 급기동으로 빠져나가요');B.cd=3.6*fast;}
   else if(pick==='barrage'){const tg=aimOf(e,p);(S.warns=S.warns||[]).push({x:tg.x,z:tg.z,r:135,t:2.1,max:2.1,k:'barrage',src:e,n:D.easyLoot?16:30});SFX.play('warn');tip('barTip','집중 포격 · 넓은 범위에 포탄이 쏟아져요. 요격·연막·방탄 돔이 큰 힘이 돼요');B.cd=5.2*fast;}
@@ -1801,6 +1818,7 @@ function openTreasure(){
   $('contBtn').onclick=openMap;$('reward').hidden=false;
 }
 const BTL={battle:'전투',elite:'정예',boss:'보스전'};
+const BOSSTRAIT={1:'포대를 세우고 멀리서 포격으로 해역을 덮어요',2:'두 척이 양쪽에서 협공해요 · 한 척은 공격을, 한 척은 방어를 키워요',3:'바짝 붙어 돌진하고, 사슬로 끌어당기고, 불길로 가둬요',4:'순간이동과 망령화로 사라졌다가 그물과 낙인으로 사냥해요',5:'회전 광선과 낙뢰, 집중 포격으로 하늘에서 해역을 휩쓸어요'};
 const BOSSNAME={1:'보스 · 해적 요새선',2:'보스 · 쌍둥이 전열함',3:'보스 · 해적왕의 기함',4:'보스 · 망령 제독의 기함',5:'보스 · 폭풍왕의 기함'};
 function openReward(kind,goldGain){
   S.mode='reward';joy=null;hideHud();$('mapov').hidden=true;
@@ -1827,7 +1845,7 @@ const ACTINFO={1:{fl:'산호초가 흩어진 맑은 바다. 해적들의 앞마�
   4:{fl:'빛이 닿지 않는 깊은 해구. 망령들이 떠돌아요.',ft:['짙은 안개 때문에 멀리 보이지 않아요','적이 단단하고 아파요']},
   5:{fl:'폭풍이 끝나지 않는 세상의 끝. 폭풍왕이 기다려요.',ft:['돌풍과 낙뢰가 쉬지 않아요','해류가 세고 자주 나타나요','생존 장비 없이는 버티기 힘들어요']}};
 function showActCard(next){const A=ACTINFO[S.act],panel=$('actPanel');S.mode='reward';hideHud();$('mapov').hidden=true;
-  panel.innerHTML=`<div class="kicker">${S.act===1?'항해 시작':`${S.act-1}장 돌파${S.actHeal?` · 선체 ${S.actHeal} 수리됨`:''}`}</div><div class="actnum">${S.act}장</div><h1 style="font-size:34px">${ACTS[S.act].name}</h1><div class="actline"></div><p>${A.fl}</p><ul class="feat">${A.ft.map(f=>`<li>${f}</li>`).join('')}</ul><div class="actboss">기다리는 적 · ${BOSSNAME[S.act].replace('보스 · ','')}</div><button class="btn" id="actGo">출항</button>`;
+  panel.innerHTML=`<div class="kicker">${S.act===1?'항해 시작':`${S.act-1}장 돌파${S.actHeal?` · 선체 ${S.actHeal} 수리됨`:''}`}</div><div class="actnum">${S.act}장</div><h1 style="font-size:34px">${ACTS[S.act].name}</h1><div class="actline"></div><p>${A.fl}</p><ul class="feat">${A.ft.map(f=>`<li>${f}</li>`).join('')}</ul><div class="actboss">기다리는 적 · ${BOSSNAME[S.act].replace('보스 · ','')}</div><p style="font-size:13px;opacity:.8;margin-top:4px">${BOSSTRAIT[S.act]||''}</p><button class="btn" id="actGo">출항</button>`;
   $('actcard').hidden=false;SFX.play('warn');$('actGo').onclick=()=>{$('actcard').hidden=true;next();};}
 function actClear(){const p=S.player,h=Math.round((p.max-p.hp)*0.3);healHp(h);S.actHeal=h;S.act++;S.map=genMap();S.pos=null;S.path=[];showActCard(openMap);}
 const ENC={
