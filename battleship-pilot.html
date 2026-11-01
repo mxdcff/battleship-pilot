@@ -229,7 +229,7 @@ body{background:var(--deep);color:var(--ink);overflow:hidden;overscroll-behavior
 <script>
 (()=>{
 const cv=document.getElementById('game'),ctx=cv.getContext('2d'),wrap=document.getElementById('wrap');
-const VERSION='v0.47';
+const VERSION='v0.49';
 const FINE=(()=>{try{return matchMedia('(pointer:fine)').matches&&!('ontouchstart' in window);}catch(_){return false;}})();const ZOOMS=FINE?[260,340,430,500,580]:[260,340,430],ZOOMN=['가까이','보통','멀리','아주 멀리','전체'];let zoomIdx=1;try{const v=localStorage.getItem('bs_zoom');if(v!==null&&ZOOMS[+v])zoomIdx=+v;}catch(_){}
 let VIEW_MIN=ZOOMS[zoomIdx],JR=22*VIEW_MIN/240;
 const VZ=1.3,WW=900,WZ=900,YF=0.6,HULL_X=16,HULL_Z=7;
@@ -369,6 +369,7 @@ const SPR={
   p_powder:makeShip({...BASE,s:'#3a3a40',ss:'#2c2c32',sd:'#1e1e24',r:'#e0533f',rd:'#9a2a1f',st:'#a8322d'},{barrels:true,stripe:true,oneMast:true,ports:[16,24,32]}),
   p_priv:makeShip({...BASE,s:'#2a2a30',ss:'#1e1e24',sd:'#141418',m:'#ece6d6',r:'#c0392b',rd:'#7f1d1d'},{ports:[16,22,28,34]}),
   flag:makeShip({...DARK,s:'#7a1f1a',ss:'#5e1612',sd:'#45100d',r:'#e3b341',rd:'#9a7420',st:'#c9a23a'},{threeMasts:true,stripe:true,ports:[14,20,26,32,38]}),
+  boss5:makeShip({...DARK,o:'#0a0814',d:'#241c38',w:'#352a52',l:'#4a3c6e',h:'#6a5a96',s:'#3a2f5a',ss:'#2c2346',sd:'#1e1832',r:'#ffd75e',rd:'#b08a20',m:'#fff1b8',st:'#e3b341'},{threeMasts:true,stripe:true,ports:[12,17,22,27,32,37,42]}),
   boss4:makeShip({...DARK,o:'#081412',d:'#22302e',w:'#33463f',l:'#46605a',h:'#68867e',s:'#a8e0d0',ss:'#86c4b2',sd:'#5e9a8a',r:'#7fe0c0',rd:'#3f8f7a',m:'#e8fff8',st:'#2f8f7a'},{threeMasts:true,stripe:true,ports:[14,19,24,29,34,39]})
 };
 
@@ -447,8 +448,8 @@ function makeIsle(x,z,kind,r,seed){const R=rng(seed),parts=islandSpec(kind,r,R),
 function islParts(i){return i.parts||[i];}
 const ISL_KINDS=[['round',2],['ridge',2],['crescent',1.4],['twin',1.2],['rocky',2],['atoll',0.7]];
 // sea currents: straight bands of moving water; ships inside drift along them (ride them or fight them)
-function genCurrents(kind){const out=[],n=kind==='boss'?0:(S.act===1?1:(Math.random()<0.6?2:1));for(let k=0,t=0;k<n&&t<40;t++){const a=Math.random()*Math.PI,cx=200+Math.random()*(WW-400),cz=200+Math.random()*(WZ-400),len=520+Math.random()*260,w=34+Math.random()*16,dir=Math.random()<0.5?1:-1;
-    const c={x:cx,z:cz,dx:Math.cos(a)*dir,dz:Math.sin(a)*dir,len,w,spd:(S.act===1?44:52)+Math.random()*16,seed:Math.random()*1000};if(out.some(o=>Math.hypot(o.x-c.x,o.z-c.z)<220))continue;out.push(c);k++;}return out;}
+function genCurrents(kind){const out=[],n=kind==='boss'?0:(S.act===1?1:S.act>=5?2:(Math.random()<0.6?2:1));for(let k=0,t=0;k<n&&t<40;t++){const a=Math.random()*Math.PI,cx=200+Math.random()*(WW-400),cz=200+Math.random()*(WZ-400),len=520+Math.random()*260,w=34+Math.random()*16,dir=Math.random()<0.5?1:-1;
+    const c={x:cx,z:cz,dx:Math.cos(a)*dir,dz:Math.sin(a)*dir,len,w,spd:(S.act===1?44:S.act>=5?64:52)+Math.random()*16,seed:Math.random()*1000};if(out.some(o=>Math.hypot(o.x-c.x,o.z-c.z)<220))continue;out.push(c);k++;}return out;}
 function currentAt(x,z){let vx=0,vz=0;for(const c of S.currents||[]){const rx=x-c.x,rz=z-c.z,along=rx*c.dx+rz*c.dz,side=Math.abs(-rx*c.dz+rz*c.dx);if(side>c.w||Math.abs(along)>c.len/2)continue;const f=Math.min(1,(c.w-side)/(c.w*0.45))*Math.min(1,(c.len/2-Math.abs(along))/60);vx+=c.dx*c.spd*f;vz+=c.dz*c.spd*f;}return[vx,vz];}
 function genIslands(){const out=[],R=rng((Math.random()*1e9)|0),n=4+Math.floor(R()*3),want=pickW=>{let t=R()*ISL_KINDS.reduce((s,k)=>s+k[1],0);for(const [k,w] of ISL_KINDS){t-=w;if(t<=0)return k;}return'round';};
   for(let tries=0;out.length<n&&tries<400;tries++){const kind=want(),r=kind==='rocky'?16+R()*12:kind==='atoll'?36+R()*14:20+R()*26,x=70+R()*(WW-140),z=70+R()*(WZ-140);
@@ -458,64 +459,77 @@ function genIslands(){const out=[],R=rng((Math.random()*1e9)|0),n=4+Math.floor(R
     if(out.some(o=>Math.hypot(o.x-is.x,o.z-is.z)<o.r+is.r+46))continue;out.push(is);}
   return out;}
 let ISLANDS=genIslands();
-const ARENA_ISL={};function arenaIsles(){ARENA_ISL.abyss=[[230,250,20],[670,250,22],[230,650,22],[670,650,20]].map(([x,z,r],i)=>makeIsle(x,z,i%2?'rocky':'round',r,i*517+29));ARENA_ISL.whirl=[[450,95,26],[120,450,24],[780,450,24],[250,790,22],[650,790,22]].map(([x,z,r],i)=>makeIsle(x,z,['rocky','round','ridge','rocky','crescent'][i],r,i*331+71));}
+const ARENA_ISL={};function arenaIsles(){ARENA_ISL.abyss=[[230,250,20],[670,250,22],[230,650,22],[670,650,20]].map(([x,z,r],i)=>makeIsle(x,z,i%2?'rocky':'round',r,i*517+29));ARENA_ISL.storm=[[450,150,18],[190,300,20],[710,300,20],[190,600,18],[710,600,18]].map(([x,z,r],i)=>makeIsle(x,z,'rocky',r,i*613+5));ARENA_ISL.whirl=[[450,95,26],[120,450,24],[780,450,24],[250,790,22],[650,790,22]].map(([x,z,r],i)=>makeIsle(x,z,['rocky','round','ridge','rocky','crescent'][i],r,i*331+71));}
 function ISL(){return(S&&S.isl)||ISLANDS;}
 
 /* ---------- data ---------- */
 const ATK={gun:1,flame:1,mine:1};
 const ITEMS={
-  cannon:{name:'소형 포',short:'포',kind:'gun',range:120,dmg:11,cd:0.9,spd:210,desc:'중간 사거리에서 쉬지 않고 쏘는 기본 포',up:{burst:2},upDesc:'두 발씩 연달아 쏨'},
-  gatling:{name:'속사포',short:'속사',kind:'gun',range:110,dmg:2.6,cd:0.18,spd:380,flat:true,jit:0.1,style:'tracer',desc:'낮게 깔리는 탄을 쉴 새 없이 퍼붓는 연발포',up:{dmg:3.4,cd:0.13},upDesc:'더 빠르고 강하게 연사'},
-  grape:{name:'산탄포',short:'산탄',kind:'gun',range:85,dmg:4.5,cd:1.3,spd:230,pel:5,spread:0.45,desc:'가까이 붙은 적에게 포탄 다섯 발을 흩뿌림',up:{pel:7,spread:0.35,dmg:5.5},upDesc:'7발로 늘고 퍼짐이 좁아짐'},
+  cannon:{name:'소형 포',short:'포',kind:'gun',range:120,dmg:11,cd:0.9,spd:210,desc:'중간 사거리에서 쉬지 않고 쏘는 기본 포',up:{burst:2,dmg:8.5},upDesc:'두 발씩 연달아 쏨'},
+  gatling:{name:'속사포',short:'속사',kind:'gun',range:110,dmg:2.6,cd:0.18,spd:380,flat:true,jit:0.1,style:'tracer',desc:'낮게 깔리는 탄을 쉴 새 없이 퍼붓는 연발포',up:{dmg:3,cd:0.13},upDesc:'더 빠르고 강하게 연사'},
+  grape:{name:'산탄포',short:'산탄',kind:'gun',range:85,dmg:3.9,cd:1.3,spd:230,pel:5,spread:0.45,desc:'가까이 붙은 적에게 포탄 다섯 발을 흩뿌림',up:{pel:7,spread:0.35,dmg:4.4},upDesc:'7발로 늘고 퍼짐이 좁아짐'},
   long:{name:'장거리포',short:'장포',kind:'gun',range:190,dmg:23,cd:2.2,spd:260,lob:true,style:'heavy',desc:'높이 쏘아 올려 섬 너머의 적까지 맞히는 묵직한 한 방',up:{aoe:22,dmg:27},upDesc:'착탄 지점에 작은 폭발'},
-  mortar:{name:'박격포',short:'박격',kind:'gun',range:150,dmg:19,cd:2.8,spd:170,lob:true,aoe:30,style:'bomb',desc:'화약통을 던져 떨어진 자리 주변을 통째로 날려버림',up:{aoe:42,dmg:23},upDesc:'폭발 반경이 크게 늘어남'},
-  harpoon:{name:'작살포',short:'작살',kind:'gun',range:165,dmg:18,cd:2.4,spd:340,flat:true,pierce:true,slow:2,style:'harpoon',desc:'일직선으로 꿰뚫고, 맞은 배를 2초 동안 느리게 묶어둠',up:{pull:true,dmg:22},upDesc:'꿰뚫은 적을 내 쪽으로 끌어당김'},
+  mortar:{name:'박격포',short:'박격',kind:'gun',range:150,dmg:19,cd:2.8,spd:170,lob:true,aoe:30,style:'bomb',desc:'화약통을 던져 떨어진 자리 주변을 통째로 날려버림',up:{aoe:42,dmg:27},upDesc:'폭발 반경이 크게 늘어남'},
+  harpoon:{name:'작살포',short:'작살',kind:'gun',range:165,dmg:18,cd:2.4,spd:340,flat:true,pierce:true,slow:2,style:'harpoon',desc:'일직선으로 꿰뚫고, 맞은 배를 2초 동안 느리게 묶어둠',up:{pull:true,dmg:25},upDesc:'꿰뚫은 적을 내 쪽으로 끌어당김'},
   flame:{name:'화염포',short:'화염',kind:'flame',range:100,dmg:1.7,cd:0.15,cone:0.62,burn:3,burnDur:3,desc:'불길을 넓게 뿜어 앞쪽 적들을 한꺼번에 태우고 화상을 남김',up:{burnDur:6,burn:4},upDesc:'화상이 두 배 오래 타오름'},
   mine:{name:'기뢰',short:'기뢰',kind:'mine',range:0,dmg:30,cd:3,aoe:28,desc:'지나온 자리에 기뢰를 떨어뜨려 쫓아오는 적을 폭파',up:{count:2},upDesc:'한 번에 두 개씩 투하'},
   repair:{name:'수리공',short:'수리',kind:'regen',val:1,post:5,desc:'포화가 멎으면 선체를 조금씩 고치고, 전투가 끝나면 한 번 더 손봄. 맞은 직후 3초는 수리가 멈춤',up:{val:1.6,post:9},upDesc:'더 빨리, 더 많이 고침'},
   armor:{name:'철갑',short:'철갑',kind:'armor',val:0.15,desc:'선체에 철판을 덧대 받는 피해를 줄임',up:{val:0.25},upDesc:'더 두꺼운 철판'},
   sail:{name:'큰 돛',short:'돛',kind:'speed',val:0.2,desc:'더 빨리 움직이고 급기동도 더 자주 씀',up:{val:0.35},upDesc:'더 큰 돛'},
-  tesla:{name:'전격포',short:'전격',kind:'gun',range:125,dmg:6.5,cd:1.4,zap:true,chains:3,desc:'번개를 쏴 맞은 적에서 가까운 적으로 줄줄이 튀어 옮겨감',up:{chains:5,dmg:8},upDesc:'5척까지 연쇄'},
-  chain:{name:'사슬탄',short:'사슬',kind:'gun',range:140,dmg:16,cd:1.7,spd:300,flat:true,style:'chain',slow:1,partMul:2,desc:'두 포탄을 사슬로 묶어 쏨. 맞은 배를 느리게 하고 돛·포대 같은 부위에 2배 피해',up:{pierce:true,dmg:17},upDesc:'일직선으로 꿰뚫음'},
+  tesla:{name:'전격포',short:'전격',kind:'gun',range:125,dmg:8,cd:1.4,zap:true,chains:3,desc:'번개를 쏴 맞은 적에서 가까운 적으로 줄줄이 튀어 옮겨감',up:{chains:5,dmg:8},upDesc:'5척까지 연쇄'},
+  chain:{name:'사슬탄',short:'사슬',kind:'gun',range:140,dmg:16,cd:1.7,spd:300,flat:true,style:'chain',slow:1,partMul:2,desc:'두 포탄을 사슬로 묶어 쏨. 맞은 배를 느리게 하고 돛·포대 같은 부위에 2배 피해',up:{pierce:true,dmg:20},upDesc:'일직선으로 꿰뚫음'},
   rocket:{name:'신기전',short:'신기',kind:'gun',range:200,dmg:9,cd:2.6,rockets:3,aoe:16,desc:'불화살 로켓 3발이 적을 쫓아 날아가 터짐',up:{rockets:5},upDesc:'5발 발사'},
-  buoy:{name:'부표 포대',short:'부표',kind:'gun',range:170,cd:9,buoy:true,dur:8,tdmg:9,tcd:0.7,trange:130,dmg:7,desc:'적이 보이면 바다에 포대 부표를 띄워 8초 동안 혼자 싸우게 함',up:{dur:12,tcd:0.55},upDesc:'더 오래, 더 빠르게 쏨'},
+  buoy:{name:'부표 포대',short:'부표',kind:'gun',range:170,cd:9,buoy:true,dur:8,tdmg:11,tcd:0.7,trange:130,dmg:7,desc:'적이 보이면 바다에 포대 부표를 띄워 8초 동안 혼자 싸우게 함',up:{dur:12,tcd:0.55},upDesc:'더 오래, 더 빠르게 쏨'},
   torpedo:{name:'어뢰 발사관',short:'어뢰',kind:'gun',range:220,dmg:21,cd:3,spd:135,flat:true,style:'torp',aoe:20,desc:'물속으로 느리게 달려가 맞으면 크게 터지는 어뢰',up:{dmg:28,aoe:26},upDesc:'더 강하고 넓게 폭발'},
-  hwacha:{name:'화차',short:'화차',kind:'gun',combo:true,range:210,dmg:8,cd:2.8,rockets:8,aoe:18,desc:'신기전 8발을 한꺼번에 쏟아내는 이동식 발사대',up:{rockets:12},upDesc:'12발 발사'},
+  hwacha:{name:'화차',short:'화차',kind:'gun',combo:true,range:210,dmg:7,cd:2.8,rockets:8,aoe:18,desc:'신기전 8발을 한꺼번에 쏟아내는 이동식 발사대',up:{rockets:12},upDesc:'12발 발사'},
   stormharp:{name:'뇌격 작살',short:'뇌격',kind:'gun',combo:true,range:175,dmg:20,cd:2.2,spd:340,flat:true,pierce:true,slow:2,style:'harpoon',chainZap:2,zapDmg:13,desc:'꿰뚫은 배마다 번개가 튀어 주변 적 둘을 지짐',up:{chainZap:4,zapDmg:16},upDesc:'번개가 4척까지'},
   torpfan:{name:'어뢰 부채',short:'어부',kind:'gun',combo:true,range:220,dmg:17,cd:3,spd:135,flat:true,style:'torp',aoe:22,pel:3,spread:0.5,desc:'어뢰 3발을 부채꼴로 펼쳐 쏨',up:{pel:5,spread:0.7},upDesc:'5발 발사'},
   gunbuoy:{name:'기관포 부표',short:'기부',kind:'gun',combo:true,range:170,cd:9,buoy:true,dur:9,tdmg:4,tcd:0.16,trange:120,tflat:true,dmg:3,desc:'속사포를 단 부표를 띄워 9초 동안 탄을 퍼부음',up:{dur:13,tdmg:5},upDesc:'더 오래, 더 세게'},
-  reaper:{name:'돛 절단포',short:'절단',kind:'gun',combo:true,range:215,dmg:28,cd:1.8,spd:320,flat:true,pierce:true,style:'chain',slow:1.5,partMul:3,desc:'먼 거리까지 꿰뚫는 거대한 사슬탄. 부위에 3배 피해',up:{dmg:34},upDesc:'더 강하게'},
+  reaper:{name:'돛 절단포',short:'절단',kind:'gun',combo:true,range:215,dmg:26,cd:1.8,spd:320,flat:true,pierce:true,style:'chain',slow:1.5,partMul:3,desc:'먼 거리까지 꿰뚫는 거대한 사슬탄. 부위에 3배 피해',up:{dmg:32},upDesc:'더 강하게'},
   intercept:{name:'요격포',short:'요격',kind:'intercept',cd:1.6,desc:'내 배에 떨어지려는 적 포탄을 공중에서 쏴 떨어뜨림',up:{cd:1},upDesc:'1초마다 요격'},
   decoy:{name:'미끼 뗏목',short:'미끼',kind:'decoy',cd:8,dur:2.5,desc:'뒤에 뗏목을 떨어뜨려 주변 적이 잠시 그쪽을 쏘게 만듦',up:{cd:6,dur:3.5},upDesc:'더 자주, 더 오래'},
   smoke:{name:'연막통',short:'연막',kind:'smoke',cd:10,dur:4,r:60,trig:3,desc:'포탄이 한꺼번에 쏟아지면 연막을 터뜨려 연막 안으로 떨어질 포탄을 빗나가게 함',up:{cd:7,r:75,trig:2},upDesc:'더 넓고 더 자주'},
   absorb:{name:'충격 흡수 선체',short:'흡수',kind:'absorb',val:0.1,kb:0.5,desc:'밀려나는 힘을 절반으로 줄이고 받는 피해도 조금 줄임',up:{val:0.15,kb:0.3},upDesc:'밀려남 70% 감소'},
-  incend:{name:'소이 박격포',short:'소이',kind:'gun',combo:true,range:155,dmg:20,cd:2.6,spd:170,lob:true,aoe:32,style:'bomb',zone:{r:34,t:3,dps:7},desc:'터진 자리가 잠시 불바다가 되어 지나가는 적을 태움',up:{zone:{r:42,t:4,dps:8}},upDesc:'불바다가 더 넓고 오래감'},
-  shrapnel:{name:'유산탄',short:'유산',kind:'gun',combo:true,range:185,dmg:9,cd:2.2,spd:250,lob:true,style:'heavy',airburst:10,desc:'적 머리 위에서 터져 산탄이 비처럼 쏟아짐',up:{airburst:15},upDesc:'산탄이 13발로 늘어남'},
+  incend:{name:'소이 박격포',short:'소이',kind:'gun',combo:true,range:155,dmg:20,cd:2.6,spd:170,lob:true,aoe:32,style:'bomb',zone:{r:34,t:3,dps:7},desc:'터진 자리가 잠시 불바다가 되어 지나가는 적을 태움',up:{dmg:25,zone:{r:42,t:4,dps:9}},upDesc:'불바다가 더 넓고 오래감'},
+  shrapnel:{name:'유산탄',short:'유산',kind:'gun',combo:true,range:185,dmg:9,cd:2.2,spd:250,lob:true,style:'heavy',airburst:10,desc:'적 머리 위에서 터져 산탄이 비처럼 쏟아짐',up:{airburst:13},upDesc:'산탄이 13발로 늘어남'},
   boomharpoon:{name:'폭뢰 작살',short:'폭뢰',kind:'gun',combo:true,range:170,dmg:14,cd:2.2,spd:340,flat:true,pierce:true,slow:2,style:'harpoon',attach:{t:1,dmg:24,aoe:30},desc:'꿰뚫은 배마다 화약을 매달아 1초 뒤 터뜨림',up:{attach:{t:1,dmg:34,aoe:38}},upDesc:'폭발이 더 크고 강해짐'},
-  repeater:{name:'연발포',short:'연발',kind:'gun',combo:true,range:130,dmg:9,cd:0.38,spd:260,desc:'묵직한 포탄을 빠르게 연달아 쏨',up:{burst:2},upDesc:'두 발씩 몰아 쏨'},
-  minelauncher:{name:'기뢰 투척기',short:'투척',kind:'gun',combo:true,range:160,dmg:34,cd:2.4,spd:160,lob:true,aoe:30,style:'bomb',layMine:true,desc:'적 앞길에 기뢰를 던져 깔아둠',up:{pel:2,spread:0.6},upDesc:'두 개씩 던짐'},
+  repeater:{name:'연발포',short:'연발',kind:'gun',combo:true,range:130,dmg:9,cd:0.38,spd:260,desc:'묵직한 포탄을 빠르게 연달아 쏨',up:{burst:2,dmg:4.8},upDesc:'두 발씩 몰아 쏨'},
+  minelauncher:{name:'기뢰 투척기',short:'투척',kind:'gun',combo:true,range:160,dmg:30,cd:2.4,spd:160,lob:true,aoe:30,style:'bomb',layMine:true,desc:'적 앞길에 기뢰를 던져 깔아둠',up:{pel:2,spread:0.6},upDesc:'두 개씩 던짐'},
   thunder:{name:'천둥 일제포',short:'천둥',kind:'gun',combo:true,legend:true,range:200,dmg:18,cd:2.3,spd:250,lob:true,aoe:22,style:'heavy',multi:6,desc:'사거리 안의 적들에게 폭발 포탄을 한꺼번에 나눠 퍼붓는 전설의 전열포',up:{multi:9,dmg:20},upDesc:'한 번에 9발'},
-  dragon:{name:'용의 숨결',short:'용염',kind:'gun',combo:true,legend:true,range:165,dmg:22,cd:2.2,spd:210,lob:true,aoe:24,style:'bomb',firewall:5,zone:{r:26,t:3.5,dps:20},desc:'적을 향해 일직선으로 불기둥을 줄줄이 떨어뜨려 바다를 불태움',up:{firewall:7,zone:{r:30,t:4.5,dps:20}},upDesc:'불기둥 7개, 더 뜨겁고 오래 탐'},
-  abyss:{name:'심해 폭뢰',short:'심해',kind:'gun',combo:true,legend:true,range:175,dmg:42,cd:3.0,spd:150,lob:true,aoe:46,style:'bomb',charges:3,slow:2.5,desc:'거대한 폭뢰를 떨어뜨려 넓게 터뜨리고, 휩쓸린 배를 2.5초 동안 느리게 만듦',up:{charges:4,dmg:52},upDesc:'폭뢰 4발, 더 강하게'},
-  trident:{name:'해신의 삼지창',short:'삼지',kind:'gun',combo:true,legend:true,range:270,dmg:55,cd:1.5,spd:620,flat:true,pierce:true,noBlock:true,bsOnly:true,style:'trident',desc:'배 옆구리(위아래) 방향의 적만 노려, 섬까지 꿰뚫는 거대한 창을 날림',up:{dmg:75,cd:1.2},upDesc:'더 강하고 빠르게'},
+  dragon:{name:'용의 숨결',short:'용염',kind:'gun',combo:true,legend:true,range:165,dmg:22,cd:2.2,spd:210,lob:true,aoe:24,style:'bomb',firewall:5,zone:{r:26,t:3.5,dps:17},desc:'적을 향해 일직선으로 불기둥을 줄줄이 떨어뜨려 바다를 불태움',up:{firewall:7,zone:{r:30,t:4.5,dps:20}},upDesc:'불기둥 7개, 더 뜨겁고 오래 탐'},
+  abyss:{name:'심해 폭뢰',short:'심해',kind:'gun',combo:true,legend:true,range:175,dmg:36,cd:3.0,spd:150,lob:true,aoe:46,style:'bomb',charges:3,slow:2.5,desc:'거대한 폭뢰를 떨어뜨려 넓게 터뜨리고, 휩쓸린 배를 2.5초 동안 느리게 만듦',up:{charges:4,dmg:52},upDesc:'폭뢰 4발, 더 강하게'},
+  trident:{name:'해신의 삼지창',short:'삼지',kind:'gun',combo:true,legend:true,range:270,dmg:55,cd:1.5,spd:620,flat:true,pierce:true,noBlock:true,bsOnly:true,style:'trident',desc:'배 옆구리(위아래) 방향의 적만 노려, 섬까지 꿰뚫는 거대한 창을 날림',up:{dmg:66,cd:1.3},upDesc:'더 강하고 빠르게'},
   stormeye:{name:'폭풍의 눈',short:'폭풍',kind:'aura',combo:true,legend:true,dmg:60,r:62,desc:'배 주위에 폭풍을 두름. 빨리 달릴수록, 드리프트할수록 주변 적이 크게 다침',up:{dmg:80,r:76},upDesc:'더 넓고 강한 폭풍'},
   kraken:{name:'크라켄의 손',short:'크라',kind:'gun',combo:true,legend:true,range:190,dmg:52,cd:4,aoe:50,kraken:true,pullR:110,desc:'바다 밑에서 촉수가 솟아 주변 적을 한곳으로 끌어모은 뒤 짓눌러 터뜨림',up:{dmg:68,pullR:140},upDesc:'더 넓게 끌어모음'},
-  zapgat:{name:'뇌전 기관포',short:'뇌기',kind:'gun',combo:true,range:120,dmg:2.8,cd:0.2,spd:380,flat:true,jit:0.1,style:'tracer',chainZap:1,zapDmg:3,desc:'맞을 때마다 번개가 옆 배로 튀는 연발포',up:{dmg:3.4,zapDmg:4.5,cd:0.16},upDesc:'더 빠르고 번개가 세짐'},
+  zapgat:{name:'뇌전 기관포',short:'뇌기',kind:'gun',combo:true,range:120,dmg:2.8,cd:0.2,spd:380,flat:true,jit:0.1,style:'tracer',chainZap:1,zapDmg:3,desc:'맞을 때마다 번개가 옆 배로 튀는 연발포',up:{dmg:3,zapDmg:4.5,cd:0.16},upDesc:'더 빠르고 번개가 세짐'},
   anchor:{name:'닻 사슬포',short:'닻',kind:'gun',combo:true,range:175,dmg:26,cd:2,spd:330,flat:true,pierce:true,pull:true,slow:2.5,partMul:2,style:'chain',desc:'사슬 달린 닻을 꽂아 꿰뚫은 배를 끌어오고 묶어둠. 부위에 2배 피해',up:{dmg:32,cd:1.7},upDesc:'더 강하고 자주 쏨'},
-  seeker:{name:'유도 어뢰',short:'유뢰',kind:'gun',combo:true,range:230,dmg:18,cd:3,rockets:3,aoe:24,desc:'적을 끝까지 쫓아가 크게 터지는 어뢰 3발',up:{rockets:5,dmg:20},upDesc:'5발 발사'},
+  seeker:{name:'유도 어뢰',short:'유뢰',kind:'gun',combo:true,range:230,dmg:18,cd:3,rockets:3,aoe:24,desc:'적을 끝까지 쫓아가 크게 터지는 어뢰 3발',up:{rockets:4,dmg:21},upDesc:'4발 발사'},
   twinlong:{name:'쌍열 장포',short:'쌍장',kind:'gun',combo:true,range:180,dmg:17,cd:1.5,spd:270,lob:true,aoe:14,style:'heavy',burst:2,desc:'포신 두 개로 장거리 폭발탄을 연달아 쏘아 올림',up:{dmg:21,aoe:18},upDesc:'더 강하고 넓게 터짐'},
   firerocket:{name:'화염 신기전',short:'화신',kind:'gun',combo:true,range:200,dmg:8,cd:2.6,rockets:4,aoe:18,zone:{r:22,t:2.5,dps:7},desc:'불화살 4발이 쫓아가 터진 자리를 불바다로 만듦',up:{rockets:6,zone:{r:26,t:3,dps:8}},upDesc:'6발, 불바다가 더 넓고 오래감'},
-  harptorp:{name:'작살 어뢰',short:'작뢰',kind:'gun',combo:true,range:220,dmg:22,cd:2.6,spd:170,flat:true,pierce:true,slow:1.5,style:'torp',aoe:18,desc:'물속을 달리며 줄지은 배를 모두 꿰뚫고 터지는 어뢰',up:{dmg:28,aoe:24},upDesc:'더 강하고 넓게 폭발'},
+  harptorp:{name:'작살 어뢰',short:'작뢰',kind:'gun',combo:true,range:220,dmg:26,cd:2.6,spd:170,flat:true,pierce:true,slow:1.5,style:'torp',aoe:18,desc:'물속을 달리며 줄지은 배를 모두 꿰뚫고 터지는 어뢰',up:{dmg:32,aoe:24},upDesc:'더 강하고 넓게 폭발'},
   chaincannon:{name:'쇄탄 연포',short:'쇄연',kind:'gun',combo:true,range:145,dmg:11,cd:1.2,spd:300,flat:true,style:'chain',slow:1,partMul:2,burst:2,desc:'사슬탄을 두 발씩 몰아 쏘아 배를 느리게 하고 부위를 부숨',up:{dmg:14,cd:1},upDesc:'더 강하고 자주 쏨'},
   zapgrape:{name:'전격 산탄',short:'전산',kind:'gun',combo:true,range:95,dmg:4.5,cd:1.2,spd:250,pel:5,spread:0.5,chainZap:1,zapDmg:5,desc:'산탄마다 번개가 실려 맞은 배 옆의 적까지 지짐',up:{pel:7,zapDmg:7},upDesc:'7발, 번개가 세짐'},
-  skyfire:{name:'천화 신기전',short:'천화',kind:'gun',combo:true,legend:true,range:230,dmg:14,cd:2.8,rockets:7,aoe:26,zone:{r:26,t:3,dps:9},desc:'하늘을 뒤덮는 불화살 7발이 적을 쫓아가 바다를 불태우는 전설의 발사대',up:{rockets:10,zone:{r:30,t:3.5,dps:11}},upDesc:'10발, 불바다가 더 뜨거움'},
+  skyfire:{name:'천화 신기전',short:'천화',kind:'gun',combo:true,legend:true,range:230,dmg:14,cd:2.8,rockets:7,aoe:26,zone:{r:26,t:3,dps:9},desc:'하늘을 뒤덮는 불화살 7발이 적을 쫓아가 바다를 불태우는 전설의 발사대',up:{rockets:9,zone:{r:30,t:3.5,dps:11}},upDesc:'9발, 불바다가 더 뜨거움'},
   thundergod:{name:'뇌신의 노여움',short:'뇌신',kind:'gun',combo:true,legend:true,range:140,dmg:4.5,cd:0.16,spd:420,flat:true,jit:0.08,style:'tracer',chainZap:2,zapDmg:3.5,desc:'번개 실린 탄환을 폭우처럼 쏟아부어 주변 적을 줄줄이 지지는 전설의 연발포',up:{chainZap:3,zapDmg:4.5},upDesc:'번개가 3척까지'},
+  harplong:{name:'관통 장포',short:'관장',kind:'gun',combo:true,range:215,dmg:40,cd:2.4,spd:360,flat:true,pierce:true,slow:1,style:'harpoon',desc:'먼 거리의 적을 일직선으로 모두 꿰뚫는 무거운 작살탄',up:{dmg:52},upDesc:'더 강하게'},
+  flamegat:{name:'화염 기관포',short:'화기',kind:'gun',combo:true,range:115,dmg:2.8,cd:0.18,spd:380,flat:true,jit:0.1,style:'tracer',burnHit:3,burnDur:3,desc:'불붙은 탄을 쏟아부어 맞은 배를 태움',up:{dmg:3.4,burnDur:5},upDesc:'더 세고 오래 탐'},
+  chaingrape:{name:'사슬 산탄',short:'사산',kind:'gun',combo:true,range:100,dmg:9,cd:1.4,spd:260,pel:4,spread:0.5,style:'chain',slow:1,partMul:2,desc:'사슬탄 네 발을 흩뿌려 가까운 배를 느리게 하고 부위를 부숨',up:{pel:6},upDesc:'6발 발사'},
+  longrocket:{name:'장거리 신기전',short:'장신',kind:'gun',combo:true,range:270,dmg:12,cd:2.8,rockets:4,aoe:18,desc:'아주 먼 적까지 쫓아가는 신기전 4발',up:{rockets:6},upDesc:'6발 발사'},
+  firecannon:{name:'화염 연포',short:'화연',kind:'gun',combo:true,range:125,dmg:13,cd:1.0,spd:220,burnHit:4,burnDur:3,desc:'불붙은 포탄으로 맞은 배에 화상을 남김',up:{burst:2,dmg:10},upDesc:'두 발씩 몰아 쏨'},
+  harpcannon:{name:'작살 연포',short:'작연',kind:'gun',combo:true,range:140,dmg:19,cd:1.1,spd:330,flat:true,pierce:true,slow:1,style:'harpoon',desc:'작은 작살을 빠르게 쏘아 줄지은 배를 꿰뚫음',up:{burst:2,dmg:15},upDesc:'두 발씩 쏨'},
+  lifeboat:{name:'구명정',short:'구명',kind:'lifeboat',val:0.15,desc:'침몰할 피해를 받으면 전투마다 한 번 버티고 2.5초 무적',up:{val:0.3},upDesc:'버틸 때 내구도 30%로 회복'},
+  bulwark:{name:'방탄 돔',short:'방돔',kind:'bulwark',cd:11,dur:5,r:36,desc:'포탄이 몰려오면 배 위에 돔을 펼쳐 5초 동안 돔 안으로 오는 포탄을 막음',up:{cd:8,r:44},upDesc:'더 넓고 자주'},
+  cleanser:{name:'정화 펌프',short:'정화',kind:'cleanse',cd:9,imm:2,desc:'사슬·그물·흡수·감속·화상에 걸리면 바로 풀고 잠시 다시 걸리지 않음',up:{cd:6,imm:3},upDesc:'더 자주, 더 오래 막음'},
+  evader:{name:'회피 엔진',short:'회피',kind:'evade',cd:7,desc:'포탄이 배에 떨어지기 직전 저절로 짧게 급회피',up:{cd:5},upDesc:'5초마다 회피'},
+  mirror:{name:'반사 장갑',short:'반사',kind:'mirror',cd:8,mul:2.5,desc:'직사 포탄 하나를 쏜 배에게 그대로 튕겨냄',up:{cd:5.5,mul:3.5},upDesc:'더 자주, 더 세게'},
+  aegisdome:{name:'방공 돔',short:'방공',kind:'bulwark',combo:true,cd:9,dur:6,r:54,desc:'넓은 돔을 펼쳐 6초 동안 돔 안으로 오는 포탄과 광선 끝을 막음',up:{cd:7,r:64},upDesc:'더 넓고 자주'},
+  phantom:{name:'유령 함대',short:'유령',kind:'evade',combo:true,cd:5,decoy:2.5,desc:'포탄을 자동으로 피하고, 피한 자리에 미끼 배를 남겨 적의 포격을 끌어감',up:{cd:3.5,decoy:3.5},upDesc:'더 자주, 미끼가 더 오래'},
   firegrape:{name:'화염 산탄',short:'화산',kind:'gun',combo:true,range:95,dmg:4.5,cd:1.1,spd:240,pel:5,spread:0.5,burnHit:4,burnDur:3,desc:'불붙은 산탄을 흩뿌려 맞은 배에 화상을 남김',up:{pel:7},upDesc:'산탄이 9발로 늘어남'}
 };
-const RECIPES=[['mortar','flame','incend'],['long','grape','shrapnel'],['harpoon','mine','boomharpoon'],['cannon','gatling','repeater'],['mine','mortar','minelauncher'],['flame','grape','firegrape'],['repeater','shrapnel','thunder'],['incend','firegrape','dragon'],['boomharpoon','minelauncher','abyss'],['rocket','mortar','hwacha'],['tesla','harpoon','stormharp'],['torpedo','mine','torpfan'],['buoy','gatling','gunbuoy'],['chain','long','reaper'],['reaper','stormharp','trident'],['hwacha','gunbuoy','stormeye'],['torpfan','boomharpoon','kraken'],['tesla','gatling','zapgat'],['chain','harpoon','anchor'],['rocket','torpedo','seeker'],['cannon','long','twinlong'],['rocket','flame','firerocket'],['torpedo','harpoon','harptorp'],['chain','cannon','chaincannon'],['grape','tesla','zapgrape'],['firerocket','seeker','skyfire'],['zapgat','zapgrape','thundergod']];
+const RECIPES=[['mortar','flame','incend'],['long','grape','shrapnel'],['harpoon','mine','boomharpoon'],['cannon','gatling','repeater'],['mine','mortar','minelauncher'],['flame','grape','firegrape'],['repeater','shrapnel','thunder'],['incend','firegrape','dragon'],['boomharpoon','minelauncher','abyss'],['rocket','mortar','hwacha'],['tesla','harpoon','stormharp'],['torpedo','mine','torpfan'],['buoy','gatling','gunbuoy'],['chain','long','reaper'],['reaper','stormharp','trident'],['hwacha','gunbuoy','stormeye'],['torpfan','boomharpoon','kraken'],['tesla','gatling','zapgat'],['chain','harpoon','anchor'],['rocket','torpedo','seeker'],['cannon','long','twinlong'],['rocket','flame','firerocket'],['torpedo','harpoon','harptorp'],['chain','cannon','chaincannon'],['grape','tesla','zapgrape'],['firerocket','seeker','skyfire'],['zapgat','zapgrape','thundergod'],['long','harpoon','harplong'],['gatling','flame','flamegat'],['grape','chain','chaingrape'],['rocket','long','longrocket'],['cannon','flame','firecannon'],['cannon','harpoon','harpcannon'],['intercept','bulwark','aegisdome'],['decoy','evader','phantom']];
 const LEGENDS=['thunder','dragon','abyss','trident','stormeye','kraken','skyfire','thundergod'];
-const BASE_IDS=['cannon','gatling','grape','long','mortar','harpoon','flame','mine','repair','armor','sail','intercept','decoy','smoke','absorb','tesla','chain','rocket','buoy','torpedo'];
-const DEFK={intercept:1,decoy:1,smoke:1,aura:1};
+const BASE_IDS=['cannon','gatling','grape','long','mortar','harpoon','flame','mine','repair','armor','sail','intercept','decoy','smoke','absorb','tesla','chain','rocket','buoy','torpedo','lifeboat','bulwark','cleanser','evader','mirror'];
+const DEFK={intercept:1,decoy:1,smoke:1,aura:1,lifeboat:1,bulwark:1,cleanse:1,evade:1,mirror:1};const SURV=['intercept','decoy','smoke','lifeboat','bulwark','cleanser','evader','mirror','absorb'];
 let UID=0;
 function mkItem(id,up,star){return{uid:++UID,id,up:!!up||!!star,star:!!star,t:0};}
 function itemName(it){return ITEMS[it.id].name+(it.star?'★':it.up?'+':'');}
@@ -524,6 +538,7 @@ function gunStats(it){const d=ITEMS[it.id];const s=it.up&&d.up?{...d,...d.up}:{.
   if(s.zone){s.zone={...s.zone};m(s.zone,'dps',1.3);}if(s.attach){s.attach={...s.attach};m(s.attach,'dmg',1.3);}}return s;}
 function statLine(it){const s=gunStats(it),d=ITEMS[it.id];
   if(d.kind==='intercept')return`${s.cd}초마다 포탄 하나 요격`;if(d.kind==='decoy')return`${s.cd}초마다 미끼 · ${s.dur}초 동안 적을 끌어감`;if(d.kind==='smoke')return`포탄 ${s.trig}발 이상 쏟아지면 연막 · 반경 ${s.r} · ${s.dur}초 · 대기 ${s.cd}초`;if(d.kind==='absorb')return`밀려남 ${Math.round((1-s.kb)*100)}% 감소 · 받는 피해 ${Math.round(s.val*100)}% 감소`;
+  if(d.kind==='lifeboat')return`전투마다 한 번 · 침몰 대신 내구도 ${Math.round(s.val*100)}%로 버팀 · 2.5초 무적`;if(d.kind==='bulwark')return`포탄이 몰리면 반경 ${s.r} 돔 · ${s.dur}초 · 대기 ${s.cd}초`;if(d.kind==='cleanse')return`사슬·그물·흡수·감속·화상 해제 · ${s.imm}초 면역 · 대기 ${s.cd}초`;if(d.kind==='evade')return`떨어지기 직전 자동 급회피 · 대기 ${s.cd}초${s.decoy?` · 미끼 ${s.decoy}초`:''}`;if(d.kind==='mirror')return`직사 포탄 하나를 ${s.mul}배로 반사 · 대기 ${s.cd}초`;
   if(d.kind==='regen')return`초당 내구도 ${s.val} 회복(맞은 뒤 3초 멈춤) · 전투 후 +${s.post}`;if(d.kind==='armor')return`받는 피해 ${Math.round(s.val*100)}% 감소`;if(d.kind==='speed')return`이동 속도 +${Math.round(s.val*100)}%`;
   if(d.kind==='flame')return`사거리 ${s.range} · 초당 피해 ${Math.round(s.dmg/s.cd)} · 화상 ${s.burnDur}초`;
   if(d.kind==='mine')return`기뢰 피해 ${s.dmg} · 폭발 반경 ${s.aoe} · ${s.cd}초마다${(s.count||1)>1?' 2개씩':''} 투하`;
@@ -545,7 +560,7 @@ const KINDS={
   player:{hp:100,r:15,speed:72,spr:'player'},
   raider:{hp:30,r:15,speed:56,spr:'raider',approach:0.6,guns:[{range:110,dmg:6,cd:1.6,spd:170,pel:1,spread:0}]},
   gunboat:{hp:48,r:15,speed:36,spr:'gunboat',approach:0.85,guns:[{range:175,dmg:10,cd:2.7,spd:200,pel:1,spread:0}]},
-  boss:{hp:1250,r:30,speed:28,spr:'boss',sc:2,boss:true,approach:0.7,guns:[{range:160,dmg:8,cd:2.3,spd:190,pel:3,spread:0.35},{range:230,dmg:14,cd:3.6,spd:230,pel:1,spread:0,lob:true}]}
+  boss:{hp:1250,r:30,speed:24,spr:'boss',sc:2,boss:true,approach:1.05,guns:[{range:160,dmg:8,cd:2.3,spd:190,pel:3,spread:0.35},{range:230,dmg:14,cd:3.6,spd:230,pel:1,spread:0,lob:true}]}
 };
 Object.assign(KINDS,{
   rammer:{hp:22,r:13,speed:68,spr:'rammer',ai:'ram',approach:0.8,guns:[{range:120,cd:3}]},
@@ -553,8 +568,9 @@ Object.assign(KINDS,{
   fireship:{hp:26,r:14,speed:46,spr:'fireship',ai:'fire',approach:0,guns:[{range:40,cd:3}]},
   broadside:{hp:64,r:16,speed:30,spr:'broadside',ai:'broad',approach:0.85,guns:[{range:170,cd:3}]},
   boss2:{hp:1300,r:30,speed:34,spr:'boss2',sc:2,boss:true,approach:0.7,guns:[{range:160,cd:3}]},
-  boss3:{hp:4100,r:30,speed:30,spr:'boss3',sc:2,boss:true,approach:0.7,guns:[{range:170,cd:3}]},
+  boss3:{hp:4100,r:30,speed:38,spr:'boss3',sc:2,boss:true,approach:0.4,guns:[{range:170,cd:3}]},
   boss4:{hp:5000,r:30,speed:34,spr:'boss4',sc:2,boss:true,approach:0.7,guns:[{range:170,cd:3}]},
+  boss5:{hp:6400,r:30,speed:30,spr:'boss5',sc:2,boss:true,approach:0.95,guns:[{range:170,cd:3}]},
   fort:{hp:75,r:16,speed:0,spr:'fort',approach:0,guns:[{range:250,dmg:10,cd:2.6,spd:200,pel:1,spread:0,lob:true}]},
   flag:{hp:110,r:20,speed:32,spr:'flag',sc:1.45,approach:0.75,guns:[{range:170,cd:3}]},
   skiff:{hp:18,r:12,speed:92,spr:'skiff',approach:0.5,guns:[{range:85,dmg:4,cd:1.1,spd:230,pel:1,spread:0}]},
@@ -563,7 +579,7 @@ Object.assign(KINDS,{
   mender:{hp:40,r:14,speed:50,spr:'mender',ai:'heal',approach:1.4,guns:[{range:150,cd:3}]},
   sub:{hp:46,r:14,speed:52,spr:'sub',ai:'dive',approach:0.8,guns:[{range:160,cd:3}]}
 });
-const ACTS=[null,{name:'산호 해역',sea:'#1e5b8c',deep:'#16466d'},{name:'폭풍 해협',sea:'#225470',deep:'#163a52'},{name:'해적왕의 바다',sea:'#2a4466',deep:'#1b2c47'},{name:'망령의 해구',sea:'#1d3a48',deep:'#0f2230'}];
+const ACTS=[null,{name:'산호 해역',sea:'#1e5b8c',deep:'#16466d'},{name:'폭풍 해협',sea:'#225470',deep:'#163a52'},{name:'해적왕의 바다',sea:'#2a4466',deep:'#1b2c47'},{name:'망령의 해구',sea:'#1d3a48',deep:'#0f2230'},{name:'폭풍의 끝',sea:'#2a3550',deep:'#171d33'}];
 const DIFFS=[
   {name:'순항',miss:0.18,easyLoot:true,hp:0.7,dmg:0.5,rate:1.4,lead:0.3,extra:0,spd:0.92,shell:1.25,startHp:30,oneWave:true,bossEase:0.15,note:'처음이라면 여기부터. 적이 약하고 포탄이 느리고, 조합·전설 무기를 더 쉽게 얻어요.'},
   {name:'격랑',miss:0.1,hp:1.25,dmg:1.3,rate:0.8,lead:0.7,extra:1,spd:1.05,note:'적이 더 단단하고 정확해요. 키보드라면 여기부터.'},
@@ -610,6 +626,7 @@ function arenaUpdate(dt){
     else if(A.gs==='blow'){for(const e of S.ents){if(e.dead)continue;e.vz+=A.dir*150*dt*(e.sc>1?0.35:1)*(e===p?kbM():1);}if(Math.random()<dt*70)S.parts.push({x:p.x+(Math.random()-0.5)*gw*1.2,z:p.z+(Math.random()-0.5)*gh*1.6,h:4+Math.random()*30,vx:(Math.random()-0.5)*20,vz:A.dir*320,vh:0,g:0,life:0.3,max:0.3,col:'#e8f4fb',s:1,fade:true});if(A.gt<=0){A.gs='idle';A.gt=7+Math.random()*3;}}
     A.lt-=dt;if(A.lt<=0){A.lt=(2.6+Math.random()*1.4)*(S.enrage?0.6:1);const a=Math.random()*Math.PI*2,r=Math.random()*130;strikeAt(Math.max(30,Math.min(WW-30,p.x+p.vx*0.6+Math.cos(a)*r)),Math.max(30,Math.min(WZ-30,p.z+p.vz*0.6+Math.sin(a)*r)));}
   }
+  if(S.arena==='storm'){A.lt=(A.lt===undefined?3:A.lt)-dt;if(A.lt<=0){A.lt=(2.2+Math.random()*1.2)*(S.enrage?0.6:1);const a=Math.random()*Math.PI*2,r=Math.random()*120;strikeAt(Math.max(30,Math.min(WW-30,p.x+p.vx*0.6+Math.cos(a)*r)),Math.max(30,Math.min(WZ-30,p.z+p.vz*0.6+Math.sin(a)*r)));}}
   if(S.arena==='whirl'){
     const W=S.whirl;W.boost=Math.max(0,(W.boost||0)-dt);const pw=W.boost>0?2.2:1;
     for(const e of S.ents){if(e.dead)continue;const dx=e.x-W.x,dz=e.z-W.z,d=Math.hypot(dx,dz)||1;if(d>W.R)continue;const f=(1-d/W.R)*pw*(e.sc>1?0.3:1)*dt*(e===S.player?kbM():1);e.vx+=(-dx/d*75-dz/d*55)*f;e.vz+=(-dz/d*75+dx/d*55)*f;}
@@ -713,10 +730,17 @@ function defUpdate(dt,p){
     if(d.kind==='intercept'){let best=null,bt=1e9;for(const pr of S.proj){if(pr.team!==1||pr.flat||pr.done||pr.t<0)continue;const rem=pr.dur-pr.t;if(rem>0.75||rem<0.04)continue;if(((pr.x1-p.x)/(HULL_X+20))**2+((pr.z1-p.z)/(HULL_Z+16))**2>1)continue;if(rem<bt){bt=rem;best=pr;}}
       if(best){best.done=true;const u=best.t/best.dur,x=best.x0+(best.x1-best.x0)*u,z=best.z0+(best.z1-best.z0)*u,h=Math.sin(Math.PI*u)*best.arc;S.fx.push({k:'flash',x,z,h,r:8,life:0.14,max:0.14,col:'#bfe8ff'});(S.icp=S.icp||[]).push({x0:p.x,z0:p.z,x1:x,z1:z,h,life:0.12,max:0.12});
         for(let i=0;i<10;i++){const a=Math.random()*Math.PI*2,sp=30+Math.random()*50;S.parts.push({x,z,h,vx:Math.cos(a)*sp,vz:Math.sin(a)*sp*0.6,vh:(Math.random()-0.5)*40,g:120,life:0.35,max:0.35,col:i%2?'#fff1b8':'#bfe8ff',s:1,streak:true,drag:3});}s.t=g.cd;}}
+    else if(d.kind==='bulwark'){let n=0;for(const pr of S.proj){if(pr.team!==1||pr.done||pr.t<0)continue;if(Math.hypot(pr.x1-p.x,pr.z1-p.z)<80)n++;}if(n>=2||(S.brand&&Math.hypot(S.brand.x-p.x,S.brand.z-p.z)<60&&S.brand.t<1)){(S.domes=S.domes||[]).push({x:p.x,z:p.z,r:g.r,t:g.dur,max:g.dur});popText(p.x,p.z,'방탄 돔!','#bfe8ff');SFX.play('pick');s.t=g.cd;}}
+    else if(d.kind==='cleanse'){if(S.tether||S.netT>0||(S.siphon||0)>0||p.slowT>0||p.burn>0){S.tether=null;S.netT=0;S.siphon=0;p.slowT=0;p.burn=0;S.cleanT=g.imm;popText(p.x,p.z,'정화!','#9fcbe6');S.fx.push({k:'ring',x:p.x,z:p.z,r0:8,r1:44,life:0.4,max:0.4,col:'#9fcbe6'});SFX.play('pick');s.t=g.cd;}}
+    else if(d.kind==='evade'){let tx=null,tz=0;for(const pr of S.proj){if(pr.team!==1||pr.flat||pr.done||pr.t<0||pr.smoked)continue;if(pr.dur-pr.t>0.26)continue;if(((pr.x1-p.x)/(HULL_X+6))**2+((pr.z1-p.z)/(HULL_Z+5))**2>1)continue;tx=pr.x1;tz=pr.z1;break;}
+      if(tx===null&&S.brand&&S.brand.t<0.3&&Math.hypot(S.brand.x-p.x,S.brand.z-p.z)<S.brand.r){tx=S.brand.x;tz=S.brand.z;}
+      if(tx!==null&&!(S.netT>0)){const dx=p.x-tx,dz=p.z-tz,l=Math.hypot(dx,dz),ux=l>2?dx/l:-p.face,uz=l>2?dz/l:0.3;if(g.decoy)(S.decoys=S.decoys||[]).push({x:p.x,z:p.z,vx:0,vz:0,t:g.decoy,max:g.decoy});p.vx=ux*320;p.vz=uz*320;p.iT=Math.max(p.iT,0.3);popText(p.x,p.z,'회피!','#e8f4fb');S.fx.push({k:'ring',x:p.x,z:p.z,r0:20,r1:6,life:0.25,max:0.25,col:'#e8f4fb'});s.t=g.cd;}}
     else if(d.kind==='decoy'){if(S.ents.some(e=>e.team===1&&!e.dead)){(S.decoys=S.decoys||[]).push({x:p.x-p.face*22,z:p.z+6,vx:0,vz:0,t:g.dur,max:g.dur});splash(p.x-p.face*22,p.z+6,false);s.t=g.cd;}}
     else if(d.kind==='smoke'){let n=0;for(const pr of S.proj){if(pr.team!==1||pr.flat||pr.done)continue;if(Math.hypot(pr.x1-p.x,pr.z1-p.z)<70)n++;}
       if(n>=g.trig){(S.smokes=S.smokes||[]).push({x:p.x,z:p.z,r:g.r,t:g.dur,max:g.dur});popText(p.x,p.z,'연막!','#e8e4da');s.t=g.cd;for(let i=0;i<24;i++){const a=Math.random()*Math.PI*2,r=Math.random()*g.r;S.parts.push({x:p.x+Math.cos(a)*r,z:p.z+Math.sin(a)*r,h:4+Math.random()*10,vx:Math.cos(a)*20,vz:Math.sin(a)*10,vh:6+Math.random()*8,g:-2,life:1.2,max:1.2,col:i%2?'#d8d2c4':'#9a958a',s:3,fade:true,drag:1});}}}}
   if(S.decoys){for(const d of S.decoys)d.t-=dt;S.decoys=S.decoys.filter(d=>d.t>0);}
+  if(S.cleanT>0)S.cleanT-=dt;if(S.netT>0)S.netT-=dt;
+  if(S.domes){for(const c of S.domes){c.t-=dt;for(const pr of S.proj){if(pr.team!==1||pr.done||pr.t<0)continue;if(pr.flat){const u=Math.min(1,pr.t/pr.dur),gx=pr.x0+(pr.x1-pr.x0)*u,gz=pr.z0+(pr.z1-pr.z0)*u;if(Math.hypot(gx-c.x,gz-c.z)<c.r&&Math.hypot(pr.x0-c.x,pr.z0-c.z)>c.r){pr.done=true;domeHit(gx,gz);}}else if(pr.dur-pr.t<0.06&&Math.hypot(pr.x1-c.x,pr.z1-c.z)<c.r){pr.done=true;domeHit(pr.x1,pr.z1);}}}S.domes=S.domes.filter(c=>c.t>0);}
   if(S.icp){for(const l of S.icp)l.life-=dt;S.icp=S.icp.filter(l=>l.life>0);}
   if(S.smokes){for(const c of S.smokes){c.t-=dt;
       for(const pr of S.proj){if(pr.team!==1||pr.flat||pr.done||pr.smoked)continue;if(pr.dur-pr.t<0.15)continue;const dx=pr.x1-c.x,dz=pr.z1-c.z,d=Math.hypot(dx,dz);if(d>c.r)continue;pr.smoked=true;const a=d>2?Math.atan2(dz,dx):Math.random()*Math.PI*2,nd=c.r+8+Math.random()*24;pr.x1=Math.max(10,Math.min(WW-10,c.x+Math.cos(a)*nd));pr.z1=Math.max(10,Math.min(WZ-10,c.z+Math.sin(a)*nd));}
@@ -730,10 +754,16 @@ function zapChain(from,g,first){const pts=[[from.x,from.z]],hits=new Set();if(fr
   if(pts.length>1){SFX.play('zap');}if(pts.length>1)(S.bolts=S.bolts||[]).push({pts,life:0.2,max:0.2});}
 function weaponsUpdate(dt){
   if(S.coverTxt>0)S.coverTxt-=dt;
+  if(S.warns&&S.warns.length){const pl=S.player;for(const w of S.warns){w.t-=dt;if(w.t>0)continue;w.done=true;if(w.src&&w.src.dead)continue;
+      if(w.k==='net'){S.fx.push({k:'ring',x:w.x,z:w.z,r0:w.r,r1:8,life:0.3,max:0.3,col:'#cfd6dc'});splash(w.x,w.z,false);if(!pl.dead&&Math.hypot(pl.x-w.x,pl.z-w.z)<w.r+pl.r*0.4&&!(pl.iT>0)&&!(S.cleanT>0)&&!(S.domes||[]).some(c=>Math.hypot(pl.x-c.x,pl.z-c.z)<c.r)){S.netT=D.easyLoot?1.6:2.6;popText(pl.x,pl.z,'그물!','#cfd6dc');SFX.play('hurt');}}
+      else if(w.k==='barrage'){for(let i=0;i<w.n;i++){const a=Math.random()*TAU,r=Math.sqrt(Math.random())*w.r;shell(w.src,w.x+Math.cos(a)*r,w.z+Math.sin(a)*r,{lob:true,dmg:7,spd:250,delay:i*0.045});}}}
+    S.warns=S.warns.filter(w=>!w.done);}
+  if(S.brand){const B2=S.brand,pl=S.player;B2.t-=dt;if(!B2.src||B2.src.dead){S.brand=null;}else{if(B2.t>0.55){const tg=B2.tg&&!B2.tg.dead&&(B2.tg.t===undefined||B2.tg.t>0)?B2.tg:pl,k=Math.min(1,dt*3.2);B2.x+=(tg.x-B2.x)*k;B2.z+=(tg.z-B2.z)*k;}
+    if(B2.t<=0){S.brand=null;const inDome=(S.domes||[]).some(c=>Math.hypot(B2.x-c.x,B2.z-c.z)<c.r);if(inDome)domeHit(B2.x,B2.z);else{boom(B2.x,B2.z,true,14);S.fx.push({k:'ring',x:B2.x,z:B2.z,r0:8,r1:B2.r+12,life:0.45,max:0.45,col:'#ff7a3d'});if(!RM)S.shake=Math.max(S.shake||0,5);if(!pl.dead&&Math.hypot(pl.x-B2.x,pl.z-B2.z)<B2.r+pl.r*0.4)damage(pl,B2.dmg);}}}}
   if(S.pfx&&S.pfx.length){for(const f of S.pfx)f.t+=dt*f.spd;S.pfx=S.pfx.filter(f=>f.t*f.d.fps<f.d.vars[f.v].n);}
-  if(S.lasers&&S.lasers.length){const pl=S.player;for(const L of S.lasers){if(L.src&&L.src.dead&&L.src.team===1){L.warn=0;L.fire=0;L.cut=1;continue;}if(L.warn>0){if(L.src&&!L.src.dead&&L.warn>0.3){L.x=L.src.x;L.z=L.src.z;}L.warn-=dt;if(L.warn<=0){L.fire=L.act||0.3;L.fmax=L.fire;if(!L.act&&!pl.dead&&segDist(pl.x,pl.z,L.x,L.z,L.dx,L.dz,L.len)<L.w+pl.r*0.6){const inv=pl.iT>0;damage(pl,L.dmg);if(L.tether&&!inv&&L.src&&!L.src.dead){S.tether={src:L.src,t:D.easyLoot?2.5:3.8,len:135};banner('사슬에 묶였다 · 보스 곁을 못 벗어나요');}}for(let i=0;i<10;i++){const t=Math.random()*L.len;S.parts.push({x:L.x+L.dx*t,z:L.z+L.dz*t,h:8,vx:0,vz:0,vh:20+Math.random()*30,g:60,life:0.5,max:0.5,col:'#fff1e0',s:1,fade:true});}if(!RM)S.shake=Math.max(S.shake||0,2.5);}}else{L.fire-=dt;if(L.act){if(L.src&&!L.src.dead){L.x=L.src.x;L.z=L.src.z;}const a=Math.atan2(L.dz,L.dx)+L.angV*dt;L.dx=Math.cos(a);L.dz=Math.sin(a);L.hitCd-=dt;if(L.hitCd<=0&&!pl.dead&&segDist(pl.x,pl.z,L.x,L.z,L.dx,L.dz,L.len)<L.w+pl.r*0.5){L.hitCd=0.45;damage(pl,L.dmg);}if(L.src&&L.src.dead)L.fire=0;}}}S.lasers=S.lasers.filter(L=>!L.cut&&(L.warn>0||L.fire>0));}
-  if(S.tether){const Tt=S.tether,pl=S.player;Tt.t-=dt;if(Tt.t<=0||!Tt.src||Tt.src.dead||pl.dead)S.tether=null;else{const dx=pl.x-Tt.src.x,dz=pl.z-Tt.src.z,d=Math.hypot(dx,dz)||1;if(d>Tt.len){pl.x=Tt.src.x+dx/d*Tt.len;pl.z=Tt.src.z+dz/d*Tt.len;const vr=(pl.vx*dx+pl.vz*dz)/d;if(vr>0){pl.vx-=dx/d*vr;pl.vz-=dz/d*vr;}}}}
-  {const sn=S.ents.filter(x=>x.arch==='sentry'&&!x.dead);if(sn.length&&S.mode==='play'){S.sentT-=dt;if(S.sentT<=0){S.sentI=(S.sentI+1)%sn.length;const e=sn[S.sentI],p=S.player;if(!p.dead){addLaser(e,p.x+p.vx*0.25,p.z+p.vz*0.25,{warn:1.15,w:11,dmg:15,len:760});e.flash=0.1;}S.sentT=(sn.length===3?1.5:sn.length===2?1.9:2.4)*(D.easyLoot?1.3:1);if(!S.sentTip){S.sentTip=1;banner('감시 포대 · 빨간 선을 피해요');}}}}
+  if(S.lasers&&S.lasers.length){const pl=S.player;for(const L of S.lasers){if(L.src&&L.src.dead&&L.src.team===1){L.warn=0;L.fire=0;L.cut=1;continue;}if(L.warn>0){if(L.src&&!L.src.dead&&L.warn>0.3){L.x=L.src.x;L.z=L.src.z;}L.warn-=dt;if(L.warn<=0){L.fire=L.act||0.3;L.fmax=L.fire;if(!L.act&&!pl.dead&&segDist(pl.x,pl.z,L.x,L.z,L.dx,L.dz,L.len)<L.w+pl.r*0.6){const inv=pl.iT>0;damage(pl,L.dmg);if(L.tether&&!inv&&L.src&&!L.src.dead&&!(S.cleanT>0)){S.tether={src:L.src,t:D.easyLoot?2.5:3.8,len:L.drag?150:135,drag:L.drag};banner(L.drag?'닻에 걸렸다 · 보스 쪽으로 끌려가요':'사슬에 묶였다 · 보스 곁을 못 벗어나요');}}for(let i=0;i<10;i++){const t=Math.random()*L.len;S.parts.push({x:L.x+L.dx*t,z:L.z+L.dz*t,h:8,vx:0,vz:0,vh:20+Math.random()*30,g:60,life:0.5,max:0.5,col:'#fff1e0',s:1,fade:true});}if(!RM)S.shake=Math.max(S.shake||0,2.5);}}else{L.fire-=dt;if(L.act){if(L.src&&!L.src.dead){L.x=L.src.x;L.z=L.src.z;}const a=Math.atan2(L.dz,L.dx)+L.angV*dt;L.dx=Math.cos(a);L.dz=Math.sin(a);L.hitCd-=dt;if(L.hitCd<=0&&!pl.dead&&segDist(pl.x,pl.z,L.x,L.z,L.dx,L.dz,L.len)<L.w+pl.r*0.5){L.hitCd=0.45;damage(pl,L.dmg);}if(L.src&&L.src.dead)L.fire=0;}}}S.lasers=S.lasers.filter(L=>!L.cut&&(L.warn>0||L.fire>0));}
+  if(S.tether){const Tt=S.tether,pl=S.player;Tt.t-=dt;if(Tt.t<=0||!Tt.src||Tt.src.dead||pl.dead)S.tether=null;else{const dx=pl.x-Tt.src.x,dz=pl.z-Tt.src.z,d=Math.hypot(dx,dz)||1;if(Tt.drag&&!(pl.dashT>0)){Tt.len=Math.max(55,Tt.len-48*dt);}if(d>Tt.len){pl.x=Tt.src.x+dx/d*Tt.len;pl.z=Tt.src.z+dz/d*Tt.len;const vr=(pl.vx*dx+pl.vz*dz)/d;if(vr>0){pl.vx-=dx/d*vr;pl.vz-=dz/d*vr;}}}}
+  {const sn=S.ents.filter(x=>x.arch==='sentry'&&!x.dead);if(sn.length&&S.mode==='play'){S.sentT-=dt;if(S.sentT<=0){S.sentI=(S.sentI+1)%sn.length;const e=sn[S.sentI],p=S.player;if(!p.dead){addLaser(e,p.x+p.vx*0.25,p.z+p.vz*0.25,{warn:1.15,w:11,dmg:S.battle==='boss'?5:15,len:760});e.flash=0.1;}S.sentT=(sn.length===3?1.5:sn.length===2?1.9:2.4)*(D.easyLoot?1.3:1);if(!S.sentTip){S.sentTip=1;banner(S.battle==='boss'?'폭풍탑 · 돌아가며 광선을 쏴요. 부수면 멈춰요':'감시 포대 · 빨간 선을 피해요');}}}}
   for(const r of S.rockets||[]){if(r.delay>0){r.delay-=dt;continue;}r.t+=dt;
     if(!r.tgt||r.tgt.dead||r.tgt.sub){let b=null,bd=280;for(const e of S.ents){if(e.team!==1||e.dead||e.sub)continue;const d=Math.hypot(e.x-r.x,e.z-r.z);if(d<bd){bd=d;b=e;}}r.tgt=b;}
     if(r.tgt){const dx=r.tgt.x-r.x,dz=r.tgt.z-r.z,d=Math.hypot(dx,dz)||1,k=Math.min(1,dt*(2+r.t*5));r.vx+=(dx/d*240-r.vx)*k;r.vz+=(dz/d*240-r.vz)*k;if(d<8+r.tgt.r*0.5)r.done=true;}
@@ -773,7 +803,7 @@ function drawPfx(cam){if(!S.pfx||!S.pfx.length)return;for(const f of S.pfx){if(f
 function fxLoop(n,x,z,sc,cam,al,v){if(!HAS_FX(n))return false;const d=FXSHEETS[n];v=v||0;const V=d.vars[v%d.vars.length],i=Math.floor(T*d.fps)%V.n;fxDraw(n,v%d.vars.length,i,x-cam.x,z*YF-cam.y,sc,false,al);return true;}
 const ARCH={nob:'광폭한 대장선',lag:'잠든 철갑선',sentry:'감시 포대',book:'연격 대장선',auto:'청동 거함',donu:'붉은 도누',deca:'푸른 데카'};
 function foeMul(e){return(e.rage?1+0.12*e.rage:1)*(1+(S.foeAtk||0));}
-function addLaser(src,tx,tz,o){const dx=tx-src.x,dz=tz-src.z,l=Math.hypot(dx,dz)||1;(S.lasers=S.lasers||[]).push({src,x:src.x,z:src.z,dx:dx/l,dz:dz/l,len:o.len||700,w:o.w||12,warn:o.warn||1,max:o.warn||1,dmg:o.dmg||16,fire:0,col:o.col||'#ff5a4a',act:o.act||0,angV:o.angV||0,tether:!!o.tether,hitCd:0});if(!o.quiet)SFX.play('warn');}
+function addLaser(src,tx,tz,o){const dx=tx-src.x,dz=tz-src.z,l=Math.hypot(dx,dz)||1;(S.lasers=S.lasers||[]).push({src,x:src.x,z:src.z,dx:dx/l,dz:dz/l,len:o.len||700,w:o.w||12,warn:o.warn||1,max:o.warn||1,dmg:o.dmg||16,fire:0,col:o.col||'#ff5a4a',act:o.act||0,angV:o.angV||0,tether:!!o.tether,drag:!!o.drag,hitCd:0});if(!o.quiet)SFX.play('warn');}
 function segDist(px,pz,x,z,dx,dz,len){const t=Math.max(0,Math.min(len,(px-x)*dx+(pz-z)*dz));return Math.hypot(px-(x+dx*t),pz-(z+dz*t));}
 function fire(e,g,tgt,lead){if(e.team===1){const m=foeMul(e);if(m!==1)g={...g,dmg:g.dmg*m};}
   if(e.team===0&&(e.powderT>0||SHIP().powder)&&!g.flat){g={...g,aoe:Math.max(g.aoe||0,18),dmg:g.dmg*1.15,style:g.style==='tracer'||!g.style||g.style==='ball'?'heavy':g.style};}
@@ -893,13 +923,13 @@ function bossAct(e,dt,p,dist){
   if(e.mini&&B.phase===1&&e.hp<e.max*0.5&&e.multi){B.phase=2;}
   if(e.mini&&B.phase===1&&e.hp<e.max*0.5){B.phase=2;B.cd=Math.min(B.cd,1);e.iT=1.2;S.fx.push({k:'ring',x:e.x,z:e.z,r0:20,r1:120,life:0.6,max:0.6,col:'#ff7a3d'});SFX.play('big',0.8);banner('정예 대장선이 지원을 불렀다');summon(S.act>=3?['raider','rammer']:['raider']);}
   if(!e.mini&&B.phase===1&&e.hp<e.max*0.6){
-    B.phase=2;B.cd=Math.min(B.cd,1.2);phaseFx();banner({boss:'요새선이 지원을 불렀다',boss2:'전열함이 화선을 풀었다',boss3:'해적왕이 함대를 불렀다',boss4:'망령 제독이 심해의 망령을 불렀다'}[e.kind]);
-    summon({boss:['raider','raider'],boss2:['fireship'],boss3:['rammer','fireship','sub','rammer','gunboat','gunboat'],boss4:['sub','sniper','aegis']}[e.kind]);if(e.kind==='boss')spawnForts(1);
+    B.phase=2;B.cd=Math.min(B.cd,1.2);phaseFx();banner({boss:'요새선이 지원을 불렀다',boss2:'전열함이 화선을 풀었다',boss3:'해적왕이 함대를 불렀다',boss4:'망령 제독이 심해의 망령을 불렀다',boss5:'폭풍왕이 폭풍탑을 세웠다'}[e.kind]);if(e.kind==='boss5')spawnTowers(e,D.easyLoot?2:3);
+    summon({boss:['raider','raider'],boss2:['fireship'],boss3:['rammer','fireship','sub','rammer','gunboat','gunboat'],boss4:['sub','sniper','aegis'],boss5:['sniper','broadside']}[e.kind]);if(e.kind==='boss')spawnForts(1);
   }
-  if(!e.mini&&B.phase===2&&e.kind!=='boss2'&&e.hp<e.max*0.25){B.phase=3;B.cd=0.6;phaseFx();banner({boss:'요새선의 화약고가 불타오른다',boss3:'해적왕이 분노했다',boss4:'망령 제독이 심연을 연다'}[e.kind]);if(e.kind==='boss3'){summon(['fireship','fireship']);if(S.whirl){S.whirl.R=330;S.whirl.core=54;}banner('소용돌이가 커진다');}if(e.kind==='boss3'||e.kind==='boss4'){const nn=D.easyLoot?2:3;setTimeout(()=>{if(S&&S.battle==='boss'&&!e.dead)spawnNodes(e,nn);},1800);}if(e.kind==='boss4'){summon(['fireship','sub']);if(S.abyss)S.abyss.minR=D.easyLoot?170:125;if(!D.easyLoot)S.weather='fog';}if(e.kind==='boss'&&!D.easyLoot){S.abyss={x:Math.max(200,Math.min(WW-200,e.x)),z:Math.max(200,Math.min(WZ-200,e.z)),R:320,minR:145,t:6,fire:true,spd:6};setTimeout(()=>{if(S&&S.battle==='boss')banner('불길이 해역을 조여온다');},1300);}}
+  if(!e.mini&&B.phase===2&&e.kind!=='boss2'&&e.hp<e.max*0.25){B.phase=3;B.cd=0.6;phaseFx();banner({boss:'요새선의 화약고가 불타오른다',boss3:'해적왕이 분노했다',boss4:'망령 제독이 심연을 연다',boss5:'폭풍의 눈이 거세진다'}[e.kind]);if(e.kind==='boss5'&&S.gyre){S.gyre.spd=58;S.gyre.r0=120;}if(e.kind==='boss3'){summon(['fireship','fireship']);if(S.whirl){S.whirl.R=330;S.whirl.core=54;}banner('소용돌이가 커진다');}if(e.kind==='boss3'||e.kind==='boss4'||e.kind==='boss5'){const nn=D.easyLoot?2:3;setTimeout(()=>{if(S&&S.battle==='boss'&&!e.dead)spawnNodes(e,nn);},1800);}if(e.kind==='boss4'){summon(['fireship','sub']);if(S.abyss)S.abyss.minR=D.easyLoot?170:125;if(!D.easyLoot)S.weather='fog';}if(e.kind==='boss'&&!D.easyLoot){S.abyss={x:Math.max(200,Math.min(WW-200,e.x)),z:Math.max(200,Math.min(WZ-200,e.z)),R:320,minR:145,t:6,fire:true,spd:6};setTimeout(()=>{if(S&&S.battle==='boss')banner('불길이 해역을 조여온다');},1300);}}
   if(B.huntN>0){B.huntT-=dt;if(B.huntT<=0){shell(e,p.x+p.vx*0.35,p.z+p.vz*0.35,{lob:true,dmg:9,spd:230});B.huntN--;B.huntT=0.32;}}
   if(B.stormN>0){B.stormT-=dt;if(B.stormT<=0){fire(e,{range:999,dmg:7,spd:200,pel:7,spread:1.3},p,0.2);B.stormN--;B.stormT=0.35;}}
-  const fast=(B.phase>=3?0.5:B.phase===2?0.65:1)*D.rate*(broken(e,'helm')?1.4:1)*(1-0.45*(S.enrage||0))*[1,1,0.88,0.78,0.72][S.act||1]*(e.mini?1.4+0.12*((S.act||1)-1):1)*(e.awoken?0.82:1);
+  const fast=(B.phase>=3?0.5:B.phase===2?0.65:1)*D.rate*(broken(e,'helm')?1.4:1)*(1-0.45*(S.enrage||0))*[1,1,0.88,0.78,0.72,0.68][S.act||1]*(e.mini?1.4+0.12*((S.act||1)-1):1)*(e.awoken?0.82:1);
   B.wsCd=(B.wsCd===undefined?4:B.wsCd)-dt;
   if(!B.ws&&B.wsCd<=0&&!(e.exposedT>0)&&B.st!=='blink'){const pt=pickR(PARTS[e.kind]||PARTS.boss);B.ws={dir:pt.dirs[Math.floor(Math.random()*pt.dirs.length)],t:6,prog:0,need:e.max*(e.mini?0.06:0.035),flash:0};if(!S.wsTip){S.wsTip=1;banner('약점 표적 · 그쪽에서 공격');}}
   if(B.ws){B.ws.t-=dt;B.ws.flash=Math.max(0,B.ws.flash-dt);if(B.ws.t<=0){B.ws=null;B.wsCd=6;}}
@@ -915,12 +945,28 @@ function bossAct(e,dt,p,dist){
     return true;
   }
   B.cd-=dt;if(B.cd>0||p.dead)return false;
-  const OP={boss:['volley','rain','line','ram','spiral','ringtrap','noose'],boss2:['volley','line','ram','cross','pincer','sweepfan','emines','tidal','firesea','crossfire','crossfire','reefrise'],boss3:['volley','rain','line','ram','ram','spiral','cross','hunt','storm','sweep','ringtrap','sweepfan','emines','vortex','reefrise','beam','noose','firesea','tidal'],boss4:['ram','volley','rain','spiral','cross','sweep','ringtrap','sweepfan','hunt','tidal','beam','noose','reefrise','firesea','whirlpools','blink','phantom']};
+  // each boss has its own kit: fortress = artillery, twins = crossfire, pirate king = boarding (rams, chains, fire),
+  // ghost admiral = hunting (blink, net, brand), storm king = the sky (lasers, lightning, barrage)
+  const OP={boss:['volley','rain','line','spiral','ringtrap','noose','rain'],
+    boss2:['volley','line','ram','cross','pincer','sweepfan','emines','tidal','firesea','crossfire','crossfire','reefrise'],
+    boss3:['ram','ram','chain','chain','firecage','volley','rain','hunt','sweep','emines','vortex','noose','firesea','spiral'],
+    boss4:['blink','blink','phantom','net','brand','brand','whirlpools','ringtrap','spiral','cross','sweep','hunt','noose','beam','volley'],
+    boss5:['beams','thunderline','thunderline','barrage','tidal','storm','volley','rain','sweepfan','spiral','cross','hunt','stormwall']};
   OP.mini=['volley','rain','line','ram','ringtrap','noose','cross'].concat(S.act>=3?['sweepfan','hunt']:[]);
-  const opts=[...OP[e.mini?'mini':e.kind]];if(!e.mini){if(e.kind!=='boss'||B.phase>=2)opts.push('grid');if(e.kind==='boss3'||e.kind==='boss4')opts.push('beams');if((e.kind==='boss2'||e.kind==='boss3'||(e.kind==='boss4'&&B.phase>=2))&&!S.tether)opts.push('chain');if(e.kind==='boss'&&B.phase>=2)opts.push('beams');}if(dist<160&&e.kind!=='boss2')opts.push('nova','nova');if(B.phase>=3&&e.kind!=='boss2')opts.push('hunt','storm');if(e.kind==='boss3'&&B.phase>=2&&B.fleetCd<=0)opts.push('fleet');
+  const opts=[...OP[e.mini?'mini':e.kind]];
+  if(!e.mini){const k=e.kind,ph=B.phase;
+    if(k==='boss'){if(ph>=2)opts.push('grid','grid');if(S.ents.some(f=>f.kind==='fort'&&!f.dead))opts.push('fortsalvo','fortsalvo');if(ph>=3)opts.push('barrage');}
+    if(k==='boss3'){if(ph>=2)opts.push('drag','drag','fleet');if(ph>=3)opts.push('firecage','storm');}
+    if(k==='boss4'){if(ph>=2)opts.push('net','phantom');if(ph>=3)opts.push('brand','hunt');}
+    if(k==='boss5'){if(ph>=2)opts.push('barrage','thunderline');if(ph>=3)opts.push('beams','stormwall');}
+    if(dist<160&&k!=='boss2'&&k!=='boss5'){opts.push('nova');if(k==='boss')opts.push('nova');}}
+  if(S.tether)for(let i=opts.length-1;i>=0;i--)if(opts[i]==='chain'||opts[i]==='drag')opts.splice(i,1);
+  if(e.kind==='boss3'&&B.fleetCd>0)for(let i=opts.length-1;i>=0;i--)if(opts[i]==='fleet')opts.splice(i,1);
+  // signature patterns have their own cooldowns so no single one floods the fight
+  {const PCD={beams:15,barrage:16,brand:9,net:8,firecage:10,drag:9,chain:7,grid:8,thunderline:5,tidal:10,stormwall:12,fortsalvo:7,blink:6,phantom:9},now=S.btime||0;B.pl=B.pl||{};for(let i=opts.length-1;i>=0;i--){const o=opts[i];if(PCD[o]&&B.pl[o]!==undefined&&now-B.pl[o]<PCD[o])opts.splice(i,1);}}
   const PP=e.mini?{volley:'guns',cross:'guns',noose:'guns',sweepfan:'guns',ram:'sail',line:'sail'}:e.kind==='boss2'?PAT_PART2:PAT_PART;const okO=opts.filter(o=>!broken(e,PP[o]));
   if(!okO.length){B.cd=1.2;return false;}
-  let pick,tries=0;do{pick=okO[Math.floor(Math.random()*okO.length)];tries++;}while(pick===B.last&&okO.length>1&&tries<10);B.last=pick;
+  let pick,tries=0;do{pick=okO[Math.floor(Math.random()*okO.length)];tries++;}while(pick===B.last&&okO.length>1&&tries<10);B.last=pick;(B.pl=B.pl||{})[pick]=S.btime||0;
   const ux=(p.x-e.x)/(dist||1),uz=(p.z-e.z)/(dist||1);
   const run=pick=>{
   if(pick==='volley'){fire(e,{range:999,dmg:8,cd:0,spd:190,pel:B.phase>=3?9:B.phase===2?7:5,spread:0.75},aimOf(e,p),0.5);B.cd=2.3*fast;}
@@ -933,8 +979,16 @@ function bossAct(e,dt,p,dist){
   else if(pick==='storm'){B.stormN=4;B.stormT=0;B.cd=3.6*fast;}
   else if(pick==='fleet'){summon(['fireship','fireship']);B.fleetCd=16;banner('해적왕이 화선을 풀었다');B.cd=2*fast;}
   else if(pick==='grid'){const cx=p.x+p.vx*0.3,cz=p.z+p.vz*0.3,G=34,par=Math.random()<0.5?0:1;for(let i=-2;i<=2;i++)for(let j=-2;j<=2;j++){const w=((i+j)&1)===par?0:1,x=cx+i*G,z=cz+j*G*1.0;shell(e,x,z,{lob:true,dmg:10,spd:210,delay:w?1.25:0.15});}if(!S.gridTip){S.gridTip=1;banner('격자 포격 · 두 번째 포격 전에 칸을 옮겨요');}B.cd=3.4*fast;}
-  else if(pick==='beams'){const n=e.kind==='boss4'?4:3,base=Math.atan2(uz,ux)+Math.PI/n,dir=Math.random()<0.5?1:-1,eL=D.easyLoot;for(let k=0;k<n;k++){const a=base+k*Math.PI*2/n;addLaser(e,e.x+Math.cos(a)*100,e.z+Math.sin(a)*100,{warn:1.3,act:eL?2.4:3.2,angV:dir*(eL?0.38:0.55)*(B.phase>=3?1.25:1),w:9,dmg:eL?4:6,len:e.kind==='boss'?330:430,col:'#ff7a3d',quiet:k>0});}e.vx*=0.3;e.vz*=0.3;if(!S.beamTip){S.beamTip=1;banner('회전 광선 · 같은 방향으로 돌며 피해요');}B.cd=4.6*fast;}
+  else if(pick==='beams'){const n=e.kind==='boss5'?(B.phase>=3?5:4):e.kind==='boss4'?4:3,base=Math.atan2(uz,ux)+Math.PI/n,dir=Math.random()<0.5?1:-1,eL=D.easyLoot;for(let k=0;k<n;k++){const a=base+k*Math.PI*2/n;addLaser(e,e.x+Math.cos(a)*100,e.z+Math.sin(a)*100,{warn:1.3,act:eL?2.4:3.2,angV:dir*(eL?0.38:0.55)*(B.phase>=3?1.25:1),w:9,dmg:eL?4:6,len:430,col:e.kind==='boss5'?'#7fd6ff':'#ff7a3d',quiet:k>0});if(k===0&&e.kind==='boss5')fxBolt(e.x,e.z,0.55);}e.vx*=0.3;e.vz*=0.3;if(!S.beamTip){S.beamTip=1;banner('회전 광선 · 같은 방향으로 돌며 피해요');}B.cd=4.6*fast;}
   else if(pick==='chain'){addLaser(e,p.x+p.vx*0.35,p.z+p.vz*0.35,{warn:0.9,w:9,dmg:6,len:Math.min(520,dist+80),col:'#cfd6dc',tether:true});B.cd=1.6*fast;}
+  else if(pick==='fortsalvo'){const fs=S.ents.filter(f=>f.kind==='fort'&&!f.dead);fs.forEach((f,j)=>{for(let i=0;i<4;i++){const a=Math.random()*TAU,r=Math.random()*40;shell(f,p.x+p.vx*0.5+Math.cos(a)*r,p.z+p.vz*0.5+Math.sin(a)*r,{lob:true,dmg:9,spd:200,delay:j*0.25+i*0.12});}});tip('salvoTip','포대 일제 사격 · 포대를 먼저 부수면 포격이 줄어요');B.cd=2.6*fast;}
+  else if(pick==='stormwall'){const ax=Math.random()<0.5?'x':'z',mx=ax==='x'?WW:WZ,dir=Math.random()<0.5?1:-1;S.tides.push({ax,dir,pos:dir>0?-10:mx+10,spd:170,w:14,warn:1.4,hit:false});setTimeout(()=>{if(S&&S.mode==='play'&&!e.dead){const ax2=ax==='x'?'z':'x',mx2=ax2==='x'?WW:WZ,d2=Math.random()<0.5?1:-1;S.tides.push({ax:ax2,dir:d2,pos:d2>0?-10:mx2+10,spd:170,w:14,warn:1.4,hit:false});}},1600);tip('wallTip','폭풍 벽 · 가로와 세로로 연달아 밀려와요');B.cd=3.2*fast;}
+  else if(pick==='net'){const x=p.x+p.vx*0.5,z=p.z+p.vz*0.5;(S.warns=S.warns||[]).push({x,z,r:46,t:1.15,max:1.15,k:'net',src:e});SFX.play('warn');tip('netTip','포획 그물 · 원 밖으로 피하지 못하면 2초 넘게 느려지고 급기동도 못 써요');B.cd=2.3*fast;}
+  else if(pick==='brand'){const tg=aimOf(e,p);S.brand={x:tg.x,z:tg.z,tg,t:2.8,max:2.8,r:48,src:e,dmg:D.easyLoot?16:26};SFX.play('warn');tip('brandTip','낙인 포격 · 표적이 따라와요. 마지막 순간 급기동으로 빠져나가요');B.cd=3.6*fast;}
+  else if(pick==='barrage'){const tg=aimOf(e,p);(S.warns=S.warns||[]).push({x:tg.x,z:tg.z,r:135,t:2.1,max:2.1,k:'barrage',src:e,n:D.easyLoot?16:30});SFX.play('warn');tip('barTip','집중 포격 · 넓은 범위에 포탄이 쏟아져요. 요격·연막·방탄 돔이 큰 힘이 돼요');B.cd=5.2*fast;}
+  else if(pick==='firecage'){const cx=p.x+p.vx*0.2,cz=p.z+p.vz*0.2,n=16,g0=Math.floor(Math.random()*n);for(let j=0;j<n;j++){if(j===g0||j===(g0+1)%n)continue;const a=j/n*TAU;shell(e,cx+Math.cos(a)*80,cz+Math.sin(a)*80,{lob:true,dmg:7,spd:230,delay:0.08,fire:true,fireT:5,fireR:17});}for(let j=0;j<8;j++){const a=Math.random()*TAU,r=Math.sqrt(Math.random())*58;shell(e,cx+Math.cos(a)*r,cz+Math.sin(a)*r,{lob:true,dmg:9,spd:150,delay:1.5+j*0.08});}tip('cageTip','불의 우리 · 불길이 닫히기 전에 빈틈으로 빠져나가요');B.cd=4.2*fast;}
+  else if(pick==='drag'){addLaser(e,p.x+p.vx*0.35,p.z+p.vz*0.35,{warn:0.95,w:9,dmg:5,len:Math.min(560,dist+80),col:'#cfd6dc',tether:true,drag:true});tip('dragTip','닻 끌기 · 맞으면 보스 쪽으로 끌려가요. 급기동하면 버틸 수 있어요');B.cd=1.8*fast;}
+  else if(pick==='thunderline'){const n=7,ox=p.x+p.vx*0.4,oz=p.z+p.vz*0.4,a=Math.random()*Math.PI;for(let i=0;i<n;i++){const o=(i-(n-1)/2)*34;setTimeout(()=>{if(S&&S.mode==='play'&&!e.dead)strikeAt(Math.max(30,Math.min(WW-30,ox+Math.cos(a)*o)),Math.max(30,Math.min(WZ-30,oz+Math.sin(a)*o)));},i*90);}B.cd=2.6*fast;}
   else if(pick==='ringtrap'){const cx=p.x+p.vx*0.3,cz=p.z+p.vz*0.3,n=14,g=Math.floor(Math.random()*n);for(let j=0;j<n;j++){if(j===g||j===(g+1)%n)continue;const a=j/n*Math.PI*2;shell(e,cx+Math.cos(a)*58,cz+Math.sin(a)*58,{lob:true,dmg:10,spd:200,delay:0.25});}for(let j=0;j<4;j++){const a=Math.random()*Math.PI*2,r=Math.random()*26;shell(e,cx+Math.cos(a)*r,cz+Math.sin(a)*r,{lob:true,dmg:12,spd:200,delay:0.85});}B.cd=3.2*fast;}
   else if(pick==='pincer'){const cx=p.x,cz=p.z,px=-uz,pz=ux;for(const sgn of[-1,1]){const g=3+Math.floor(Math.random()*5);for(let i=0;i<11;i++){if(i===g||i===g+1)continue;const o=(i-5)*22;shell(e,cx+ux*o+px*50*sgn,cz+uz*o+pz*50*sgn,{lob:true,dmg:10,spd:210,delay:0.3});}}for(let i=-5;i<=5;i++)shell(e,cx+ux*i*22,cz+uz*i*22,{lob:true,dmg:12,spd:210,delay:1.2});B.cd=3.4*fast;}
   else if(pick==='sweepfan'){const base=Math.atan2(uz,ux),n=14,dir=Math.random()<0.5?1:-1;for(let i=0;i<n;i++){const a=base+dir*(-0.95+1.9*i/(n-1));for(const dd of[dist-14,dist+16])shell(e,e.x+Math.cos(a)*dd,e.z+Math.sin(a)*dd,{lob:true,dmg:10,spd:220,delay:0.2+i*0.09});}B.cd=3.2*fast;}
@@ -1028,6 +1082,7 @@ function enemyAct(e,dt,p,dist,ux,uz,seen){
 }
 const PARTS={
   boss:[{id:'bow',name:'선수 포대',dirs:[[1,0]]},{id:'mortar',name:'박격포',dirs:[[-1,0]]},{id:'sail',name:'돛',dirs:[[0,-1]]},{id:'helm',name:'조타실',dirs:[[0,1]]}],
+  boss5:[{id:'bow',name:'선수 포대',dirs:[[1,0]]},{id:'mortar',name:'박격포',dirs:[[-1,0]]},{id:'sail',name:'돛',dirs:[[0,-1]]},{id:'helm',name:'조타실',dirs:[[0,1]]}],
   boss4:[{id:'bow',name:'선수 포대',dirs:[[1,0]]},{id:'mortar',name:'박격포',dirs:[[-1,0]]},{id:'sail',name:'돛',dirs:[[0,-1]]},{id:'helm',name:'조타실',dirs:[[0,1]]}],
   boss3:[{id:'bow',name:'선수 포대',dirs:[[1,0]]},{id:'mortar',name:'박격포',dirs:[[-1,0]]},{id:'sail',name:'돛',dirs:[[0,-1]]},{id:'helm',name:'조타실',dirs:[[0,1]]}],
   boss2:[{id:'bow',name:'선수포',dirs:[[1,0]]},{id:'sail',name:'돛',dirs:[[-1,0]]},{id:'guns',name:'포열',dirs:[[0,-1],[0,1]]}],
@@ -1035,7 +1090,7 @@ const PARTS={
   broadside:[{id:'guns',name:'포열',dirs:[[0,-1],[0,1]]}],
   leader:[{id:'sail',name:'돛',dirs:[[0,-1],[-1,0]]},{id:'guns',name:'포대',dirs:[[1,0],[0,1]]}]
 };
-const PARTHP={boss4:0.12,boss:0.18,boss3:0.14,boss2:0.22,mortarer:0.5,broadside:0.45,leader:0.35};
+const PARTHP={boss5:0.12,boss4:0.12,boss:0.18,boss3:0.14,boss2:0.22,mortarer:0.5,broadside:0.45,leader:0.35};
 const PAT_PART={tidal:'sail',beam:'bow',noose:'helm',reefrise:'mortar',firesea:'mortar',whirlpools:'sail',blink:'helm',phantom:'sail',volley:'bow',storm:'bow',sweepfan:'bow',rain:'mortar',spiral:'mortar',nova:'mortar',hunt:'mortar',ringtrap:'mortar',emines:'mortar',ram:'sail',fleet:'sail',vortex:'sail',cross:'helm',line:'helm',sweep:'helm'};
 const PAT_PART2={crossfire:'guns',reefrise:'sail',tidal:'sail',firesea:'guns',volley:'guns',cross:'guns',pincer:'guns',ram:'sail',emines:'sail',line:'bow',sweepfan:'bow'};
 function addParts(e,key){e.pts=PARTS[key].map(p=>({...p,max:Math.max(4,Math.round(e.max*PARTHP[key])),hp:Math.max(4,Math.round(e.max*PARTHP[key])),flash:0}));}
@@ -1050,15 +1105,17 @@ function breakPart(e,pt){
   if(e.pts.every(p=>p.dead)){e.exposed=true;if(e.boss)banner('약점 노출 · 받는 피해 증가');}
 }
 const TICKN=80;
+function tip(k,t){if(S[k])return;S[k]=1;banner(t);}
 function archStatus(){const L=S.ents.filter(x=>x.arch&&!x.dead);if(!L.length)return'';const e=L[0],B=e.B||{};let t='';
   if(e.arch==='nob')t=`분노 ${e.rage||0}중첩 · 급기동할수록 세져요`;else if(e.arch==='lag')t=e.sleep?`잠듦 ${Math.ceil(e.sleepT)}초 · 깨우면 흡수를 시작해요`:`흡수 ${S.siphon||0}중첩 · 사거리·연사 -${(S.siphon||0)*6}%`;
   else if(e.arch==='sentry')t=`감시 포대 ${L.length}기 · 번갈아 광선`;else if(e.arch==='book')t=`다음 연격 ${B.stabN||2}연발`;else if(e.arch==='auto')t=B.hyper?`과부하 충전 · ${Math.round(B.hyper.got)}/${B.hyper.need} 피해로 저지`:'청동 거함 · 주기적으로 과부하 광선';
   else t=[L.some(x=>x.arch==='donu')?'도누: 적 공격 +'+Math.round((S.foeAtk||0)*100)+'%':'',L.some(x=>x.arch==='deca')?'데카: 방벽':''].filter(Boolean).join(' · ');
   if(S.siphon&&e.arch!=='lag')t+=` · 흡수 ${S.siphon}`;return t;}
+function spawnTowers(e,n){for(let i=0,k=0;i<n&&k<80;k++){const a=i/n*TAU+Math.random()*0.5,d=200+Math.random()*60,x=Math.max(70,Math.min(WW-70,450+Math.cos(a)*d)),z=Math.max(70,Math.min(WZ-70,450+Math.sin(a)*d));if(!freeSpot(x,z,30)||S.ents.some(o=>!o.dead&&Math.hypot(o.x-x,o.z-z)<70))continue;const t=mkShip('fort',x,z);t.guns=[{range:1,cd:999,dmg:0,t:999}];t.arch='sentry';t.tower=true;t.max=t.hp=Math.round(KINDS.fort.hp*D.hp*3.2);t.anchor=true;t.ax=x;t.az=z;S.ents.push(t);splash(x,z,true);playFx('bolt',x,z,0.6);i++;}S.sentT=2.5;}
 function spawnNodes(e,n){for(let i=0,k=0;i<n&&k<80;k++){const a=Math.random()*Math.PI*2,d=150+Math.random()*90,x=Math.max(60,Math.min(WW-60,e.x+Math.cos(a)*d)),z=Math.max(60,Math.min(WZ-60,e.z+Math.sin(a)*d));if(S.abyss&&Math.hypot(x-S.abyss.x,z-S.abyss.z)>S.abyss.minR-30)continue;if(S.whirl&&Math.hypot(x-S.whirl.x,z-S.whirl.z)<S.whirl.core+40)continue;if(!freeSpot(x,z,30)||S.ents.some(o=>!o.dead&&Math.hypot(o.x-x,o.z-z)<70))continue;
   const nd=mkShip('fort',x,z);nd.guns=[{range:1,cd:999,dmg:0,t:999}];nd.node=true;nd.host=e;nd.max=nd.hp=Math.round(KINDS.fort.hp*D.hp*(1+0.35*(S.act-1))*0.9);nd.anchor=true;nd.ax=x;nd.az=z;S.ents.push(nd);splash(x,z,true);S.fx.push({k:'ring',x,z,r0:10,r1:60,life:0.6,max:0.6,col:'#7fd6ff'});i++;}
   banner('보호막 부표 · 부표를 다 부숴야 보스가 다쳐요');}
-function bossCap(e){return e.max*({3:1/60,4:1/70}[S.act]||1)*(D.easyLoot?1.5:1)*(e.exposedT>0?2.5:1);}
+function bossCap(e){return e.max*({3:1/60,4:1/70,5:1/80}[S.act]||1)*(D.easyLoot?1.5:1)*(e.exposedT>0?2.5:1);}
 function timeWarp(e){S.proj=S.proj.filter(q=>q.team!==0);S.rockets=[];for(const s of S.equip)if(s){const g=gunStats(s);if(g.cd)s.t=Math.max(s.t||0,g.cd);}e.hp=Math.min(e.max,e.hp+e.max*0.02);S.slowT=0.6;SFX.play('big',0.9);banner('해적왕이 시간을 되감는다 · 포탄이 사라지고 재장전');S.fx.push({k:'ring',x:e.x,z:e.z,r0:200,r1:10,life:0.7,max:0.7,col:'#ffd75e'});S.fx.push({k:'ring',x:S.player.x,z:S.player.z,r0:60,r1:6,life:0.5,max:0.5,col:'#ffd75e'});}
 function damage(e,d,kx,kz,quiet,col,src){
   if(e.dead||e.sub)return;
@@ -1066,14 +1123,14 @@ function damage(e,d,kx,kz,quiet,col,src){
   if(e.team===1&&e.mini){d*=e.exposedT>0?1.6:0.9;if(!quiet&&src&&e.B&&e.B.ws){const dx=src.x-e.x,dz=src.z-e.z,l=Math.hypot(dx,dz);if(l>6){const ws=e.B.ws,v=dx/l*e.face*ws.dir[0]+dz/l*ws.dir[1];if(v>0.45){ws.prog+=d;ws.flash=0.1;if(ws.prog>=ws.need){e.B.ws=null;e.B.wsCd=8;e.exposedT=3.5;e.B.stun=1.4;banner('약점 격파 · 대장선이 흔들린다');boom(e.x,e.z,true,16);}}}}}
   if(e.team===1&&e.kind==='boss'&&S.ents.some(f=>f.kind==='fort'&&!f.dead))d*=D.easyLoot?0.75:0.62;
   if(e.team===1&&e.kind==='boss2'&&S.ents.filter(x=>x.kind==='boss2'&&!x.dead).length>1)d*=0.78;
-  if(e.team===1&&e.boss&&S.battle==='boss'){d*=e.exposedT>0?1.6:Math.min(1,[1,0.85,0.58,0.47,0.42][S.act||1]+(D.bossEase||0));
+  if(e.team===1&&e.boss&&S.battle==='boss'){d*=e.exposedT>0?1.6:Math.min(1,[1,0.85,0.58,0.47,0.42,0.4][S.act||1]+(D.bossEase||0));
     if(!quiet&&src&&e.B&&e.B.ws){const dx=src.x-e.x,dz=src.z-e.z,l=Math.hypot(dx,dz);if(l>6){const ws=e.B.ws,v=dx/l*e.face*ws.dir[0]+dz/l*ws.dir[1];if(v>0.45){ws.prog+=d;ws.flash=0.1;if(ws.prog>=ws.need){e.B.ws=null;e.B.wsCd=9;e.exposedT=4;e.B.stun=Math.max(e.B.stun||0,1.6);banner('약점 격파 · 보스가 흔들린다');boom(e.x,e.z,true,20);S.fx.push({k:'ring',x:e.x,z:e.z,r0:20,r1:90,life:0.5,max:0.5,col:'#ffd75e'});}}}}}
   if(e.team===0){d*=(SHIP().takenMul||1)*(e.fortT>0?0.3:1);}
   if(e.team===1&&e.guardT>0){d*=0.5;if(!quiet)S.fx.push({k:'ring',x:e.x,z:e.z,r0:8,r1:22*e.sc,life:0.25,max:0.25,col:'#7fd6ff'});}
   if(e.team===1&&!quiet&&crewEff('marks')&&Math.random()<0.12*crewEff('marks')){d*=2;S.fx.push({k:'flash',x:e.x,z:e.z,h:20,r:8,life:0.1,max:0.1,col:'#fff8e6'});}
   if(e.iT>0){for(let i=0;i<5;i++)S.parts.push({x:e.x+(Math.random()-0.5)*16,z:e.z,h:10+Math.random()*10,vx:(Math.random()-0.5)*20,vz:0,vh:20,g:40,life:0.4,max:0.4,col:'#fff8e6',s:1});return;}
   if(e.team===0&&S.shield>0){S.shield--;S.fx.push({k:'ring',x:e.x,z:e.z,r0:10,r1:40,life:0.4,max:0.4,col:'#7fd6ff'});for(let i=0;i<10;i++)S.parts.push({x:e.x+(Math.random()-0.5)*24,z:e.z,h:6+Math.random()*16,vx:(Math.random()-0.5)*40,vz:0,vh:20+Math.random()*20,g:60,life:0.5,max:0.5,col:'#bfe8ff',s:1});return;}
-  if(e.team===0)d*=D.dmg*(1+0.22*((S.act||1)-1))*(1-pstats().armor)*(S.battle==='boss'?1.6*(1+0.5*(S.enrage||0))*[1,1,1.2,1.35,1.5][S.act||1]:1);
+  if(e.team===0)d*=D.dmg*(1+0.22*((S.act||1)-1))*(1-pstats().armor)*(S.battle==='boss'?1.6*(1+0.5*(S.enrage||0))*[1,1,1.2,1.35,1.5,1.6][S.act||1]:1);
   if(e.team===1){if(has('heavy'))d*=1.25;if(has('shark')&&e.hp<e.max*0.3)d*=1.5;if(has('chain')&&e.slowT>0)d*=1.3;if(!quiet&&has('ember')&&Math.random()<0.2){e.burn=Math.max(e.burn,3);e.burnDps=Math.max(e.burnDps||0,3);}}
   if(e.team===1&&e.pts&&!quiet&&src){const dx=src.x-e.x,dz=src.z-e.z,l=Math.hypot(dx,dz);if(l>6){const lx=dx/l*e.face,lz=dz/l;let best=null,bd=0.45;for(const pt of e.pts){if(pt.dead)continue;for(const [ax,az] of pt.dirs){const v=lx*ax+lz*az;if(v>bd){bd=v;best=pt;}}}if(best){best.hp-=d*((src&&src.pm)||1);best.flash=0.12;if(best.hp<=0)breakPart(e,best);d*=0.5;}}}
   if(e.exposed)d*=1.3;
@@ -1118,6 +1175,9 @@ function splash(x,z,big){S.fx.push({k:'ring',x,z,r0:2,r1:big?26:14,life:0.4,max:
 function islandHit(x,z,big,team){dust(x,z);S.fx.push({k:'ring',x,z,r0:3,r1:big?20:13,life:0.3,max:0.3,col:'#efdcaa'});S.fx.push({k:'flash',x,z,h:6,r:big?8:5,life:0.08,max:0.08,col:'#fff8e6'});
   for(let i=0;i<(big?9:5);i++){const a=Math.random()*Math.PI*2,sp=25+Math.random()*45;S.parts.push({x,z,h:5,vx:Math.cos(a)*sp,vz:Math.sin(a)*sp*0.5,vh:30+Math.random()*45,g:170,life:0.55,max:0.55,col:['#8b8a82','#a9a89f','#6b6a63','#cfb27a'][i%4],s:i%3?1:2});}
   if(team===1){const pl=S.player;SFX.play('hit',0.35);if(!pl.dead&&Math.hypot(pl.x-x,pl.z-z)<90&&(S.coverTxt||0)<=0){S.coverTxt=1.6;popText(x,z,'엄폐!','#e8f4fb');}}}
+function domeHit(x,z){S.fx.push({k:'ring',x,z,r0:3,r1:14,life:0.25,max:0.25,col:'#bfe8ff'});S.fx.push({k:'flash',x,z,h:14,r:6,life:0.08,max:0.08,col:'#e8fbff'});for(let i=0;i<5;i++){const a=Math.random()*Math.PI*2;S.parts.push({x,z,h:14,vx:Math.cos(a)*40,vz:Math.sin(a)*20,vh:10+Math.random()*20,g:60,life:0.3,max:0.3,col:'#bfe8ff',s:1,streak:true,drag:3});}}
+function useMirror(){for(const s of S.equip){if(!s||ITEMS[s.id].kind!=='mirror'||(s.t||0)>0)continue;const g=gunStats(s);s.t=g.cd;return g;}return null;}
+function lifeboat(){const p=S.player;for(const s of S.equip){if(!s||ITEMS[s.id].kind!=='lifeboat'||s.used)continue;const g=gunStats(s);s.used=true;p.hp=Math.max(1,Math.round(p.max*g.val));p.iT=2.5;S.slowT=0.6;S.tether=null;S.netT=0;S.fx.push({k:'ring',x:p.x,z:p.z,r0:10,r1:80,life:0.6,max:0.6,col:'#ffd75e'});SFX.play('big',0.8);banner('구명정 · 침몰을 한 번 막았어요');return true;}return false;}
 function dust(x,z){for(let i=0;i<6;i++)S.parts.push({x,z,h:2,vx:(Math.random()-0.5)*20,vz:0,vh:15+Math.random()*15,g:80,life:0.5,max:0.5,col:i%2?'#cfb27a':'#a88b55',s:1});}
 function popText(x,z,t,col,h){if(!S.texts)S.texts=[];S.texts.push({x,z,h:h||30,t,col,life:0.9,max:0.9});}
 function graze(dodge){if(S.grazeCd>0||S.mode!=='play')return;S.grazeCd=0.25;const p=S.player;for(const s of S.equip)if(s)s.t=Math.max(0,s.t-0.35);p.dcd=Math.max(0,p.dcd-0.5);SFX.play('graze');S.grazes=(S.grazes||0)+1;S.mom=(S.mom||0)+1;if(S.mom>=5){S.mom=0;S.momT=5;popText(p.x,p.z,'역습!','#ff9a3d',46);S.fx.push({k:'ring',x:p.x,z:p.z,r0:10,r1:60,life:0.5,max:0.5,col:'#ff9a3d'});}
@@ -1128,6 +1188,7 @@ function pickLoot(L){const p=S.player;SFX.play('pick');
   else{p.powderT=6;popText(L.x,L.z,'화약탄 6초','#ff9a3d');}
   S.fx.push({k:'ring',x:L.x,z:L.z,r0:4,r1:26,life:0.35,max:0.35,col:L.type==='gold'?'#ffd75e':L.type==='repair'?'#7fe08a':'#ff9a3d'});splash(L.x,L.z,false);}
 function kill(e){
+  if(e===S.player&&lifeboat())return;
   e.dead=true;const bigFx=(e.boss&&!S.ents.some(x=>x!==e&&x.boss&&!x.dead))?0.7:e.mini?0.55:0;if(bigFx)playFx('bigboom',e.x,e.z,bigFx);else if(e.team===1&&S.battle==='boss'&&S.act===4&&!e.node&&Math.random()<0.6)playFx('soul',e.x,e.z,0.5,{delay:0.3});if(e.boss){for(const n of S.ents)if(n.node&&n.host===e&&!n.dead){n.hp=0;kill(n);}if(S.tether&&S.tether.src===e)S.tether=null;}if(e.node&&!S.ents.some(n=>n.node&&!n.dead&&n.host===e.host)&&e.host&&!e.host.dead){banner('보호막 해제 · 지금 몰아쳐요');e.host.exposedT=3;}if(e.kind==='boss'){for(const f of S.ents)if(f.kind==='fort'&&!f.dead){f.hp=0;kill(f);}}if(e.boss&&!S.ents.some(x=>x!==e&&x.boss&&!x.dead)){S.slowT=1.4;S.cineT=2.6;SFX.musStop();setTimeout(()=>SFX.play('big',1.3),350);S.bossDown={t:2.6,name:BOSSNAME[S.act].replace('보스 · ','')};}if(e.team===1){SFX.play(e.sc>1?'big':'kill');if(!RM)S.shake=Math.max(S.shake||0,e.sc>1?7:1.8);S.hitstop=Math.max(S.hitstop||0,e.sc>1?0.15:0.035);}
   boom(e.x,e.z,true,10);splash(e.x,e.z,true);
   S.fx.push({k:'ring',x:e.x,z:e.z,r0:6,r1:60*e.sc,life:0.6,max:0.6,col:'#fff8e6'});
@@ -1149,9 +1210,9 @@ function update(dt){
   S.t+=dt;
   const p=S.player,st=pstats();
   if(!p.dead){
-    const d=inputDir(),sp=SHIP().speed*(1+st.speed)*(p.windT>0?1.7:1)*(inDebris(p)?0.6:1)*(p.boostT>0?1.5:1)*(p.phaseT>0?1.4:1),k=Math.min(1,dt*(p.driftT>0?4:2.6));
+    const d=inputDir(),sp=SHIP().speed*(1+st.speed)*(S.netT>0?0.35:1)*(p.windT>0?1.7:1)*(inDebris(p)?0.6:1)*(p.boostT>0?1.5:1)*(p.phaseT>0?1.4:1),k=Math.min(1,dt*(p.driftT>0?4:2.6));
     p.dcd=Math.max(0,p.dcd-dt);p.iT=Math.max(0,p.iT-dt);
-    if(dashReq){dashReq=false;if(p.dcd<=0){if(S.bs)S.bs.dash++;for(const x of S.ents)if(x.arch==='nob'&&!x.dead){x.rage=Math.min(D.easyLoot?5:8,(x.rage||0)+1);x.rageFx=0.6;x.rageDecay=10;S.fx.push({k:'ring',x:x.x,z:x.z,r0:10,r1:50,life:0.4,max:0.4,col:'#ff3a2a'});if(!S.nobTip){S.nobTip=1;banner('광폭한 대장선 · 급기동할수록 분노가 쌓여요');}}let dx=d.x,dz=d.y;const l=Math.hypot(dx,dz);if(l<0.2){dx=p.face;dz=0;}else{dx/=l;dz/=l;}
+    if(dashReq){dashReq=false;if(S.netT>0){popText(p.x,p.z,'그물!','#cfd6dc');}else if(p.dcd<=0){if(S.bs)S.bs.dash++;for(const x of S.ents)if(x.arch==='nob'&&!x.dead){x.rage=Math.min(D.easyLoot?5:8,(x.rage||0)+1);x.rageFx=0.6;x.rageDecay=10;S.fx.push({k:'ring',x:x.x,z:x.z,r0:10,r1:50,life:0.4,max:0.4,col:'#ff3a2a'});if(!S.nobTip){S.nobTip=1;banner('광폭한 대장선 · 급기동할수록 분노가 쌓여요');}}let dx=d.x,dz=d.y;const l=Math.hypot(dx,dz);if(l<0.2){dx=p.face;dz=0;}else{dx/=l;dz/=l;}
       p.dashT=0.22;p.dashX=dx;p.dashZ=dz;p.iT=0.4;p.dcdMax=dashCd(st);p.dcd=p.dcdMax;
       S.fx.push({k:'ring',x:p.x,z:p.z,r0:8,r1:34,life:0.35,max:0.35,col:'#e8f4fb'});
       for(let i=0;i<12;i++)S.parts.push({x:p.x-dx*14+(Math.random()-0.5)*14,z:p.z,h:0,vx:-dx*30+(Math.random()-0.5)*30,vz:0,vh:25+Math.random()*35,g:150,life:0.5,max:0.5,col:i%3?'#e8f4fb':'#9fcbe6',s:1});}}
@@ -1194,7 +1255,7 @@ function update(dt){
         if(!e.boss&&!e.ai&&!e.mini)for(const g of e.guns){g.t-=dt/(e.atkMul||1);if(g.t<=0&&dist<=g.range&&(g.lob||seen)){fire(e,g,aimOf(e,p),D.lead);g.t=g.cd*D.rate*(0.85+Math.random()*0.3);}}
       }else{e.vx*=0.98;e.vz*=0.98;}
     }
-    e.x+=e.vx*dt;e.z+=e.vz*dt;if(S.currents&&S.currents.length&&!e.anchor&&!e.boss&&!e.sub){const [cx,cz]=currentAt(e.x,e.z);if(cx||cz){const k=e.sc>1.3?0.6:1;e.x+=cx*k*dt;e.z+=cz*k*dt;if(e===S.player&&!S.curTip){S.curTip=1;banner('해류 · 흐름을 타면 빨라지고, 거스르면 느려져요');}}}
+    e.x+=e.vx*dt;e.z+=e.vz*dt;if(S.gyre&&!e.anchor&&!e.boss&&!e.sub){const G=S.gyre,dx=e.x-G.x,dz=e.z-G.z,d=Math.hypot(dx,dz)||1;if(d>G.r0&&d<G.r1){const f=Math.min(1,(d-G.r0)/50,(G.r1-d)/50)*G.spd*(e.sc>1.3?0.6:1);e.x+=-dz/d*f*dt;e.z+=dx/d*f*dt;}}if(S.currents&&S.currents.length&&!e.anchor&&!e.boss&&!e.sub){const [cx,cz]=currentAt(e.x,e.z);if(cx||cz){const k=e.sc>1.3?0.6:1;e.x+=cx*k*dt;e.z+=cz*k*dt;if(e===S.player&&!S.curTip){S.curTip=1;banner('해류 · 흐름을 타면 빨라지고, 거스르면 느려져요');}}}
     if(Math.abs(e.vx)>6&&!(e.team===0&&e.guns.length===0&&false))e.face=e.vx>0?1:-1;
     e.flash=Math.max(0,e.flash-dt);e.kick=Math.max(0,e.kick-dt);
     if(e.pts)for(const pt of e.pts){pt.flash=Math.max(0,pt.flash-dt);if(pt.dead&&Math.random()<dt*7){const q=partPos(e,pt);S.parts.push({x:q.x+(Math.random()-0.5)*6,z:q.z,h:q.h,vx:(Math.random()-0.5)*6,vz:0,vh:14+Math.random()*10,g:-5,life:0.8,max:0.8,col:Math.random()<0.35?'#ff7a3d':(Math.random()<0.5?'#3e3e3e':'#5c5c5c'),s:2,fade:true});}}
@@ -1220,7 +1281,7 @@ function update(dt){
     if(pr.flat){
       const u=Math.min(1,pr.t/pr.dur),gx=pr.x0+(pr.x1-pr.x0)*u,gz=pr.z0+(pr.z1-pr.z0)*u;
       for(const e of S.ents){if(e.dead||e.team===pr.team||(pr.hits&&pr.hits.has(e))||(pr.team===0&&e.sub))continue;
-        if(e.team===0?((e.x-gx)/(HULL_X*e.sc))**2+((e.z-gz)/((HULL_Z+2)*e.sc))**2<=1:Math.hypot(e.x-gx,e.z-gz)<e.r*0.9){const kn=pr.pull?-85:(pr.pierce?45:12);damage(e,pr.dmg,pr.dx*kn,pr.dz*kn,false,null,{x:pr.x0,z:pr.z0,pm:pr.partMul});if(pr.slow)e.slowT=pr.slow;if(pr.team===0&&pr.aoe){explodeAoe(gx,gz,pr.aoe,pr.dmg*0.6,0);splash(gx,gz,true);}if(pr.chainZap)zapChain(e,{chains:pr.chainZap,dmg:pr.zapDmg},null);if(pr.attach&&!e.dead)e.bomb={...pr.attach};if(pr.burnHit&&!e.dead){e.burn=pr.burnDur;e.burnDps=Math.max(e.burnDps||0,pr.burnHit);}hitSpark(gx,gz,pr.style==='harpoon');if(pr.hits)pr.hits.add(e);else{pr.done=true;break;}}}
+        if(e.team===0?((e.x-gx)/(HULL_X*e.sc))**2+((e.z-gz)/((HULL_Z+2)*e.sc))**2<=1:Math.hypot(e.x-gx,e.z-gz)<e.r*0.9){if(e===S.player&&pr.team===1&&!(e.iT>0)){const mg=useMirror();if(mg){pr.done=true;const src=pr.src&&!pr.src.dead?pr.src:null;fire(e,{range:999,dmg:Math.max(10,pr.dmg*mg.mul*2),spd:420,flat:true,style:'tracer'},src||{x:pr.x0,z:pr.z0,vx:0,vz:0},0);popText(e.x,e.z,'반사!','#e8f4fb');S.fx.push({k:'ring',x:e.x,z:e.z,r0:6,r1:30,life:0.25,max:0.25,col:'#e8f4fb'});break;}}const kn=pr.pull?-85:(pr.pierce?45:12);damage(e,pr.dmg,pr.dx*kn,pr.dz*kn,false,null,{x:pr.x0,z:pr.z0,pm:pr.partMul});if(pr.slow)e.slowT=pr.slow;if(pr.team===0&&pr.aoe){explodeAoe(gx,gz,pr.aoe,pr.dmg*0.6,0);splash(gx,gz,true);}if(pr.chainZap)zapChain(e,{chains:pr.chainZap,dmg:pr.zapDmg},null);if(pr.attach&&!e.dead)e.bomb={...pr.attach};if(pr.burnHit&&!e.dead){e.burn=pr.burnDur;e.burnDps=Math.max(e.burnDps||0,pr.burnHit);}hitSpark(gx,gz,pr.style==='harpoon');if(pr.hits)pr.hits.add(e);else{pr.done=true;break;}}}
       if(!pr.done&&pr.t>=pr.dur){pr.done=true;if(pr.team===0&&pr.aoe&&!pr.pierce)explodeAoe(pr.x1,pr.z1,pr.aoe,pr.dmg*0.6,0);if(pr.blocked)islandHit(pr.x1,pr.z1,false,pr.team);else splash(pr.x1,pr.z1,false);}
       continue;}
     if(pr.style==='bomb'&&Math.random()<0.7){const u=pr.t/pr.dur;S.parts.push({x:pr.x0+(pr.x1-pr.x0)*u,z:pr.z0+(pr.z1-pr.z0)*u,h:Math.sin(Math.PI*u)*pr.arc+3,vx:(Math.random()-0.5)*10,vz:0,vh:(Math.random()-0.5)*10,g:0,life:0.2,max:0.2,col:Math.random()<0.5?'#ffd75e':'#ff7a3d',s:1});}
@@ -1256,7 +1317,7 @@ function update(dt){
     for(const L of S.loot){L.t-=dt;if(!p.dead&&Math.hypot(L.x-p.x,L.z-p.z)<20){L.t=0;pickLoot(L);}}
     S.loot=S.loot.filter(L=>L.t>0);}
   for(const db of S.debris)db.t-=dt;S.debris=S.debris.filter(d=>d.t>0);
-  if(S.battle==='boss'){S.btime=(S.btime||0)+dt;const ET=[75,75,95,150,210][S.act||1];if(S.btime>ET){S.enrage=Math.min(1,(S.btime-ET)/60);if(!S.enraged){S.enraged=true;banner('격노 · 보스가 점점 강해진다');$('bossname').textContent+=' · 격노';}}}
+  if(S.battle==='boss'){S.btime=(S.btime||0)+dt;const ET=[75,75,95,150,210,240][S.act||1];if(S.btime>ET){S.enrage=Math.min(1,(S.btime-ET)/60);if(!S.enraged){S.enraged=true;banner('격노 · 보스가 점점 강해진다');$('bossname').textContent+=' · 격노';}}}
   for(const zn of S.zones){zn.t-=dt;
     for(const e of S.ents){if(e.team!==1||e.dead)continue;if(Math.hypot(e.x-zn.x,e.z-zn.z)<zn.r+e.r*0.4){e.burn=Math.max(e.burn,1);e.burnDps=Math.max(e.burnDps||0,zn.dps);}}
     if(Math.random()<dt*30){const a=Math.random()*Math.PI*2,r=Math.sqrt(Math.random())*zn.r;S.parts.push({x:zn.x+Math.cos(a)*r,z:zn.z+Math.sin(a)*r,h:1,vx:0,vz:0,vh:16+Math.random()*16,g:-6,life:0.5,max:0.5,col:['#fff1b8','#ffd75e','#ff7a3d','#e0533f'][Math.floor(Math.random()*4)],s:Math.random()<0.4?2:1,fade:true});}}
@@ -1367,6 +1428,15 @@ Object.assign(WART,{zapgat:recol(WART.gatling,{'#a8322d':'#7fd6ff','#5b6270':'#4
   chaincannon:recol(WART.cannon,{'#3a3f4a':'#4a4f5a'},[[3,-4,1.3,1.3,'#22252b'],[3.9,-2.6,1.3,1.3,'#22252b']]),
   zapgrape:recol(WART.grape,{'#7a6440':'#4a5566','#a08a5a':'#7fd6ff','#d4c08a':'#ffffff'}),
   skyfire:recol(WART.hwacha,{'#a8322d':'#ffb347','#8a5a32':'#8a1f14','#e3b341':'#ffd75e'}),
+  harplong:recol(WART.long,{'#2f3540':'#5a4630'},[[6.2,-4.6,1.4,0.8,'#ffffff']]),flamegat:recol(WART.gatling,{'#a8322d':'#ff7a3d','#5b6270':'#5a1a14'}),chaingrape:recol(WART.grape,{'#7a6440':'#3a3f4a','#a08a5a':'#22252b'}),
+  longrocket:recol(WART.rocket,{'#8a5a32':'#2f3540'},[[2.6,-4.8,3,0.5,'#7b8494']]),firecannon:recol(WART.cannon,{'#3a3f4a':'#5a1a14','#8a94a4':'#ff7a3d'}),harpcannon:recol(WART.cannon,{'#3a3f4a':'#5a4630'},[[3.6,-3,1.4,0.6,'#ffffff']]),
+  lifeboat:[[-2.4,-1.4,4.8,1.4,'#8a5a32'],[-2,-2.6,4,1.2,'#e0533f'],[-2,-2.6,4,0.4,'#ffffff'],[-0.2,-4.4,0.4,1.8,'#5a3a22']],
+  bulwark:[[-2,-1.2,4,1.2,'#4a5566'],[-1.6,-3.4,3.2,2.2,'#7fd6ff'],[-1.2,-4,2.4,0.6,'#bfe8ff']],
+  cleanser:[[-1.4,-3.2,2.8,3.2,'#3a7fb5'],[-1.4,-3.2,2.8,0.6,'#9fcbe6'],[1.4,-2.6,1.8,0.6,'#cfd6dc'],[2.8,-3,0.6,1.4,'#e8f4fb']],
+  evader:[[-2,-1.6,4,1.6,'#4a5566'],[-2.8,-1.3,0.9,0.9,'#ffb347'],[-1.4,-2.8,2.8,1.2,'#8a94a4']],
+  mirror:[[-1.6,-3.6,3.2,3.6,'#8a94a4'],[-1.2,-3.2,2.4,2.8,'#e8f4fb'],[-0.6,-2.8,0.6,1.8,'#ffffff']],
+  aegisdome:[[-2.2,-1.2,4.4,1.2,'#4a5566'],[-2,-3.8,4,2.6,'#7fd6ff'],[-1.4,-4.4,2.8,0.6,'#ffd75e']],
+  phantom:[[-2.2,-1,4.4,1,'#5e9a8a'],[-0.3,-4.4,0.5,3.4,'#2f6f73'],[0.2,-4.4,1.9,1.2,'#bfe8ff'],[-2.8,-1.3,0.9,0.9,'#7fd6ff']],
   thundergod:recol(WART.gatling,{'#a8322d':'#ffd75e','#5b6270':'#2f3540','#4a5566':'#e3b341'},[[-1.6,-6.2,1.4,1.4,'#7fd6ff'],[1.6,-6.2,1.4,1.4,'#7fd6ff']])});
 const MOUNTS=[33,23,13,40,28,18,8];
 function deckY(gx){return gx>=37?27-Math.floor((gx-37)*0.6):(gx<=12?24:27);}
@@ -1481,6 +1551,7 @@ function render(){
       else{ctx.fillStyle='#e0cfa6';ctx.fillRect(px,py,3,1.5);}}
     ctx.globalAlpha=k*0.5;dotEllipse(sx,sy,db.r,db.r*YF,4,'rgba(232,244,251,0.5)');}
   ctx.globalAlpha=1;
+  if(S.gyre){const G=S.gyre;ctx.strokeStyle='#e8f4fb';ctx.lineWidth=ds();for(let i=0;i<70;i++){const r1=Math.sin(i*12.9898)*43758.5453,fr=r1-Math.floor(r1),R=G.r0+20+fr*(G.r1-G.r0-40),a=i*2.4+T*G.spd/R,ln=10/R;ctx.globalAlpha=0.3;ctx.beginPath();for(let k=0;k<=3;k++){const aa=a+ln*k,x=G.x+Math.cos(aa)*R-cam.x,y=(G.z+Math.sin(aa)*R)*YF-cam.y;k?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.stroke();}ctx.globalAlpha=1;}
   for(const c of S.currents||[]){const px=-c.dz,pz=c.dx,h=c.len/2,P=(a,s2)=>[c.x+c.dx*a+px*s2-cam.x,(c.z+c.dz*a+pz*s2)*YF-cam.y];
     for(const [ww,al] of [[1,0.07],[0.62,0.07]]){ctx.fillStyle=`rgba(150,215,235,${al})`;ctx.beginPath();const q=[P(-h,-c.w*ww),P(h,-c.w*ww),P(h,c.w*ww),P(-h,c.w*ww)];ctx.moveTo(q[0][0],q[0][1]);for(const v of q)ctx.lineTo(v[0],v[1]);ctx.closePath();ctx.fill();}
     ctx.strokeStyle='#e8f4fb';ctx.lineWidth=ds();const N=Math.round(c.len/18);for(let i=0;i<N;i++){const r1=Math.sin(i*12.9898+c.seed)*43758.5453,fr=r1-Math.floor(r1),side=(fr-0.5)*1.7*c.w,along=((i*97.3+T*c.spd*(0.8+fr*0.4))%c.len)-h,edge=Math.min(1,(h-Math.abs(along))/50)*Math.min(1,(c.w-Math.abs(side))/(c.w*0.4));if(edge<=0)continue;const L2=6+fr*8,[x0,y0]=P(along,side),[x1,y1]=P(along+L2,side);ctx.globalAlpha=0.45*edge;ctx.beginPath();ctx.moveTo(rd(x0),rd(y0));ctx.lineTo(rd(x1),rd(y1));ctx.stroke();}
@@ -1489,6 +1560,10 @@ function render(){
   const p=S.player;
   if(!p.dead&&S.mode!=='menu'){const st=pstats();if(st.maxRange)dotEllipse(rd(p.x-cam.x),rd(p.z*YF-cam.y),st.maxRange,st.maxRange*YF,7,'rgba(255,248,230,0.32)');
     const px=p.x-cam.x,py=p.z*YF-cam.y,Rw=58,ha=Math.acos(0.55);for(const sd of[-1,1]){const a0=sd*Math.PI/2-(Math.PI/2-ha),a1=sd*Math.PI/2+(Math.PI/2-ha);ctx.beginPath();ctx.moveTo(px,py);for(let k=0;k<=12;k++){const a=a0+(a1-a0)*k/12;ctx.lineTo(px+Math.cos(a)*Rw,py+Math.sin(a)*Rw*YF);}ctx.closePath();ctx.fillStyle=`rgba(255,215,120,${(0.07+(p.bsT||0)*0.6).toFixed(3)})`;ctx.fill();}}
+  for(const w of S.warns||[]){const u=1-w.t/w.max,sx=rd(w.x-cam.x),sy=rd(w.z*YF-cam.y),bl=Math.floor(T*(u>0.6?16:8))%2;
+    if(w.k==='net'){ctx.globalAlpha=0.25+0.35*u;ctx.fillStyle='rgba(207,214,220,0.18)';fillEll(sx,sy,w.r,w.r*YF);ctx.strokeStyle='#cfd6dc';ctx.lineWidth=ds();for(let k=-3;k<=3;k++){const o=k*w.r/3.5,h=Math.sqrt(Math.max(0,w.r*w.r-o*o));ctx.beginPath();ctx.moveTo(sx+o,sy-h*YF);ctx.lineTo(sx+o,sy+h*YF);ctx.moveTo(sx-h,sy+o*YF);ctx.lineTo(sx+h,sy+o*YF);ctx.stroke();}ctx.globalAlpha=bl?0.9:0.5;dotEllipse(sx,sy,w.r,w.r*YF,2,'#e8f4fb');ctx.globalAlpha=1;}
+    else{ctx.globalAlpha=0.12+0.2*u;ctx.fillStyle='#ff5a4a';fillEll(sx,sy,w.r,w.r*YF);ctx.globalAlpha=bl?0.85:0.45;dotEllipse(sx,sy,w.r,w.r*YF,3,'#ff7a5a');dotEllipse(sx,sy,w.r*u,w.r*u*YF,3,'#ffd0c0');ctx.globalAlpha=1;ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.lineWidth=3;ctx.strokeStyle='#05080d';ctx.strokeText('집중 포격',sx,sy-w.r*YF-4);ctx.fillStyle='#ff9a7a';ctx.fillText('집중 포격',sx,sy-w.r*YF-4);}}
+  if(S.brand){const B2=S.brand,u=1-B2.t/B2.max,sx=rd(B2.x-cam.x),sy=rd(B2.z*YF-cam.y),lock=B2.t<=0.55,R2=B2.r*(0.35+0.65*(1-u));ctx.globalAlpha=0.18+0.25*u;ctx.fillStyle='#ff3a2a';fillEll(sx,sy,B2.r,B2.r*YF);ctx.globalAlpha=lock?(Math.floor(T*20)%2?1:0.5):0.8;ctx.strokeStyle=lock?'#fff1e0':'#ff5a4a';ctx.lineWidth=1.4;ctx.beginPath();ctx.ellipse(sx,sy,B2.r,B2.r*YF,0,0,TAU);ctx.stroke();ctx.beginPath();ctx.ellipse(sx,sy,R2,R2*YF,0,0,TAU);ctx.stroke();ctx.beginPath();ctx.moveTo(sx-B2.r-4,sy);ctx.lineTo(sx-6,sy);ctx.moveTo(sx+6,sy);ctx.lineTo(sx+B2.r+4,sy);ctx.moveTo(sx,sy-(B2.r+4)*YF);ctx.lineTo(sx,sy-6*YF);ctx.moveTo(sx,sy+6*YF);ctx.lineTo(sx,sy+(B2.r+4)*YF);ctx.stroke();ctx.globalAlpha=1;}
   for(const pr of S.proj){if(pr.team!==1)continue;
     if(pr.flat){if(pr.style==='torp'&&pr.t>=0){const u=Math.min(1,pr.t/pr.dur),gx=pr.x0+(pr.x1-pr.x0)*u,gz=pr.z0+(pr.z1-pr.z0)*u;ctx.globalAlpha=0.55;pxLine(gx-cam.x,gz*YF-cam.y,pr.x1-cam.x,pr.z1*YF-cam.y,'#ff5a4a',4);ctx.globalAlpha=1;}continue;}
     const u=Math.max(0,Math.min(1,(pr.t+pr.delay)/(pr.dur+pr.delay))),sx=rd(pr.x1-cam.x),sy=rd(pr.z1*YF-cam.y),R=7+17*(1-u),a=(0.35+0.6*u).toFixed(2);
@@ -1523,6 +1598,8 @@ function render(){
   for(const w of S.wrecks)draws.push({z:w.z,f:()=>drawWreck(w,cam)});
   draws.sort((a,b)=>a.z-b.z).forEach(d=>d.f());
   drawPfx(cam);
+  for(const c of S.domes||[]){const sx=rd(c.x-cam.x),sy=rd(c.z*YF-cam.y),a=Math.min(1,c.t/0.4)*Math.min(1,(c.max-c.t)/0.2);ctx.globalAlpha=0.16*a;ctx.fillStyle='#7fd6ff';ctx.beginPath();ctx.ellipse(sx,sy-c.r*0.25,c.r,c.r*0.75,0,Math.PI,0);ctx.lineTo(sx+c.r,sy);ctx.ellipse(sx,sy,c.r,c.r*YF,0,0,Math.PI);ctx.fill();ctx.globalAlpha=0.6*a;ctx.strokeStyle='#bfe8ff';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(sx,sy-c.r*0.25,c.r,c.r*0.75,0,Math.PI,0);ctx.stroke();ctx.beginPath();ctx.ellipse(sx,sy,c.r,c.r*YF,0,0,TAU);ctx.stroke();ctx.globalAlpha=1;}
+  if(S.netT>0&&!S.player.dead){const pl=S.player,sx=rd(pl.x-cam.x),sy=rd(pl.z*YF-cam.y)-10;ctx.globalAlpha=0.75;ctx.strokeStyle='#cfd6dc';ctx.lineWidth=0.8;for(let k=-3;k<=3;k++){ctx.beginPath();ctx.moveTo(sx+k*6-8,sy-16);ctx.lineTo(sx+k*6+8,sy+12);ctx.moveTo(sx+k*6+8,sy-16);ctx.lineTo(sx+k*6-8,sy+12);ctx.stroke();}ctx.globalAlpha=1;}
   {const pl=S.player;let cov=0;if(!pl.dead&&S.mode==='play')for(const e of S.ents){if(e.team!==1||e.dead||e.sub||e.boss||e.mini||e.seen!==false||!e.guns||!e.guns.some(g=>!g.lob))continue;const d=Math.hypot(e.x-pl.x,e.z-pl.z),rg=Math.max(...e.guns.filter(g=>!g.lob).map(g=>g.range));if(d>rg*1.15)continue;cov++;
       const sx=rd(e.x-cam.x),sy=rd(e.z*YF-cam.y)-44*e.sc-2,b=Math.sin(T*4+e.x)*0.8;ctx.globalAlpha=0.85;ctx.fillStyle='#05080d';ctx.beginPath();ctx.ellipse(sx,sy+b,5,4.4,0,0,TAU);ctx.fill();ctx.fillStyle='#e8f4fb';ctx.beginPath();ctx.ellipse(sx,sy+b,4,3.5,0,0,TAU);ctx.fill();ctx.fillStyle='#16466d';ctx.font='bold 6px sans-serif';ctx.textAlign='center';ctx.fillText('?',sx,sy+b+2.2);ctx.globalAlpha=1;}
     if(cov){const sx=rd(pl.x-cam.x),sy=rd(pl.z*YF-cam.y)+12,x0=sx-14;ctx.globalAlpha=0.9;ctx.fillStyle='rgba(5,8,13,0.75)';ctx.fillRect(x0,sy-6,28,9);ctx.fillStyle='#cfb27a';ctx.beginPath();ctx.moveTo(x0+4,sy-4.5);ctx.lineTo(x0+8,sy-4.5);ctx.lineTo(x0+8,sy-1);ctx.lineTo(x0+6,sy+1.5);ctx.lineTo(x0+4,sy-1);ctx.closePath();ctx.fill();ctx.font='bold 6px sans-serif';ctx.textAlign='left';ctx.fillStyle='#efdcaa';ctx.fillText('엄폐 '+cov,x0+10,sy+0.6);ctx.globalAlpha=1;}}
@@ -1632,7 +1709,7 @@ function updHud(force){
   if(force)wavetx.textContent=S.battle?`${S.act}장 · ${BTL[S.battle]}${S.waveN>1?` · ${S.waveI}/${S.waveN}파`:''}`:'';
   for(const [s,el] of cdBars){const cd=gunStats(s).cd;el.style.width=(100*(1-s.t/cd))+'%';}
   const cool=p.dcd>0;dashBtn.classList.toggle('cool',cool);dashFill.style.height=(cool?100*p.dcd/p.dcdMax:0)+'%';
-  if((S.battle==='boss'||S.battle==='elite')&&S.bossMax){const cur=S.ents.filter(x=>(x.boss||x.mini)&&!x.dead).reduce((a,x)=>a+Math.max(0,x.hp),0);$('bossfill').style.width=(100*cur/S.bossMax)+'%';const bb=S.battle==='boss'&&S.ents.find(x=>x.boss&&!x.dead),st=$('bossstat');if(st){let t='';if(S.battle==='elite'){t=archStatus();}else if(bb){if(bb.intT>0)t='망령화 · 공격이 거의 통하지 않아요';else if(bb.kind==='boss3'&&S.act>=3)t=`시간 되감기까지 ${Math.max(0,TICKN-(bb.tick||0))}타`;if(bb.capHit>0)t=(t?t+' · ':'')+'피해 한도 · 약점을 노려요';const nn=S.ents.filter(n=>n.node&&!n.dead).length;if(nn)t=`보호막 부표 ${nn}기 · 부표부터 부숴요`+(t?' · '+t:'');if(S.tether)t='사슬에 묶임'+(t?' · '+t:'');}if(st.textContent!==t)st.textContent=t;}}
+  if((S.battle==='boss'||S.battle==='elite')&&S.bossMax){const cur=S.ents.filter(x=>(x.boss||x.mini)&&!x.dead).reduce((a,x)=>a+Math.max(0,x.hp),0);$('bossfill').style.width=(100*cur/S.bossMax)+'%';const bb=S.battle==='boss'&&S.ents.find(x=>x.boss&&!x.dead),st=$('bossstat');if(st){let t='';if(S.battle==='elite'){t=archStatus();}else if(bb){if(bb.intT>0)t='망령화 · 공격이 거의 통하지 않아요';else if(bb.kind==='boss3'&&S.act>=3)t=`시간 되감기까지 ${Math.max(0,TICKN-(bb.tick||0))}타`;if(bb.capHit>0)t=(t?t+' · ':'')+'피해 한도 · 약점을 노려요';const nn=S.ents.filter(n=>n.node&&!n.dead).length;if(nn)t=`보호막 부표 ${nn}기 · 부표부터 부숴요`+(t?' · '+t:'');if(S.tether)t=(S.tether.drag?'끌려가는 중 · 급기동으로 버텨요':'사슬에 묶임')+(t?' · '+t:'');if(S.netT>0)t='그물에 걸림'+(t?' · '+t:'');if(S.brand)t='낙인 포격 조준 중'+(t?' · '+t:'');}if(st.textContent!==t)st.textContent=t;}}
   const sh=SHIP();skillBtn.hidden=!sh.skill||S.mode!=='play';
   if(sh.skill){if(force)skillLbl.textContent=sh.skillName;const sc=(p.skcd||0)>0;skillBtn.classList.toggle('cool',sc);skillFill.style.height=(sc?100*p.skcd/(p.skMax||sh.skillCd):0)+'%';}
 }
@@ -1656,7 +1733,8 @@ function pickBase(n){
   while(out.length<n)out.push(rest.shift());
   return out.sort(()=>Math.random()-0.5);
 }
-function rewardOffers(kind){
+function rewardOffers(kind){const o=rewardOffers0(kind);if(kind!=='boss'&&S.act>=2&&!allItems().some(i=>SURV.includes(i.id))&&!o.some(x=>SURV.includes(x.id))&&(kind==='elite'||Math.random()<0.5))o[o.length-1]={id:pickR(SURV.filter(id=>id!=='absorb')),up:kind==='elite'};return o;}
+function rewardOffers0(kind){
   if(kind==='boss'){const c=RECIPES.map(r=>r[2]).filter(id=>!ITEMS[id].legend).sort(()=>Math.random()-0.5).slice(0,3);{const own=new Set(allItems().map(i=>i.id)),free=LEGENDS.filter(l=>!own.has(l));if(free.length&&(D.easyLoot?S.act<=3:S.act===2))c[2]=pickR(free);}return c.map(id=>({id,up:false}));}
   const ids=pickBase(SHIP().extraPick?4:3);
   if(kind==='elite'){const o=ids.map(id=>({id,up:true}));if(D.easyLoot)o[0]={id:pickR(RECIPES.filter(r=>!ITEMS[r[2]].legend))[2],up:false};return o;}
@@ -1740,7 +1818,8 @@ function openTreasure(){
   $('contBtn').onclick=openMap;$('reward').hidden=false;
 }
 const BTL={battle:'전투',elite:'정예',boss:'보스전'};
-const BOSSNAME={1:'보스 · 해적 요새선',2:'보스 · 쌍둥이 전열함',3:'보스 · 해적왕의 기함',4:'보스 · 망령 제독의 기함'};
+const BOSSTRAIT={1:'포대를 세우고 멀리서 포격으로 해역을 덮어요',2:'두 척이 양쪽에서 협공해요 · 한 척은 공격을, 한 척은 방어를 키워요',3:'바짝 붙어 돌진하고, 사슬로 끌어당기고, 불길로 가둬요',4:'순간이동과 망령화로 사라졌다가 그물과 낙인으로 사냥해요',5:'회전 광선과 낙뢰, 집중 포격으로 하늘에서 해역을 휩쓸어요'};
+const BOSSNAME={1:'보스 · 해적 요새선',2:'보스 · 쌍둥이 전열함',3:'보스 · 해적왕의 기함',4:'보스 · 망령 제독의 기함',5:'보스 · 폭풍왕의 기함'};
 function openReward(kind,goldGain){
   S.mode='reward';joy=null;hideHud();$('mapov').hidden=true;
   if(!S.rw){S.rw={offers:rewardOffers(kind),kind,gold:goldGain||0,vet:S.vetNote||[]};S.vetNote=[];if(kind==='elite'){const r=randomRelics(1)[0];if(r){gainRelic(r);S.rw.relic=r;}}}
@@ -1757,31 +1836,33 @@ function afterReward(){const k=S.rw&&S.rw.kind;S.rw=null;$('reward').hidden=true
 function battleWon(){SFX.musStop();if(S.bs){const b=S.bs;LOG.ev('W',Math.round(S.t-b.t0),Math.round(b.dmg),Math.round(S.player.hp),b.dash,(S.grazes||0)-b.g0,S.kills-b.k0,Object.entries(b.hit).sort((a,c)=>c[1]-a[1]).slice(0,4).map(([k,v])=>k+':'+Math.round(v)).join(','));S.bs=null;}S.bossDown=null;for(const it of S.equip)if(it&&ITEMS[it.id].kind==='regen')healHp(gunStats(it).post||0);
   const k=S.battle,g=Math.round((k==='boss'?100:k==='elite'?45+Math.floor(Math.random()*16):14+Math.floor(Math.random()*8)+S.act*4)*(has('coin')?1.5:1)*(SHIP().goldMul||1))+(S.partGold||0)+(S.bounty?90:0)+(S.evGold||0);S.bounty=false;S.evGold=0;gain(g);if(has('wood'))healHp(6);if(crewEff('carp'))healHp(Math.round(8*crewEff('carp')));
   const vet=[];for(const c of S.crew||[]){c.xp++;if(!c.vet&&c.xp>=4){c.vet=true;vet.push(CREW[c.id].name);}}S.vetNote=vet;
-  if(k==='boss'&&S.act>=4){endGame(true);return;}
+  if(k==='boss'&&S.act>=5){endGame(true);return;}
   openReward(k,g);
 }
 const ACTINFO={1:{fl:'산호초가 흩어진 맑은 바다. 해적들의 앞마당이에요.',ft:['날씨가 맑아 보급품이 자주 떠올라요','암초 사이에서 싸우는 법을 익히세요']},
   2:{fl:'번개와 돌풍이 끊이지 않는 좁은 해협.',ft:['돌풍이 주기적으로 모든 배를 밀어내요','근처에 낙뢰가 떨어져요 · 노란 원을 피하세요']},
   3:{fl:'해적왕의 함대가 지배하는 불타는 바다.',ft:['바다 곳곳에 적 기뢰가 깔려 있어요','꺼지지 않는 불길이 해역을 막고 있어요']},
-  4:{fl:'빛이 닿지 않는 깊은 해구. 망령들이 떠돌아요.',ft:['짙은 안개 때문에 멀리 보이지 않아요','적이 가장 단단하고 아파요']}};
+  4:{fl:'빛이 닿지 않는 깊은 해구. 망령들이 떠돌아요.',ft:['짙은 안개 때문에 멀리 보이지 않아요','적이 단단하고 아파요']},
+  5:{fl:'폭풍이 끝나지 않는 세상의 끝. 폭풍왕이 기다려요.',ft:['돌풍과 낙뢰가 쉬지 않아요','해류가 세고 자주 나타나요','생존 장비 없이는 버티기 힘들어요']}};
 function showActCard(next){const A=ACTINFO[S.act],panel=$('actPanel');S.mode='reward';hideHud();$('mapov').hidden=true;
-  panel.innerHTML=`<div class="kicker">${S.act===1?'항해 시작':`${S.act-1}장 돌파${S.actHeal?` · 선체 ${S.actHeal} 수리됨`:''}`}</div><div class="actnum">${S.act}장</div><h1 style="font-size:34px">${ACTS[S.act].name}</h1><div class="actline"></div><p>${A.fl}</p><ul class="feat">${A.ft.map(f=>`<li>${f}</li>`).join('')}</ul><div class="actboss">기다리는 적 · ${BOSSNAME[S.act].replace('보스 · ','')}</div><button class="btn" id="actGo">출항</button>`;
+  panel.innerHTML=`<div class="kicker">${S.act===1?'항해 시작':`${S.act-1}장 돌파${S.actHeal?` · 선체 ${S.actHeal} 수리됨`:''}`}</div><div class="actnum">${S.act}장</div><h1 style="font-size:34px">${ACTS[S.act].name}</h1><div class="actline"></div><p>${A.fl}</p><ul class="feat">${A.ft.map(f=>`<li>${f}</li>`).join('')}</ul><div class="actboss">기다리는 적 · ${BOSSNAME[S.act].replace('보스 · ','')}</div><p style="font-size:13px;opacity:.8;margin-top:4px">${BOSSTRAIT[S.act]||''}</p><button class="btn" id="actGo">출항</button>`;
   $('actcard').hidden=false;SFX.play('warn');$('actGo').onclick=()=>{$('actcard').hidden=true;next();};}
 function actClear(){const p=S.player,h=Math.round((p.max-p.hp)*0.3);healHp(h);S.actHeal=h;S.act++;S.map=genMap();S.pos=null;S.path=[];showActCard(openMap);}
 const ENC={
   1:{first:{raider:2},battle:[{raider:3},{raider:2,rammer:1},{raider:2,gunboat:1},{gunboat:2,rammer:1},{raider:1,mortarer:1,rammer:1},{skiff:4},{sniper:1,raider:2},{mender:1,raider:2,gunboat:1}],elite:[{broadside:1,gunboat:2},{mortarer:2,rammer:2},{aegis:1,gunboat:2,skiff:2}],boss:{boss:1,raider:1}},
   2:{battle:[{raider:2,gunboat:2,mortarer:1},{rammer:2,fireship:2,raider:1},{broadside:1,raider:3},{mortarer:2,gunboat:2},{sub:2,raider:2},{sniper:2,rammer:2},{aegis:1,gunboat:2,raider:1},{skiff:5,mortarer:1},{mender:1,broadside:1,raider:2}],elite:[{broadside:2,fireship:2},{mortarer:2,rammer:2,gunboat:2},{aegis:1,broadside:2,sniper:1},{sub:3,mender:1,skiff:2}],boss:{boss2:2}},
   3:{battle:[{broadside:1,mortarer:1,raider:3,rammer:1},{fireship:3,gunboat:2,rammer:2},{broadside:2,mortarer:2,raider:2},{aegis:1,mender:1,broadside:1,raider:2},{sub:3,sniper:2},{skiff:6,fireship:2},{sniper:2,aegis:1,mortarer:2}],elite:[{broadside:2,mortarer:2,fireship:2,rammer:2},{broadside:3,rammer:3},{aegis:1,mender:1,broadside:2,sniper:2},{sub:3,skiff:3,broadside:1}],boss:{boss3:1}},
+  5:{battle:[{broadside:2,sniper:2,sub:2,aegis:1},{mender:1,aegis:1,broadside:2,mortarer:2,rammer:2},{skiff:7,sniper:2,fireship:2},{sub:4,mortarer:2,broadside:1},{broadside:3,rammer:3,sniper:1}],elite:[{aegis:2,broadside:3,sniper:2,mender:1},{sub:4,skiff:4,mortarer:2,fireship:2}],boss:{boss5:1}},
   4:{battle:[{broadside:2,sniper:1,sub:2},{aegis:1,mender:1,broadside:2,raider:2},{skiff:6,sniper:2,mortarer:1},{sub:3,fireship:2,aegis:1},{broadside:2,mortarer:2,rammer:2,sniper:1}],elite:[{aegis:2,broadside:2,sniper:2,mender:1},{sub:4,skiff:3,mortarer:2}],boss:{boss4:1}}
 };
 const pickR=a=>a[Math.floor(Math.random()*a.length)];
 function startBattle(kind){
   S.battle=kind;S.clearT=0;S.mode='play';joy=null;S.bs={t0:S.t,hp0:Math.round(S.player.hp),dmg:0,dash:0,g0:S.grazes||0,k0:S.kills,hit:{}};
-  S.arena=kind==='boss'?({2:'strait',3:'whirl',4:'abyss'}[S.act]||null):null;if(!ARENA_ISL.whirl)arenaIsles();ISLANDS=genIslands();S.isl=S.arena==='whirl'?ARENA_ISL.whirl:S.arena==='abyss'?ARENA_ISL.abyss:S.arena==='strait'?[]:ISLANDS;
-  const p=S.player;p.x=450;p.z=S.arena==='whirl'?770:S.arena==='abyss'?680:420;p.vx=p.vz=0;p.dashT=0;p.ramT=0;p.iT=0;p.dcd=0;p.windT=0;p.skcd=0;p.flash=0;
-  S.partGold=0;S.reefs=S.arena==='strait'?straitReefs():genReefs(kind);S.emines=[];S.strikes=[];S.whirl=S.arena==='whirl'?{x:450,z:450,R:250,core:38,boost:0}:null;S.abyss=S.arena==='abyss'?{x:450,z:450,R:400,minR:D.easyLoot?210:165,t:0}:null;S.tides=[];S.beams=[];S.risers=[];S.vortices=[];S.weather=kind!=='boss'?({1:'clear',2:'squall',3:'mines',4:'fog'}[S.act]||null):null;S.wx={gt:6+Math.random()*4,lt:5,gs:'idle'};S.arenaSt=S.arena?{gs:'idle',gt:5,lt:3}:null;S.debris=[];S.hazards=[];S.btime=0;S.enrage=0;S.pfx=[];S.currents=genCurrents(kind);fxPreload('bigboom',...(S.act>=2?['bolt','geyser']:[]),...(S.act===3?['whirl']:[]),...(S.act===4?['hands','soul']:[]));S.foeAtk=0;S.siphon=0;S.lasers=[];S.battleArch=null;S.sentT=3;S.sentI=0;S.enraged=false;S.ents=[p];S.proj=[];S.mines=[];S.zones=[];S.parts=[];S.nums=[];S.texts=[];S.loot=[];S.lootT=5;S.decoys=[];S.smokes=[];S.icp=[];S.rockets=[];S.turrets=[];S.bolts=[];S.krakens=[];S.mom=0;S.momT=0;p.auraF=0;p.fortT=0;p.phaseT=0;if(S.powderBattles>0){S.powderBattles--;p.powderT=10;}S.grazeCd=0;p.powderT=0;p.driftT=0;p.boostT=0;p.driftCd=0;p.bsT=0;S.fx=[];S.wrecks=[];
+  S.arena=kind==='boss'?({2:'strait',3:'whirl',4:'abyss',5:'storm'}[S.act]||null):null;if(!ARENA_ISL.whirl)arenaIsles();ISLANDS=genIslands();S.isl=S.arena==='storm'?ARENA_ISL.storm:S.arena==='whirl'?ARENA_ISL.whirl:S.arena==='abyss'?ARENA_ISL.abyss:S.arena==='strait'?[]:ISLANDS;
+  const p=S.player;p.x=450;p.z=S.arena==='whirl'?770:S.arena==='abyss'?680:S.arena==='storm'?720:420;p.vx=p.vz=0;p.dashT=0;p.ramT=0;p.iT=0;p.dcd=0;p.windT=0;p.skcd=0;p.flash=0;
+  S.partGold=0;S.reefs=S.arena==='strait'?straitReefs():genReefs(kind);S.emines=[];S.strikes=[];S.whirl=S.arena==='whirl'?{x:450,z:450,R:250,core:38,boost:0}:null;S.abyss=S.arena==='abyss'?{x:450,z:450,R:400,minR:D.easyLoot?210:165,t:0}:null;S.tides=[];S.beams=[];S.risers=[];S.vortices=[];S.weather=kind!=='boss'?({1:'clear',2:'squall',3:'mines',4:'fog',5:'squall'}[S.act]||null):null;S.gyre=S.arena==='storm'?{x:450,z:450,r0:90,r1:380,spd:34}:null;S.wx={gt:6+Math.random()*4,lt:5,gs:'idle'};S.arenaSt=S.arena?{gs:'idle',gt:5,lt:3}:null;S.debris=[];S.hazards=[];S.btime=0;S.enrage=0;S.pfx=[];S.warns=[];S.brand=null;S.netT=0;S.cleanT=0;S.domes=[];S.currents=genCurrents(kind);fxPreload('bigboom',...(S.act>=2?['bolt','geyser']:[]),...(S.act===3?['whirl']:[]),...(S.act===4?['hands','soul']:[]),...(S.act===5?['whirl']:[]));S.foeAtk=0;S.siphon=0;S.lasers=[];S.battleArch=null;S.sentT=3;S.sentI=0;S.enraged=false;S.ents=[p];S.proj=[];S.mines=[];S.zones=[];S.parts=[];S.nums=[];S.texts=[];S.loot=[];S.lootT=5;S.decoys=[];S.smokes=[];S.icp=[];S.rockets=[];S.turrets=[];S.bolts=[];S.krakens=[];S.mom=0;S.momT=0;p.auraF=0;p.fortT=0;p.phaseT=0;if(S.powderBattles>0){S.powderBattles--;p.powderT=10;}S.grazeCd=0;p.powderT=0;p.driftT=0;p.boostT=0;p.driftCd=0;p.bsT=0;S.fx=[];S.wrecks=[];
   if(S.weather==='mines'){for(let i=0,k=0;i<7&&k<80;k++){const x=60+Math.random()*(WW-120),z=60+Math.random()*(WZ-120);if(Math.hypot(x-p.x,z-p.z)<150||!freeSpot(x,z,20))continue;S.emines.push({x,z,t:999,arm:0.6,ph:Math.random()*6});i++;}for(let i=0,k=0;i<3&&k<60;k++){const x=60+Math.random()*(WW-120),z=60+Math.random()*(WZ-120);if(Math.hypot(x-p.x,z-p.z)<130||!freeSpot(x,z,26))continue;S.hazards.push({x,z,r:22,t:999,max:999});i++;}}
-  for(const s of S.equip)if(s){s.t=has('first')?0:0.3;s.burstLeft=0;}S.frenzyT=has('first')?3:0;S.shield=has('coral')?1:0;if(S.evShield){S.shield=Math.max(S.shield,1);S.evShield=false;}
+  for(const s of S.equip)if(s){s.t=has('first')?0:0.3;s.burstLeft=0;s.used=false;}S.frenzyT=has('first')?3:0;S.shield=has('coral')?1:0;if(S.evShield){S.shield=Math.max(S.shield,1);S.evShield=false;}
   $('relicHud').innerHTML=S.relics.map(id=>`<span title="${RELICS[id].name}">${RELICS[id].name.slice(0,2)}</span>`).join('');
   const E=ENC[S.act],first=S.act===1&&S.path.length===1;
   const waves=kind==='boss'?[{c:E.boss}]:kind==='elite'?[{c:pickR(E.battle)},{c:pickR(E.elite),el:true}]:first?[{c:E.first}]:(D.oneWave&&S.act===1)?[{c:pickR(E.battle)}]:[{c:pickR(E.battle)},{c:pickR(E.battle)}];
@@ -2089,8 +2170,8 @@ function renderRefit(){
 function endGame(win){SFX.musStop();if(!win&&S.bs){const b=S.bs,boss=S.ents.filter(e=>(e.boss||e.mini)&&!e.dead);LOG.ev('X',S.battle,Math.round(S.t-b.t0),Math.round(b.dmg),b.dash,(S.grazes||0)-b.g0,S.ents.filter(e=>e.team===1&&!e.dead).map(e=>e.kind).join('+'),boss.map(e=>Math.round(100*e.hp/e.max)+'%p'+((e.B&&e.B.phase)||1)).join(','),Object.entries(b.hit).sort((a,c)=>c[1]-a[1]).slice(0,4).map(([k,v])=>k+':'+Math.round(v)).join(','),S.lastPat||'');}if(win)LOG.ev('V!');sendRun(win);
   S.mode='end';joy=null;hideHud();$('mapov').hidden=true;$('reward').hidden=true;
   const t=Math.floor(S.t),mm=Math.floor(t/60),ss=String(t%60).padStart(2,'0');
-  $('endPanel').innerHTML=`<div class="kicker">${win?'망령 제독의 기함 격침':`${S.act}장 ${ACTS[S.act].name} · ${S.path.length}번째 해역에서`}</div><h1>${win?'항해 성공':'침몰'}</h1>
-  <dl class="stats"><dt>도달</dt><dd>${S.act}장 / 4장</dd><dt>격침</dt><dd>${S.kills}척</dd><dt>금화</dt><dd>${S.gold}</dd><dt>전투 시간</dt><dd>${mm}분 ${ss}초</dd><dt>함선</dt><dd>${shipName()}</dd><dt>보물</dt><dd>${S.relics.map(id=>RELICS[id].name).join(', ')||'없음'}</dd><dt>선원</dt><dd>${upgradeSummary().cr.join(', ')||'없음'}</dd><dt>개량</dt><dd>${upgradeSummary().md.join(', ')||'없음'}</dd><dt>최종 장비</dt><dd>${S.equip.filter(Boolean).map(itemName).join(', ')||'없음'}</dd></dl>
+  $('endPanel').innerHTML=`<div class="kicker">${win?'폭풍왕의 기함 격침':`${S.act}장 ${ACTS[S.act].name} · ${S.path.length}번째 해역에서`}</div><h1>${win?'항해 성공':'침몰'}</h1>
+  <dl class="stats"><dt>도달</dt><dd>${S.act}장 / 5장</dd><dt>격침</dt><dd>${S.kills}척</dd><dt>금화</dt><dd>${S.gold}</dd><dt>전투 시간</dt><dd>${mm}분 ${ss}초</dd><dt>함선</dt><dd>${shipName()}</dd><dt>보물</dt><dd>${S.relics.map(id=>RELICS[id].name).join(', ')||'없음'}</dd><dt>선원</dt><dd>${upgradeSummary().cr.join(', ')||'없음'}</dd><dt>개량</dt><dd>${upgradeSummary().md.join(', ')||'없음'}</dd><dt>최종 장비</dt><dd>${S.equip.filter(Boolean).map(itemName).join(', ')||'없음'}</dd></dl>
   <div class="fb"><div class="lbl">피드백 남기기</div>
   <div class="fbq">재미있었나요?</div><div class="diff" id="fbFun">${['별로','그냥','괜찮음','재밌음','최고'].map((t,i)=>`<button class="chip" data-v="${i+1}" aria-pressed="false">${t}</button>`).join('')}</div>
   <div class="fbq">아쉬웠던 점 (여러 개 골라도 돼요)</div><div class="diff" id="fbMiss">${['소리','타격감','난이도','장비·조합','해도·진행','조작감','그래픽','판 길이'].map(t=>`<button class="chip" data-v="${t}" aria-pressed="false">${t}</button>`).join('')}</div>
