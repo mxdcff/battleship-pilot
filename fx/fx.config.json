@@ -6,10 +6,36 @@
    "name": "bigboom",
    "id": "explosions/big-explosion",
    "fps": 10,
-   "maxSec": 4.6,
-   "downscale": 2,
+   "maxSec": 4.0,
    "seed": 7,
-   "opts": {}
+   "downscale": 1,
+   "lightDownscale": 3,
+   "squash": 0.82,
+   "groundFade": {
+    "above": 26,
+    "r0": 24,
+    "r1": 52
+   },
+   "smokeRamp": [
+    "#1c2129",
+    "#363c46",
+    "#585e68",
+    "#868b93",
+    "#c2c5c9"
+   ],
+   "opts": {
+    "palette": [
+     "#3a0f0a",
+     "#8a1f14",
+     "#e0533f",
+     "#ff7a3d",
+     "#ffb347",
+     "#ffd75e",
+     "#fff1b8",
+     "#ffffff"
+    ],
+    "stone": "#6f8fa6"
+   }
   }
  ]
 }
