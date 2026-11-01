@@ -1,0 +1,960 @@
+{
+ "frames": [
+  {
+   "filename": "bigboom-v2 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 1",
+   "frame": {
+    "x": 318,
+    "y": 0,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 2",
+   "frame": {
+    "x": 636,
+    "y": 0,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 3",
+   "frame": {
+    "x": 954,
+    "y": 0,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 4",
+   "frame": {
+    "x": 1272,
+    "y": 0,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 5",
+   "frame": {
+    "x": 1590,
+    "y": 0,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 6",
+   "frame": {
+    "x": 0,
+    "y": 211,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 7",
+   "frame": {
+    "x": 318,
+    "y": 211,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 8",
+   "frame": {
+    "x": 636,
+    "y": 211,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 9",
+   "frame": {
+    "x": 954,
+    "y": 211,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 10",
+   "frame": {
+    "x": 1272,
+    "y": 211,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 11",
+   "frame": {
+    "x": 1590,
+    "y": 211,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 12",
+   "frame": {
+    "x": 0,
+    "y": 422,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 13",
+   "frame": {
+    "x": 318,
+    "y": 422,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 14",
+   "frame": {
+    "x": 636,
+    "y": 422,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 15",
+   "frame": {
+    "x": 954,
+    "y": 422,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 16",
+   "frame": {
+    "x": 1272,
+    "y": 422,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 17",
+   "frame": {
+    "x": 1590,
+    "y": 422,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 18",
+   "frame": {
+    "x": 0,
+    "y": 633,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 19",
+   "frame": {
+    "x": 318,
+    "y": 633,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 20",
+   "frame": {
+    "x": 636,
+    "y": 633,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 21",
+   "frame": {
+    "x": 954,
+    "y": 633,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 22",
+   "frame": {
+    "x": 1272,
+    "y": 633,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 23",
+   "frame": {
+    "x": 1590,
+    "y": 633,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 24",
+   "frame": {
+    "x": 0,
+    "y": 844,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 25",
+   "frame": {
+    "x": 318,
+    "y": 844,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 26",
+   "frame": {
+    "x": 636,
+    "y": 844,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 27",
+   "frame": {
+    "x": 954,
+    "y": 844,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 28",
+   "frame": {
+    "x": 1272,
+    "y": 844,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 29",
+   "frame": {
+    "x": 1590,
+    "y": 844,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 30",
+   "frame": {
+    "x": 0,
+    "y": 1055,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 31",
+   "frame": {
+    "x": 318,
+    "y": 1055,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 32",
+   "frame": {
+    "x": 636,
+    "y": 1055,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 33",
+   "frame": {
+    "x": 954,
+    "y": 1055,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 34",
+   "frame": {
+    "x": 1272,
+    "y": 1055,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 35",
+   "frame": {
+    "x": 1590,
+    "y": 1055,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 36",
+   "frame": {
+    "x": 0,
+    "y": 1266,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 37",
+   "frame": {
+    "x": 318,
+    "y": 1266,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 38",
+   "frame": {
+    "x": 636,
+    "y": 1266,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 39",
+   "frame": {
+    "x": 954,
+    "y": 1266,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  },
+  {
+   "filename": "bigboom-v2 40",
+   "frame": {
+    "x": 1272,
+    "y": 1266,
+    "w": 318,
+    "h": 211
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 11,
+    "y": 26,
+    "w": 318,
+    "h": 211
+   },
+   "sourceSize": {
+    "w": 360,
+    "h": 246
+   },
+   "duration": 100
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "bigboom-v2.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 1908,
+   "h": 1477
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "bigboom-v2",
+    "from": 0,
+    "to": 40,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "explosions/big-explosion",
+   "effect": "bigboom",
+   "variant": 2,
+   "seed": 38,
+   "name": "Big explosion",
+   "fps": 10,
+   "loop": false,
+   "frames": 41,
+   "frameSize": [
+    318,
+    211
+   ],
+   "columns": 6,
+   "pivot": [
+    169,
+    189
+   ],
+   "downscale": 1,
+   "squash": 0.82,
+   "light": {
+    "image": "bigboom-v2-light.png",
+    "frameSize": [
+     89,
+     69
+    ],
+    "columns": 6,
+    "pivot": [
+     45,
+     60
+    ],
+    "downscale": 3,
+    "blend": "additive"
+   }
+  }
+ }
+}

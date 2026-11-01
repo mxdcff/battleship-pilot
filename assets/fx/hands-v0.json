@@ -1,0 +1,696 @@
+{
+ "frames": [
+  {
+   "filename": "hands-v0 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 1",
+   "frame": {
+    "x": 104,
+    "y": 0,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 2",
+   "frame": {
+    "x": 208,
+    "y": 0,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 3",
+   "frame": {
+    "x": 312,
+    "y": 0,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 4",
+   "frame": {
+    "x": 416,
+    "y": 0,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 5",
+   "frame": {
+    "x": 0,
+    "y": 68,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 6",
+   "frame": {
+    "x": 104,
+    "y": 68,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 7",
+   "frame": {
+    "x": 208,
+    "y": 68,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 8",
+   "frame": {
+    "x": 312,
+    "y": 68,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 9",
+   "frame": {
+    "x": 416,
+    "y": 68,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 10",
+   "frame": {
+    "x": 0,
+    "y": 136,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 11",
+   "frame": {
+    "x": 104,
+    "y": 136,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 12",
+   "frame": {
+    "x": 208,
+    "y": 136,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 13",
+   "frame": {
+    "x": 312,
+    "y": 136,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 14",
+   "frame": {
+    "x": 416,
+    "y": 136,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 15",
+   "frame": {
+    "x": 0,
+    "y": 204,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 16",
+   "frame": {
+    "x": 104,
+    "y": 204,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 17",
+   "frame": {
+    "x": 208,
+    "y": 204,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 18",
+   "frame": {
+    "x": 312,
+    "y": 204,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 19",
+   "frame": {
+    "x": 416,
+    "y": 204,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 20",
+   "frame": {
+    "x": 0,
+    "y": 272,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 21",
+   "frame": {
+    "x": 104,
+    "y": 272,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 22",
+   "frame": {
+    "x": 208,
+    "y": 272,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 23",
+   "frame": {
+    "x": 312,
+    "y": 272,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 24",
+   "frame": {
+    "x": 416,
+    "y": 272,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 25",
+   "frame": {
+    "x": 0,
+    "y": 340,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 26",
+   "frame": {
+    "x": 104,
+    "y": 340,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 27",
+   "frame": {
+    "x": 208,
+    "y": 340,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  },
+  {
+   "filename": "hands-v0 28",
+   "frame": {
+    "x": 312,
+    "y": 340,
+    "w": 104,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 23,
+    "w": 104,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 200,
+    "h": 95
+   },
+   "duration": 100
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "hands-v0.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 520,
+   "h": 408
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "hands-v0",
+    "from": 0,
+    "to": 28,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "shadow/grasping-hands",
+   "effect": "hands",
+   "variant": 0,
+   "seed": 5,
+   "name": "Grasping hands",
+   "fps": 10,
+   "loop": false,
+   "frames": 29,
+   "frameSize": [
+    104,
+    68
+   ],
+   "columns": 5,
+   "pivot": [
+    52,
+    59
+   ],
+   "downscale": 1,
+   "squash": 0.82,
+   "light": {
+    "image": "hands-v0-light.png",
+    "frameSize": [
+     49,
+     28
+    ],
+    "columns": 5,
+    "pivot": [
+     24,
+     23
+    ],
+    "downscale": 3,
+    "blend": "additive"
+   }
+  }
+ }
+}

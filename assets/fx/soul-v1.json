@@ -1,0 +1,740 @@
+{
+ "frames": [
+  {
+   "filename": "soul-v1 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 1",
+   "frame": {
+    "x": 64,
+    "y": 0,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 2",
+   "frame": {
+    "x": 128,
+    "y": 0,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 3",
+   "frame": {
+    "x": 192,
+    "y": 0,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 4",
+   "frame": {
+    "x": 256,
+    "y": 0,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 5",
+   "frame": {
+    "x": 320,
+    "y": 0,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 6",
+   "frame": {
+    "x": 384,
+    "y": 0,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 7",
+   "frame": {
+    "x": 448,
+    "y": 0,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 8",
+   "frame": {
+    "x": 0,
+    "y": 103,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 9",
+   "frame": {
+    "x": 64,
+    "y": 103,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 10",
+   "frame": {
+    "x": 128,
+    "y": 103,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 11",
+   "frame": {
+    "x": 192,
+    "y": 103,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 12",
+   "frame": {
+    "x": 256,
+    "y": 103,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 13",
+   "frame": {
+    "x": 320,
+    "y": 103,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 14",
+   "frame": {
+    "x": 384,
+    "y": 103,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 15",
+   "frame": {
+    "x": 448,
+    "y": 103,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 16",
+   "frame": {
+    "x": 0,
+    "y": 206,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 17",
+   "frame": {
+    "x": 64,
+    "y": 206,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 18",
+   "frame": {
+    "x": 128,
+    "y": 206,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 19",
+   "frame": {
+    "x": 192,
+    "y": 206,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 20",
+   "frame": {
+    "x": 256,
+    "y": 206,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 21",
+   "frame": {
+    "x": 320,
+    "y": 206,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 22",
+   "frame": {
+    "x": 384,
+    "y": 206,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 23",
+   "frame": {
+    "x": 448,
+    "y": 206,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 24",
+   "frame": {
+    "x": 0,
+    "y": 309,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 25",
+   "frame": {
+    "x": 64,
+    "y": 309,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 26",
+   "frame": {
+    "x": 128,
+    "y": 309,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 27",
+   "frame": {
+    "x": 192,
+    "y": 309,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 28",
+   "frame": {
+    "x": 256,
+    "y": 309,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 29",
+   "frame": {
+    "x": 320,
+    "y": 309,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  },
+  {
+   "filename": "soul-v1 30",
+   "frame": {
+    "x": 384,
+    "y": 309,
+    "w": 64,
+    "h": 103
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 16,
+    "y": 16,
+    "w": 64,
+    "h": 103
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 126
+   },
+   "duration": 100
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "soul-v1.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 512,
+   "h": 412
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "soul-v1",
+    "from": 0,
+    "to": 30,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "spawn/soul-rise",
+   "effect": "soul",
+   "variant": 1,
+   "seed": 6,
+   "name": "Soul rise",
+   "fps": 10,
+   "loop": false,
+   "frames": 31,
+   "frameSize": [
+    64,
+    103
+   ],
+   "columns": 8,
+   "pivot": [
+    32,
+    97
+   ],
+   "downscale": 1,
+   "squash": 0.9,
+   "light": {
+    "image": "soul-v1-light.png",
+    "frameSize": [
+     30,
+     39
+    ],
+    "columns": 7,
+    "pivot": [
+     15,
+     35
+    ],
+    "downscale": 3,
+    "blend": "additive"
+   }
+  }
+ }
+}
