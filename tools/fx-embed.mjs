@@ -11,9 +11,11 @@ for (const f of readdirSync(dir).filter(f => f.endsWith(".json"))) {
   const j = JSON.parse(readFileSync(join(dir, f), "utf8")), m = j.meta.pixelfx, name = f.slice(0, -5);
   sheets[name] = { src: "data:image/png;base64," + readFileSync(join(dir, j.meta.image)).toString("base64"),
     fw: m.frameSize[0], fh: m.frameSize[1], cols: m.columns, n: m.frames, fps: m.fps, loop: m.loop, pivot: m.pivot, k: m.downscale || 1 };
+  if (m.light) sheets[name].light = { src: "data:image/png;base64," + readFileSync(join(dir, m.light.image)).toString("base64"),
+    fw: m.light.frameSize[0], fh: m.light.frameSize[1], cols: m.light.columns, pivot: m.light.pivot, k: m.light.downscale };
 }
 const html = readFileSync(game, "utf8"), A = "/*PIXELFX:BEGIN*/", B = "/*PIXELFX:END*/";
 const i = html.indexOf(A), k = html.indexOf(B);
 if (i < 0 || k < i) { console.error("FXSHEETS markers not found in battleship-pilot.html"); process.exit(1); }
 writeFileSync(game, html.slice(0, i + A.length) + "const FXSHEETS=" + JSON.stringify(sheets) + ";" + html.slice(k));
-console.log("embedded:", Object.keys(sheets).map(n => `${n} (${(sheets[n].src.length / 1024).toFixed(0)} KB)`).join(", "));
+console.log("embedded:", Object.keys(sheets).map(n => `${n} (${((sheets[n].src.length + (sheets[n].light ? sheets[n].light.src.length : 0)) / 1024).toFixed(0)} KB)`).join(", "));
