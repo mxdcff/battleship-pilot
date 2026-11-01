@@ -1,0 +1,785 @@
+{
+ "frames": [
+  {
+   "filename": "geyser-v0 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 1",
+   "frame": {
+    "x": 138,
+    "y": 0,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 2",
+   "frame": {
+    "x": 276,
+    "y": 0,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 3",
+   "frame": {
+    "x": 414,
+    "y": 0,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 4",
+   "frame": {
+    "x": 552,
+    "y": 0,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 5",
+   "frame": {
+    "x": 0,
+    "y": 94,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 6",
+   "frame": {
+    "x": 138,
+    "y": 94,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 7",
+   "frame": {
+    "x": 276,
+    "y": 94,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 8",
+   "frame": {
+    "x": 414,
+    "y": 94,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 9",
+   "frame": {
+    "x": 552,
+    "y": 94,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 10",
+   "frame": {
+    "x": 0,
+    "y": 188,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 11",
+   "frame": {
+    "x": 138,
+    "y": 188,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 12",
+   "frame": {
+    "x": 276,
+    "y": 188,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 13",
+   "frame": {
+    "x": 414,
+    "y": 188,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 14",
+   "frame": {
+    "x": 552,
+    "y": 188,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 15",
+   "frame": {
+    "x": 0,
+    "y": 282,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 16",
+   "frame": {
+    "x": 138,
+    "y": 282,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 17",
+   "frame": {
+    "x": 276,
+    "y": 282,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 18",
+   "frame": {
+    "x": 414,
+    "y": 282,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 19",
+   "frame": {
+    "x": 552,
+    "y": 282,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 20",
+   "frame": {
+    "x": 0,
+    "y": 376,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 21",
+   "frame": {
+    "x": 138,
+    "y": 376,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 22",
+   "frame": {
+    "x": 276,
+    "y": 376,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 23",
+   "frame": {
+    "x": 414,
+    "y": 376,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 24",
+   "frame": {
+    "x": 552,
+    "y": 376,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 25",
+   "frame": {
+    "x": 0,
+    "y": 470,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 26",
+   "frame": {
+    "x": 138,
+    "y": 470,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 27",
+   "frame": {
+    "x": 276,
+    "y": 470,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 28",
+   "frame": {
+    "x": 414,
+    "y": 470,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 29",
+   "frame": {
+    "x": 552,
+    "y": 470,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 30",
+   "frame": {
+    "x": 0,
+    "y": 564,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 31",
+   "frame": {
+    "x": 138,
+    "y": 564,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  },
+  {
+   "filename": "geyser-v0 32",
+   "frame": {
+    "x": 276,
+    "y": 564,
+    "w": 138,
+    "h": 94
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 15,
+    "y": 41,
+    "w": 138,
+    "h": 94
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 138
+   },
+   "duration": 100
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "geyser-v0.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 690,
+   "h": 658
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "geyser-v0",
+    "from": 0,
+    "to": 32,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "water/geyser",
+   "effect": "geyser",
+   "variant": 0,
+   "seed": 4,
+   "name": "Geyser",
+   "fps": 10,
+   "loop": false,
+   "frames": 33,
+   "frameSize": [
+    138,
+    94
+   ],
+   "columns": 5,
+   "pivot": [
+    77,
+    79
+   ],
+   "downscale": 1,
+   "squash": 0.82,
+   "light": {
+    "image": "geyser-v0-light.png",
+    "frameSize": [
+     49,
+     35
+    ],
+    "columns": 5,
+    "pivot": [
+     28,
+     29
+    ],
+    "downscale": 3,
+    "blend": "additive",
+    "glow": 0.6
+   }
+  }
+ }
+}

@@ -14,16 +14,22 @@
 //   groundFade       {above, r0, r1}: near the ground line (within `above` px), fade pixels from r0 to r1 px
 //                    left/right of the pivot, so side-view ground fires do not draw a flat stripe on the sea
 //   smokeRamp        hex colors dark -> light; grey (unsaturated) color pixels are remapped onto it
+//   startSec         skip the effect's lead-in (e.g. start a lightning strike just before the bolt lands)
+//   --no-quantize    keep full RGBA PNGs (otherwise a 256-color pass shrinks them ~4x)
+//   glow             strength of the additive light layer in the game (0..1, default 0.9)
+//   variants         [{seed, opts}, ...]: bake several takes; the game picks one at random each time it plays.
+//                    Files are <name>-v<i>.png / -v<i>-light.png / -v<i>.json. Without it: one take, -v0.
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { spawnSync } from "node:child_process";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const cfg = JSON.parse(readFileSync(join(ROOT, "fx/fx.config.json"), "utf8"));
 const PFX = join(ROOT, cfg.pixelfx);
 const { loadEffect, renderFrames } = await import(pathToFileURL(join(PFX, "tools/lib/fxlib.mjs")));
 const { encodePNG } = await import(pathToFileURL(join(PFX, "tools/lib/png.mjs")));
-const want = process.argv.slice(2);
+const args = process.argv.slice(2), noQ = args.includes("--no-quantize"), want = args.filter(a => !a.startsWith("--")), written = [];
 const hexRGB = h => { const v = parseInt(h.slice(1), 16); return [v >> 16 & 255, v >> 8 & 255, v & 255]; };
 
 // Uint32 ABGR buffers -> RGBA bytes
@@ -76,11 +82,15 @@ function bbox(frames, w, h, thr = 6) {
   return x1 < 0 ? [0, 0, 0, 0] : [x0, y0, x1, y1];
 }
 
+const out = join(ROOT, cfg.out); mkdirSync(out, { recursive: true });
 for (const e of cfg.effects) {
   if (want.length && !want.includes(e.name)) continue;
   const fx = await loadEffect(e.id, join(PFX, "src/fx"));
-  const r = renderFrames(fx, { fps: e.fps, seed: e.seed, bg: "none", actor: false, options: e.opts });
-  let raw = r.frames; if (e.maxSec) raw = raw.slice(0, Math.round(e.maxSec * e.fps) + 1);
+  const vars = e.variants || [{ seed: e.seed }];
+  for (let vi = 0; vi < vars.length; vi++) {
+  const V = vars[vi], tag = `${e.name}-v${vi}`;
+  const r = renderFrames(fx, { fps: e.fps, seed: V.seed ?? e.seed, bg: "none", actor: false, options: { ...(e.opts || {}), ...(V.opts || {}) } });
+  let raw = r.frames; const s0 = Math.round((e.startSec || 0) * e.fps); if (e.maxSec) raw = raw.slice(s0, Math.round(e.maxSec * e.fps) + 1); else raw = raw.slice(s0);
   const k = e.downscale || 1, kl = e.lightDownscale || k, sq = e.squash || 1, pv = fx.meta.origin;
   // color layer
   let col = raw.map(f => { const px = colorRGBA(f.raw); smoke(px, e.smokeRamp); groundFade(px, r.w, r.h, e.groundFade, pv); return resample(px, r.w, r.h, k, sq); });
@@ -93,14 +103,19 @@ for (const e of cfg.effects) {
   const pivC = [Math.round(pv[0] / k) - cb[0], Math.round(pv[1] * sq / k) - cb[1]];
   const pivL = [Math.round(pv[0] / kl) - lb[0], Math.round(pv[1] * sq / kl) - lb[1]];
   const json = { frames: [], meta: {} };
-  for (let i = 0; i < n; i++) json.frames.push({ filename: `${e.name} ${i}`, frame: { x: (i % C.cols) * C.cw, y: Math.floor(i / C.cols) * C.ch, w: C.cw, h: C.ch }, rotated: false, trimmed: true,
+  for (let i = 0; i < n; i++) json.frames.push({ filename: `${tag} ${i}`, frame: { x: (i % C.cols) * C.cw, y: Math.floor(i / C.cols) * C.ch, w: C.cw, h: C.ch }, rotated: false, trimmed: true,
     spriteSourceSize: { x: cb[0], y: cb[1], w: C.cw, h: C.ch }, sourceSize: { w: cw0, h: ch0 }, duration: Math.round(1000 / e.fps) });
-  json.meta = { app: "https://github.com/patch-gg/pixelfx", version: "1", image: `${e.name}.png`, format: "RGBA8888", size: { w: C.SW, h: C.SH }, scale: String(1 / k),
-    frameTags: [{ name: e.name, from: 0, to: n - 1, direction: "forward" }],
-    pixelfx: { id: e.id, name: fx.meta.name, fps: e.fps, loop: fx.meta.loop, frames: n, frameSize: [C.cw, C.ch], columns: C.cols, pivot: pivC, downscale: k, squash: sq,
-      light: { image: `${e.name}-light.png`, frameSize: [Lp.cw, Lp.ch], columns: Lp.cols, pivot: pivL, downscale: kl, blend: "additive" } } };
-  const out = join(ROOT, cfg.out); mkdirSync(out, { recursive: true });
-  writeFileSync(join(out, `${e.name}.png`), C.png); writeFileSync(join(out, `${e.name}-light.png`), Lp.png);
-  writeFileSync(join(out, `${e.name}.json`), JSON.stringify(json, null, 1));
-  console.log(`${e.name} <- ${e.id}: ${n} frames @${e.fps}fps · color ${C.cw}x${C.ch} ${(C.png.length / 1024).toFixed(0)} KB · light ${Lp.cw}x${Lp.ch} ${(Lp.png.length / 1024).toFixed(0)} KB`);
+  json.meta = { app: "https://github.com/patch-gg/pixelfx", version: "1", image: `${tag}.png`, format: "RGBA8888", size: { w: C.SW, h: C.SH }, scale: String(1 / k),
+    frameTags: [{ name: tag, from: 0, to: n - 1, direction: "forward" }],
+    pixelfx: { id: e.id, effect: e.name, variant: vi, seed: V.seed ?? e.seed, name: fx.meta.name, fps: e.fps, loop: fx.meta.loop, frames: n, frameSize: [C.cw, C.ch], columns: C.cols, pivot: pivC, downscale: k, squash: sq,
+      light: { image: `${tag}-light.png`, frameSize: [Lp.cw, Lp.ch], columns: Lp.cols, pivot: pivL, downscale: kl, blend: "additive", glow: e.glow ?? 0.9 } } };
+  writeFileSync(join(out, `${tag}.png`), C.png); writeFileSync(join(out, `${tag}-light.png`), Lp.png); written.push(join(out, `${tag}.png`), join(out, `${tag}-light.png`));
+  writeFileSync(join(out, `${tag}.json`), JSON.stringify(json, null, 1));
+  console.log(`${tag} <- ${e.id}: ${n} frames @${e.fps}fps · color ${C.cw}x${C.ch} ${(C.png.length / 1024).toFixed(0)} KB · light ${Lp.cw}x${Lp.ch} ${(Lp.png.length / 1024).toFixed(0)} KB`);
+  }
+}
+// 256-color palette pass (about 4x smaller, visually the same for pixel art). Needs python3 + Pillow.
+if (!noQ && written.length) {
+  const q = spawnSync("python3", [join(ROOT, "tools/fx-quantize.py"), ...written], { encoding: "utf8" });
+  if (q.status === 0) process.stdout.write(q.stdout); else console.warn("palette pass skipped (python3 + Pillow not available):", (q.stderr || q.error || "").toString().split("\n")[0]);
 }

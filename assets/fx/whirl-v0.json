@@ -1,0 +1,719 @@
+{
+ "frames": [
+  {
+   "filename": "whirl-v0 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 1",
+   "frame": {
+    "x": 118,
+    "y": 0,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 2",
+   "frame": {
+    "x": 236,
+    "y": 0,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 3",
+   "frame": {
+    "x": 354,
+    "y": 0,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 4",
+   "frame": {
+    "x": 472,
+    "y": 0,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 5",
+   "frame": {
+    "x": 0,
+    "y": 70,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 6",
+   "frame": {
+    "x": 118,
+    "y": 70,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 7",
+   "frame": {
+    "x": 236,
+    "y": 70,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 8",
+   "frame": {
+    "x": 354,
+    "y": 70,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 9",
+   "frame": {
+    "x": 472,
+    "y": 70,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 10",
+   "frame": {
+    "x": 0,
+    "y": 140,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 11",
+   "frame": {
+    "x": 118,
+    "y": 140,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 12",
+   "frame": {
+    "x": 236,
+    "y": 140,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 13",
+   "frame": {
+    "x": 354,
+    "y": 140,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 14",
+   "frame": {
+    "x": 472,
+    "y": 140,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 15",
+   "frame": {
+    "x": 0,
+    "y": 210,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 16",
+   "frame": {
+    "x": 118,
+    "y": 210,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 17",
+   "frame": {
+    "x": 236,
+    "y": 210,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 18",
+   "frame": {
+    "x": 354,
+    "y": 210,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 19",
+   "frame": {
+    "x": 472,
+    "y": 210,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 20",
+   "frame": {
+    "x": 0,
+    "y": 280,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 21",
+   "frame": {
+    "x": 118,
+    "y": 280,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 22",
+   "frame": {
+    "x": 236,
+    "y": 280,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 23",
+   "frame": {
+    "x": 354,
+    "y": 280,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 24",
+   "frame": {
+    "x": 472,
+    "y": 280,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 25",
+   "frame": {
+    "x": 0,
+    "y": 350,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 26",
+   "frame": {
+    "x": 118,
+    "y": 350,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 27",
+   "frame": {
+    "x": 236,
+    "y": 350,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 28",
+   "frame": {
+    "x": 354,
+    "y": 350,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  },
+  {
+   "filename": "whirl-v0 29",
+   "frame": {
+    "x": 472,
+    "y": 350,
+    "w": 118,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 5,
+    "y": 7,
+    "w": 118,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 84
+   },
+   "duration": 100
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "whirl-v0.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 590,
+   "h": 420
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "whirl-v0",
+    "from": 0,
+    "to": 29,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "water/whirlpool",
+   "effect": "whirl",
+   "variant": 0,
+   "seed": 5,
+   "name": "Whirlpool",
+   "fps": 10,
+   "loop": true,
+   "frames": 30,
+   "frameSize": [
+    118,
+    70
+   ],
+   "columns": 5,
+   "pivot": [
+    59,
+    35
+   ],
+   "downscale": 1,
+   "squash": 1,
+   "light": {
+    "image": "whirl-v0-light.png",
+    "frameSize": [
+     51,
+     40
+    ],
+    "columns": 5,
+    "pivot": [
+     25,
+     20
+    ],
+    "downscale": 2,
+    "blend": "additive",
+    "glow": 0.5
+   }
+  }
+ }
+}

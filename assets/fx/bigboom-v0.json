@@ -1,7 +1,7 @@
 {
  "frames": [
   {
-   "filename": "bigboom 0",
+   "filename": "bigboom-v0 0",
    "frame": {
     "x": 0,
     "y": 0,
@@ -23,7 +23,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 1",
+   "filename": "bigboom-v0 1",
    "frame": {
     "x": 278,
     "y": 0,
@@ -45,7 +45,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 2",
+   "filename": "bigboom-v0 2",
    "frame": {
     "x": 556,
     "y": 0,
@@ -67,7 +67,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 3",
+   "filename": "bigboom-v0 3",
    "frame": {
     "x": 834,
     "y": 0,
@@ -89,7 +89,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 4",
+   "filename": "bigboom-v0 4",
    "frame": {
     "x": 1112,
     "y": 0,
@@ -111,7 +111,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 5",
+   "filename": "bigboom-v0 5",
    "frame": {
     "x": 1390,
     "y": 0,
@@ -133,7 +133,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 6",
+   "filename": "bigboom-v0 6",
    "frame": {
     "x": 0,
     "y": 206,
@@ -155,7 +155,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 7",
+   "filename": "bigboom-v0 7",
    "frame": {
     "x": 278,
     "y": 206,
@@ -177,7 +177,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 8",
+   "filename": "bigboom-v0 8",
    "frame": {
     "x": 556,
     "y": 206,
@@ -199,7 +199,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 9",
+   "filename": "bigboom-v0 9",
    "frame": {
     "x": 834,
     "y": 206,
@@ -221,7 +221,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 10",
+   "filename": "bigboom-v0 10",
    "frame": {
     "x": 1112,
     "y": 206,
@@ -243,7 +243,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 11",
+   "filename": "bigboom-v0 11",
    "frame": {
     "x": 1390,
     "y": 206,
@@ -265,7 +265,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 12",
+   "filename": "bigboom-v0 12",
    "frame": {
     "x": 0,
     "y": 412,
@@ -287,7 +287,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 13",
+   "filename": "bigboom-v0 13",
    "frame": {
     "x": 278,
     "y": 412,
@@ -309,7 +309,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 14",
+   "filename": "bigboom-v0 14",
    "frame": {
     "x": 556,
     "y": 412,
@@ -331,7 +331,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 15",
+   "filename": "bigboom-v0 15",
    "frame": {
     "x": 834,
     "y": 412,
@@ -353,7 +353,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 16",
+   "filename": "bigboom-v0 16",
    "frame": {
     "x": 1112,
     "y": 412,
@@ -375,7 +375,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 17",
+   "filename": "bigboom-v0 17",
    "frame": {
     "x": 1390,
     "y": 412,
@@ -397,7 +397,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 18",
+   "filename": "bigboom-v0 18",
    "frame": {
     "x": 0,
     "y": 618,
@@ -419,7 +419,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 19",
+   "filename": "bigboom-v0 19",
    "frame": {
     "x": 278,
     "y": 618,
@@ -441,7 +441,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 20",
+   "filename": "bigboom-v0 20",
    "frame": {
     "x": 556,
     "y": 618,
@@ -463,7 +463,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 21",
+   "filename": "bigboom-v0 21",
    "frame": {
     "x": 834,
     "y": 618,
@@ -485,7 +485,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 22",
+   "filename": "bigboom-v0 22",
    "frame": {
     "x": 1112,
     "y": 618,
@@ -507,7 +507,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 23",
+   "filename": "bigboom-v0 23",
    "frame": {
     "x": 1390,
     "y": 618,
@@ -529,7 +529,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 24",
+   "filename": "bigboom-v0 24",
    "frame": {
     "x": 0,
     "y": 824,
@@ -551,7 +551,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 25",
+   "filename": "bigboom-v0 25",
    "frame": {
     "x": 278,
     "y": 824,
@@ -573,7 +573,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 26",
+   "filename": "bigboom-v0 26",
    "frame": {
     "x": 556,
     "y": 824,
@@ -595,7 +595,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 27",
+   "filename": "bigboom-v0 27",
    "frame": {
     "x": 834,
     "y": 824,
@@ -617,7 +617,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 28",
+   "filename": "bigboom-v0 28",
    "frame": {
     "x": 1112,
     "y": 824,
@@ -639,7 +639,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 29",
+   "filename": "bigboom-v0 29",
    "frame": {
     "x": 1390,
     "y": 824,
@@ -661,7 +661,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 30",
+   "filename": "bigboom-v0 30",
    "frame": {
     "x": 0,
     "y": 1030,
@@ -683,7 +683,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 31",
+   "filename": "bigboom-v0 31",
    "frame": {
     "x": 278,
     "y": 1030,
@@ -705,7 +705,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 32",
+   "filename": "bigboom-v0 32",
    "frame": {
     "x": 556,
     "y": 1030,
@@ -727,7 +727,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 33",
+   "filename": "bigboom-v0 33",
    "frame": {
     "x": 834,
     "y": 1030,
@@ -749,7 +749,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 34",
+   "filename": "bigboom-v0 34",
    "frame": {
     "x": 1112,
     "y": 1030,
@@ -771,7 +771,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 35",
+   "filename": "bigboom-v0 35",
    "frame": {
     "x": 1390,
     "y": 1030,
@@ -793,7 +793,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 36",
+   "filename": "bigboom-v0 36",
    "frame": {
     "x": 0,
     "y": 1236,
@@ -815,7 +815,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 37",
+   "filename": "bigboom-v0 37",
    "frame": {
     "x": 278,
     "y": 1236,
@@ -837,7 +837,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 38",
+   "filename": "bigboom-v0 38",
    "frame": {
     "x": 556,
     "y": 1236,
@@ -859,7 +859,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 39",
+   "filename": "bigboom-v0 39",
    "frame": {
     "x": 834,
     "y": 1236,
@@ -881,7 +881,7 @@
    "duration": 100
   },
   {
-   "filename": "bigboom 40",
+   "filename": "bigboom-v0 40",
    "frame": {
     "x": 1112,
     "y": 1236,
@@ -906,7 +906,7 @@
  "meta": {
   "app": "https://github.com/patch-gg/pixelfx",
   "version": "1",
-  "image": "bigboom.png",
+  "image": "bigboom-v0.png",
   "format": "RGBA8888",
   "size": {
    "w": 1668,
@@ -915,7 +915,7 @@
   "scale": "1",
   "frameTags": [
    {
-    "name": "bigboom",
+    "name": "bigboom-v0",
     "from": 0,
     "to": 40,
     "direction": "forward"
@@ -923,6 +923,9 @@
   ],
   "pixelfx": {
    "id": "explosions/big-explosion",
+   "effect": "bigboom",
+   "variant": 0,
+   "seed": 7,
    "name": "Big explosion",
    "fps": 10,
    "loop": false,
@@ -939,7 +942,7 @@
    "downscale": 1,
    "squash": 0.82,
    "light": {
-    "image": "bigboom-light.png",
+    "image": "bigboom-v0-light.png",
     "frameSize": [
      88,
      69
@@ -950,7 +953,8 @@
      60
     ],
     "downscale": 3,
-    "blend": "additive"
+    "blend": "additive",
+    "glow": 0.9
    }
   }
  }
